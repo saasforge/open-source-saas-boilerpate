@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node modules
+node_modules
+
+# Dist
+# static/fonts
+# static/js
+
+
+# Python
+__pycache__
+venv
+.env
+*.pyc
+
+# Database
+# Comment it if you want to keep your migrations files commited
+src/migrations
+
+# macOs
+.DS_Store
+
+# Settings
+.vscode
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

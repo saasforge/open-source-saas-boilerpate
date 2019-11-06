@@ -1,0 +1,17 @@
+aniso8601==8.0.0
+attrs==19.3.0
+Click==7.0
+Flask==1.0.2
+flask-restplus==0.13.0
+importlib-metadata==0.23
+itsdangerous==1.1.0
+Jinja2==2.10.3
+jsonschema==3.1.1
+MarkupSafe==1.1.1
+more-itertools==7.2.0
+pyrsistent==0.15.5
+python-dotenv==0.10.3
+pytz==2019.3
+six==1.12.0
+Werkzeug==0.16.0
+zipp==0.6.0
