@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import { globalVars } from '@src/global/globalVars'
+
 
 class AuthUI extends Component {
     render() {
@@ -13,6 +15,9 @@ class AuthUI extends Component {
                         <Route path="/register" component={RegisterForm} />
                     </Switch>
                 </BrowserRouter>
+                <div className="text-center">
+                    <p>{globalVars.COMPANY_NAME} © {new Date().getFullYear()}</p>
+                </div>
             </div>
         );
     }

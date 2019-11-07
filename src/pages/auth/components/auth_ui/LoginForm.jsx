@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthUIFunctions } from './AuthUIFunctions';
-//import { httpService } from '@src/global/components/js/httpService'
 import axios from 'axios';
+
+import { AuthUIFunctions } from './AuthUIFunctions';
+import ErrorMessage from './ErrorMessage';
+
 export default class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -27,23 +29,29 @@ export default class LoginForm extends Component {
             errors: [...prevState.errors, error]
         }));
     }
+    clearError = () => {
+        this.setState(prevState => ({
+            errors: [],
+            validUsername: true,
+            validEmail: true,
+            validPassword: true
+        }));
+    }
     sendData = async () => {
-        this.setState({ errors: [] });
-        this.setState({ validEmail: true });
-        this.setState({ validPassword: true });
+        this.clearError();
+        var isValid = true;
 
-        if (!(this.state.password && this.state.email)){
-            this.setState({ errors: ['Please enter both email and password.'] });
-            if (!this.state.password){
-                this.setState({ validPassword: false });
-            }
-            if (!this.state.email){
-                this.setState({ validEmail: false });
-            }
-            return;
+        if (!(this.state.email) || !AuthUIFunctions.validateEmail(this.state.email)){
+            this.setState({ validEmail: false });
+            this.addError('Please enter a valid email.');
+            isValid = false;
         }
-        if (!AuthUIFunctions.validateEmail(this.state.email)){
-            this.setState({ errors: ['Please enter a valid email.'] });
+        if ( !(this.state.password)){
+            this.setState({ validPassword: false });
+            this.addError('Please enter a password.');
+            isValid = false;
+        }
+        if (!isValid){
             return;
         }
 
@@ -65,6 +73,9 @@ export default class LoginForm extends Component {
     render(){
         return (
             <div>
+                <div className="text-center mb-5 mt-5">
+                    <h1>Please sign in</h1>
+                </div>
                 <div className="row">
                     <label htmlFor="inputEmail">Email address</label>
                     <input type="email" id="inputEmail" 
@@ -82,34 +93,20 @@ export default class LoginForm extends Component {
                 <div className="row">
                     <div className="checkbox mb-3">
                         <label>
-                            <input type="checkbox" onChange={this.handleChange} /> Remember me
+                            <input type="checkbox" onChange={this.handleChange} name="remember" /> Remember me
                         </label>
                     </div>
                 </div>
                 <div className="row">
                     <p className="text">Don't have an account? Register <Link to="/register">here</Link>.</p>
                 </div>
-                <div className="row">
+                <div className="row mb-5 mt-5">
                     <div className="col-md-12">
-                        <button className="btn btn-lg btn-primary-dark btn-block" onClick={this.sendData} >Sign in</button>
+                        <button className="btn btn-lg btn-primary" onClick={this.sendData} >Sign in</button>
                     </div>
                 </div>
                 { this.state.errors.length ? <ErrorMessage errors={this.state.errors} /> : null }
             </div>
         );
     }
-}
-
-function ErrorMessage(props){
-    const errors = props.errors;
-    const errorItems = errors.map((error) =>
-      <div  key={error}>
-        {error}
-      </div>
-    );
-    return (
-        <div className="alert alert-danger">
-            {errorItems}     
-        </div>
-    );
 }
