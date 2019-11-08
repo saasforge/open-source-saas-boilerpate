@@ -1,0 +1,14 @@
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.form-auth {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}

@@ -3,16 +3,16 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 const config = {
     entry: {
-        auth: './src/pages/auth/AuthApp.jsx',
-        dashboard: './src/pages/dashboard/DashboardApp.jsx'
+        auth: './src/app/auth/AuthApp.jsx',
+        dashboard: './src/app/dashboard/DashboardApp.jsx'
     },
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'src/dist/js')
+        path: path.resolve(__dirname, 'static/dist')
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanAfterEveryBuildPatterns: ['src/dist/js']
+            cleanAfterEveryBuildPatterns: ['static/dist']
         })
     ],
     resolve: {
@@ -30,7 +30,7 @@ const config = {
                 options: {
                 name: '[name].[ext]',
                 outputPath: '../fonts/',    // where the fonts will go
-                publicPath: '/src/global/media/fonts'       // override the default path
+                publicPath: '/src/shared/media/fonts'       // override the default path
                 }
             }]
         },
