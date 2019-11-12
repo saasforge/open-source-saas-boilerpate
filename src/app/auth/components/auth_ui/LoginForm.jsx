@@ -5,6 +5,9 @@ import axios from 'axios';
 import { AuthUIFunctions } from './AuthUIFunctions';
 import ErrorMessage from './ErrorMessage';
 
+// Plug in JWT Functions here (or any others)
+import { JWTFunctions } from '@src/shared/components/jwt/JWTFunctions';
+
 export default class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -61,8 +64,16 @@ export default class LoginForm extends Component {
             remember: this.state.remember
         };
         try {
-            let response = await axios.post('/api/login', data);
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+            let response = await axios.post('/api/auth/login', data);
+            this.setState({ errors: JWTFunctions.handleLoginResponse(response) });
+        } catch {
+            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+        }
+    }
+    sendTestData = async () => {
+        try {
+            let response = await axios.get('/api/auth/jwttest', {a: 1});
+            this.setState({ errors: JWTFunctions.handleLoginResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
         }
@@ -105,6 +116,7 @@ export default class LoginForm extends Component {
                         <button className="btn btn-lg btn-primary" onClick={this.sendData} >Sign in</button>
                     </div>
                 </div>
+                <button onClick={this.sendTestData}>Test</button>
                 { this.state.errors.length ? <ErrorMessage errors={this.state.errors} /> : null }
             </div>
         );

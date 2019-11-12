@@ -11,6 +11,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('db_url') # Store it in the hosting config
     COMPANY_NAME = 'Your company name' # Change to your company name
+    JWT_SECRET_KEY = os.environ.get('jwt_secret_key')
 
 class ProductionConfig(Config):
     ENV = 'prod'

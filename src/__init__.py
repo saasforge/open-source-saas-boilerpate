@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, importlib
 from pathlib import Path
 
 from flask import Flask
@@ -18,6 +18,7 @@ def create_app():
     register_blueprints(app)
     init_global_functions(app)
     register_extensions(app)
+    register_components(app)
     return app
 
 # automate
@@ -39,3 +40,19 @@ def register_extensions(app):
     db_schema.init_app(app)
     mail.init_app(app)
     alembic.init_app(app)
+
+def register_components(app):
+    '''
+    Automatically registers all module that need some initializing with application.
+    To-do: make it not only for shared modules
+    '''
+    shared_modules_folder = Path('src\\shared\\components')
+    for module in shared_modules_folder.iterdir():
+        if module.is_dir():
+            module_spec = importlib.util.find_spec('src.shared.components.{0}.api'.format(module.name))
+            if module_spec:
+                component_module = importlib.import_module('src.shared.components.{0}.api'.format(module.name))
+                if hasattr(component_module, 'init_app'):
+                    init_app = getattr(component_module, 'init_app')
+                    if init_app:
+                        init_app(app)

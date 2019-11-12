@@ -13,19 +13,15 @@ auth_app = Api (auth_blueprint,
 )
 
 # This is where you add API namespaces
-auth_api = Namespace('auth', path='/app/api/auth/')
+auth_api = Namespace('auth')
 auth_app.add_namespace(auth_api)
 
-# For now, every blueprint adds all registered namespaces (API components)
-# to-do: a blueprints adds a namespace only if it needs it
-api_components = list(filter(lambda component: component.get('type') == 'api', components))
-for api_component in api_components:  
-    package_name = 'src.shared.components.{0}.api'.format(api_component.get('name'))
-    module = importlib.import_module(package_name)
-    api_namespace = getattr(module, api_component.get('name'))
-    auth_app.add_namespace(api_namespace)
+
 
 @auth_blueprint.route('/login', methods=['GET'])
+def app_login():
+    return render_template('auth.html')
+
 @auth_blueprint.route('/register', methods=['GET'])
-def app_index():
+def app_register():
     return render_template('auth.html')

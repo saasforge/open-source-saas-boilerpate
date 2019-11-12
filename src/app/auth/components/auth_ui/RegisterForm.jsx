@@ -76,7 +76,7 @@ export default class RegisterForm extends Component {
             password2: this.state.password2,
         };
         try {
-            let response = await axios.post('/api/register', data);
+            let response = await axios.post('/api/auth/register', data);
             this.setState({ errors: AuthUIFunctions.handleResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });

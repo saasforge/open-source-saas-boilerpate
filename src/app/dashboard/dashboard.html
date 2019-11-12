@@ -3,11 +3,11 @@
     <head>
         <title>{{get_config_var('COMPANY_NAME')}} - Dashboard</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link rel="icon" type="image/x-icon" href="{{ url_for("custom_static", filename="global/media/favicon.ico") }}" />
+        <link rel="icon" type="image/x-icon" href="{{ url_for("static", filename="media/favicon.ico") }}" />
     </head>
     <body>
         <h1>5</h1>
         <div id="root"></div>
-        <script src="{{ url_for("custom_static", filename="dist/js/dashboard.bundle.js")}}"></script>
+        <script src="{{ url_for("static", filename="dist/js/dashboard.bundle.js")}}"></script>
     </body>
 </html>

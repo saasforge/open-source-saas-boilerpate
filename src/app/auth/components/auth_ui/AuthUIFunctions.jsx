@@ -5,16 +5,13 @@ var AuthUIFunctions = {
         return re.test(email);
     },
     handleResponse: function(response){
-        var errors = [];
-        if (response && response.data){
-            for (var key in response.data.errors){
-                errors = errors.concat(response.data.errors[key]);
-            }
-            if (response.data.redirect){
-                window.location.href = response.data.redirect;
-            }
+        if (!response.data.result){
+            return [response.data.error || 'Something went wrong during login.'];
         }
-        return errors;
+        if (response.data.redirect){
+            window.location.href = response.data.redirect;
+        }
+        return []; // Errors list is empty.
     }
 };
 export { AuthUIFunctions };
