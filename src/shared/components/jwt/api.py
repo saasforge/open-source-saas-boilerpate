@@ -1,8 +1,8 @@
 from flask import jsonify, render_template, send_file, Response, current_app, request, make_response, redirect, url_for
 from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate, ValidationError, EXCLUDE, INCLUDE
-from flask_restplus import Namespace, Resource, fields
-from flask_jwt_extended import (create_access_token, create_refresh_token, 
+from flask_restplus import Namespace, Resource, fields, Api
+from flask_jwt_extended import (create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
                                 jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 from src.extensions import db, db_schema
@@ -13,10 +13,20 @@ jw = JWTManager()
 
 def init_app(app):
     jw.init_app(app)
+    jw._set_error_handler_callbacks(jwt_api)
+    # app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 40 # To test
+    # app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 60 # To test
+    ################ Uncomment it! ###################
+    #app.config['JWT_COOKIE_SECURE'] = True 
+    ##################################################
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
+    app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/auth/token/refresh'
+    #app.config['JWT_BLACKLIST_ENABLED'] = True
+    #app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
 
 jwt_api = Namespace('jwt_api', path ='/api/auth/')
-
 
 @jwt_api.route('/register')
 class user_registration(Resource):
@@ -66,11 +76,10 @@ class user_login(Resource):
             if existing_user.verify_hash(password):
                 access_token = create_access_token(identity = email)
                 refresh_token = create_refresh_token(identity = email)
-                return {
-                    'result': True,
-                    'access_token': access_token,
-                    'refresh_token': refresh_token
-                }
+                response = jsonify({'result': True})
+                set_access_cookies(response, access_token)
+                set_refresh_cookies(response, refresh_token)
+                return make_response(response, 200)
             else:
                 return jsonify({
                     'result': False,
@@ -81,17 +90,18 @@ class user_login(Resource):
 class token_test(Resource):
     @jwt_required
     def get(self):
-        return {'message': 'User logout'}
+        '''
+        This route is protected.
+        '''
+        return {'message': 'Protected works', 'result': True}
       
-@jwt_api.route('/logout/access')
-class user_logout_access(Resource):
+@jwt_api.route('/logout')
+class user_logout(Resource):
     def post(self):
-        return {'message': 'User logout'}
+        response = jsonify({'result': True})
+        unset_jwt_cookies(response)
+        return make_response(response, 200)
       
-@jwt_api.route('/logout/refresh')     
-class user_logout_refresh(Resource):
-    def post(self):
-        return {'message': 'User logout'}
 
 @jwt_api.route('/token/refresh')        
 class user_token_refresh(Resource):
@@ -100,14 +110,14 @@ class user_token_refresh(Resource):
     '''
     @jwt_refresh_token_required
     def post(self):
-        current_user = get_jwt_identity()
-        access_token = create_access_token(identity = current_user)
-        return {'access_token': access_token}
-      
+        current_email = get_jwt_identity()
+        access_token = create_access_token(identity = current_email)
+        response = jsonify({'result': True})
+        set_access_cookies(response, access_token)
+        return make_response(response, 200)
 
+'''
 @jw.unauthorized_loader
 def redirect_to_login(message):
-    '''
-    When user is not authenticated, it redirects to login page.
-    '''
     return redirect(url_for('auth.app_login'))
+'''

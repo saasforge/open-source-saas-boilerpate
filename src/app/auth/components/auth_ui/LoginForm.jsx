@@ -65,7 +65,7 @@ export default class LoginForm extends Component {
         };
         try {
             let response = await axios.post('/api/auth/login', data);
-            this.setState({ errors: JWTFunctions.handleLoginResponse(response) });
+            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
         }
@@ -73,7 +73,7 @@ export default class LoginForm extends Component {
     sendTestData = async () => {
         try {
             let response = await axios.get('/api/auth/jwttest', {a: 1});
-            this.setState({ errors: JWTFunctions.handleLoginResponse(response) });
+            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
         }

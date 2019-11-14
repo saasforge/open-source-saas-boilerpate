@@ -3,36 +3,89 @@
 import axios from 'axios';
 
 var JWTFunctions = {
-    handleLoginResponse: function(response){
-        if (response && response.data){
-            if (!response.data.result){
-                return ([response.data.error || 'Something went wrong during login.']);
-            }
-            var token = sessionStorage.getItem('auth_token');
-            if (token){
-                // Check if it should be refreshed
-                var expire_date = sessionStorage.getItem('expire_date');
-                if (expire_date){
-                    var now = new Date().now;
-                    if (expire_date < now || now - expire_date*1000 < 5000){
-                        // Ask for a new
-                    }
+    initJWT(){
+        this.addAxiosRequestInterceptor();
+        this.addAxiosResponseInterceptor();
+    },
+    addAxiosRequestInterceptor(){
+        axios.interceptors.request.use(
+            config => {
+                var token = '';
+                /*
+                if (config.url == '/api/auth/token/refresh'){
+                    // We need a refresh token now
+                    token = this.getRefreshToken();
+                } else {
+                    token = this.getAccessToken();
                 }
-            } else {
-                // Store token in Session storage
-                sessionStorage.setItem('auth_token', response.data.access_token);
-
-                // Add header to axios
-                axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
+                if (token) {
+                    config.headers['Authorization'] = 'Bearer ' + token;
+                }*/
+                // If there is no token, a user will be automatically redirected to the login page.
+                return config;
+            },
+            error => {
+                Promise.reject(error)
+            });
+    },
+    addAxiosResponseInterceptor(){
+        const interceptor = axios.interceptors.response.use(
+            response => {
+                if (response.config.url == '/api/auth/login'){
+                    // Update storage with tokens
+                    //this.setAccessToken(response.data.access_token);
+                    //this.setRefreshToken(response.data.refresh_token);
+                }
+                return response;
+            },
+            error => {
+                if (error.response.status === 401 && error.response.config.url == '/api/auth/token/refresh') {
+                    // If we can't do authorized requesto to refresh token, it means the refresh token is wrong or expired,
+                    // so we need to re-login.
+                    window.location.href = '/login';
+                    return Promise.reject(error);
+                }
+                // Reject promise if not authentication error
+                if (error.response.status !== 401) {
+                    return Promise.reject(error);
+                }
+    
+                /* 
+                 * When response code is 401, we try to refresh the token.
+                 * Eject the interceptor so it doesn't loop in case
+                 * token refresh causes the 401 response
+                 */
+                axios.interceptors.response.eject(interceptor);
+    
+                return axios.post('/api/auth/token/refresh').then(response => {
+                    //this.setAccessToken(response.data.access_token);
+                    return axios(error.response.config);
+                }).catch(error => {
+                    this.clearTokens();
+                    window.location.href = '/login';
+                    return Promise.reject(error);
+                }).finally(()=>{
+                    this.addAxiosResponseInterceptor();
+                });
             }
-
-
-            // If a response has a redirect we use it
-            if (response.data.redirect){
-                window.location.href = response.data.redirect;
-            }
-            return [];
-        }
+        );
+    },
+    setAccessToken(token) {
+        localStorage.setItem('access_token', token);
+    },
+    setRefreshToken(token){
+        localStorage.setItem('refresh_token', token);
+    }, 
+    getAccessToken() {
+        return localStorage.getItem('access_token');
+    }, 
+    getRefreshToken() {
+        return localStorage.getItem('refresh_token');
+    }, 
+    clearTokens() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
     }
 };
+JWTFunctions.initJWT();
 export { JWTFunctions };
