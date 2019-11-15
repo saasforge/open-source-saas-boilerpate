@@ -3,7 +3,7 @@ from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate, ValidationError, EXCLUDE, INCLUDE
 from flask_restplus import Namespace, Resource, fields, Api
 from flask_jwt_extended import (create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies,
-                                jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+                                jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, unset_jwt_cookies)
 
 from src.extensions import db, db_schema
 from src.shared.components.users_db_api import dbapi
@@ -14,14 +14,16 @@ jw = JWTManager()
 def init_app(app):
     jw.init_app(app)
     jw._set_error_handler_callbacks(jwt_api)
-    # app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 40 # To test
-    # app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 60 # To test
-    ################ Uncomment it! ###################
-    #app.config['JWT_COOKIE_SECURE'] = True 
+    #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 120 # To test
+    #app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 600 # To test
+    ################ Make it True! ###################
+    app.config['JWT_COOKIE_SECURE'] = False 
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     ##################################################
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
-    app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/auth/token/refresh'
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/app'
+    app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/auth'
+
     #app.config['JWT_BLACKLIST_ENABLED'] = True
     #app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
@@ -85,16 +87,13 @@ class user_login(Resource):
                     'result': False,
                     'error': 'Email or password is wrong.'
                 })
-
+'''
 @jwt_api.route('/jwttest')
 class token_test(Resource):
     @jwt_required
     def get(self):
-        '''
-        This route is protected.
-        '''
         return {'message': 'Protected works', 'result': True}
-      
+'''
 @jwt_api.route('/logout')
 class user_logout(Resource):
     def post(self):
@@ -114,6 +113,16 @@ class user_token_refresh(Resource):
         access_token = create_access_token(identity = current_email)
         response = jsonify({'result': True})
         set_access_cookies(response, access_token)
+        return make_response(response, 200)
+
+@jwt_api.route('/token/testrefresh')        
+class user_token_refresh_test(Resource):
+    '''
+    This endpoint is called by client to refresh the access token.
+    '''
+    @jwt_refresh_token_required
+    def post(self):
+        response = jsonify({'result': True})
         return make_response(response, 200)
 
 '''

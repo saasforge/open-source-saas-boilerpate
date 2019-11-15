@@ -4,40 +4,11 @@ import axios from 'axios';
 
 var JWTFunctions = {
     initJWT(){
-        this.addAxiosRequestInterceptor();
         this.addAxiosResponseInterceptor();
-    },
-    addAxiosRequestInterceptor(){
-        axios.interceptors.request.use(
-            config => {
-                var token = '';
-                /*
-                if (config.url == '/api/auth/token/refresh'){
-                    // We need a refresh token now
-                    token = this.getRefreshToken();
-                } else {
-                    token = this.getAccessToken();
-                }
-                if (token) {
-                    config.headers['Authorization'] = 'Bearer ' + token;
-                }*/
-                // If there is no token, a user will be automatically redirected to the login page.
-                return config;
-            },
-            error => {
-                Promise.reject(error)
-            });
     },
     addAxiosResponseInterceptor(){
         const interceptor = axios.interceptors.response.use(
-            response => {
-                if (response.config.url == '/api/auth/login'){
-                    // Update storage with tokens
-                    //this.setAccessToken(response.data.access_token);
-                    //this.setRefreshToken(response.data.refresh_token);
-                }
-                return response;
-            },
+            response => response,
             error => {
                 if (error.response.status === 401 && error.response.config.url == '/api/auth/token/refresh') {
                     // If we can't do authorized requesto to refresh token, it means the refresh token is wrong or expired,
@@ -58,7 +29,6 @@ var JWTFunctions = {
                 axios.interceptors.response.eject(interceptor);
     
                 return axios.post('/api/auth/token/refresh').then(response => {
-                    //this.setAccessToken(response.data.access_token);
                     return axios(error.response.config);
                 }).catch(error => {
                     this.clearTokens();

@@ -1,6 +1,6 @@
 import importlib
 from pathlib import Path
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 from flask_restplus import Namespace, Resource, Api
 from src.registry import components
 from flask_jwt_extended import jwt_required, jwt_refresh_token_required, get_jwt_identity, fresh_jwt_required 
@@ -58,3 +58,11 @@ def app_index():
 @fresh_jwt_required
 def app_index_test():
     return render_template('dashboard.html')
+
+@dashboard_blueprint.route('/app/api/jwttest', methods=['GET'])
+@jwt_required
+def get_test():
+    '''
+    This route is protected.
+    '''
+    return jsonify({'message': 'Protected works', 'result': True})

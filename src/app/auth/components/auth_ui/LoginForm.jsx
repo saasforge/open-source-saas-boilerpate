@@ -72,7 +72,33 @@ export default class LoginForm extends Component {
     }
     sendTestData = async () => {
         try {
-            let response = await axios.get('/api/auth/jwttest', {a: 1});
+            let response = await axios.get('/app/api/jwttest', {a: 1});
+            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+        } catch {
+            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+        }
+    }
+    doLogout = async () => {
+        try {
+            //document.cookie = 'access_token_cookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            //document.cookie = 'refresh_token_cookie=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            let response = await axios.post('/api/auth/logout', {});
+            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+        } catch {
+            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+        }
+    }
+    testRefresh = async() => {
+        try {
+            let response = await axios.post('/api/auth/token/refresh', {});
+            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+        } catch {
+            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+        }
+    }
+    testRefresh2 = async() => {
+        try {
+            let response = await axios.post('/api/auth/token/testrefresh', {});
             this.setState({ errors: AuthUIFunctions.handleResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
@@ -117,6 +143,9 @@ export default class LoginForm extends Component {
                     </div>
                 </div>
                 <button onClick={this.sendTestData}>Test</button>
+                <button onClick={this.doLogout}>Logout</button>
+                <button onClick={this.testRefresh}>Refresh</button>
+                <button onClick={this.testRefresh2}>TestRefresh</button>
                 { this.state.errors.length ? <ErrorMessage errors={this.state.errors} /> : null }
             </div>
         );
