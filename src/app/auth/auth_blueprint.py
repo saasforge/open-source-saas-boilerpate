@@ -1,7 +1,6 @@
 import importlib
 from flask import Blueprint, render_template
 from flask_restplus import Namespace, Resource, Api
-from src.registry import components
 
 auth_blueprint = Blueprint('auth', __name__, template_folder='../../app/auth')
 

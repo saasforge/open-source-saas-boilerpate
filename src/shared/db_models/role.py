@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from flask_sqlalchemy import SQLAlchemy
 import uuid
 
-from src.extensions import db
+from src.shared.utils.extensions import db
 
 class Role(db.Model):
     __tablename__ = 'role'

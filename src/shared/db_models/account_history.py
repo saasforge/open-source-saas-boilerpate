@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
 from sqlalchemy.dialects.postgresql import UUID
 
-from src.extensions import db
+from src.shared.utils.extensions import db
 from src.shared.db_models.consts.event_type import EventType, get_text_event
 
 

@@ -6,7 +6,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from src.shared.db_models.role import Role
 from src.shared.db_models.account import Account
 
-from src.extensions import db
+from src.shared.utils.extensions import db
 
 class User(db.Model):
     __tablename__ = 'user'

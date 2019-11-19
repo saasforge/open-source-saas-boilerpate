@@ -1,0 +1,2 @@
+
+def current_user

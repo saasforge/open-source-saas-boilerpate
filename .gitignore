@@ -7,8 +7,10 @@ npm-debug.log*
 node_modules
 
 # Dist
-# static/fonts
-# static/js
+static/dist
+
+# Libraries
+library
 
 
 # Python

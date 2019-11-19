@@ -4,7 +4,7 @@ from flask import current_app, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
 
-from src.extensions import db
+from src.shared.utils.extensions import db
 from src.shared.db_models.account_history import AccountHistory
 
 class Account(db.Model):

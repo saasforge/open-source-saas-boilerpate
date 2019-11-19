@@ -15,11 +15,11 @@ def custom_static(filename):
 @application.cli.command()
 @with_appcontext
 def dbupdate():
-    from src.utils.db_scaffold import reinit_db
+    from src.shared.utils.db_scaffold import reinit_db
     reinit_db('update')
 
 @application.cli.command()
 @with_appcontext
 def dbcreate():
-    from src.utils.db_scaffold import reinit_db
+    from src.shared.utils.db_scaffold import reinit_db
     reinit_db('create')

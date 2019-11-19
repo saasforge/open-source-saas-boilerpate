@@ -4,7 +4,7 @@ from pathlib import Path
 from flask import Flask
 from config import ConfigHelper
 
-from src.extensions import db, db_schema, mail, alembic
+from src.shared.utils.extensions import db, db_schema, mail, alembic
 
 def create_app():
     
@@ -32,7 +32,7 @@ def register_blueprints(app):
         app.register_blueprint(blueprint)
 
 def init_global_functions(app):
-    from src import global_functions
+    from src.shared.utils import global_functions
     global_functions.init(app)
 
 def register_extensions(app):
@@ -46,12 +46,12 @@ def register_components(app):
     Automatically registers all module that need some initializing with application.
     To-do: make it not only for shared modules
     '''
-    shared_modules_folder = Path('src\\shared\\components')
+    shared_modules_folder = Path('src\\components')
     for module in shared_modules_folder.iterdir():
         if module.is_dir():
-            module_spec = importlib.util.find_spec('src.shared.components.{0}.api'.format(module.name))
+            module_spec = importlib.util.find_spec('src.components.{0}.api'.format(module.name))
             if module_spec:
-                component_module = importlib.import_module('src.shared.components.{0}.api'.format(module.name))
+                component_module = importlib.import_module('src.components.{0}.api'.format(module.name))
                 if hasattr(component_module, 'init_app'):
                     init_app = getattr(component_module, 'init_app')
                     if init_app:

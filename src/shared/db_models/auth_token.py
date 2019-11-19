@@ -3,7 +3,7 @@ import uuid
 from flask import current_app, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
-from src.extensions import db
+from src.shared.utils.extensions import db
 
 class AuthToken(db.Model):
     __tablename__ = 'auth_token'
