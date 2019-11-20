@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-free-solid';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import jsonPath from '@src/components/json_path/jsonpath';
+
+import { observable, computed, autorun } from 'mobx';
+import { observer } from "mobx-react"
 
 import './dashboard.scss';
+
+import TodoList from './todo'
 
 library.add(fab);
 
@@ -17,6 +23,40 @@ const UserData = ()=> {
         <div>{userData.username}</div>
     );
 };
+
+class ObservableTodoStore {
+	@observable todos = [];
+    @observable pendingRequests = 0;
+
+    constructor() {
+        autorun(() => console.log(this.report));
+    }
+
+	@computed get completedTodosCount() {
+    	return this.todos.filter(
+			todo => todo.completed === true
+		).length;
+    }
+
+	@computed get report() {
+		if (this.todos.length === 0)
+			return "<none>";
+		return `Next todo: "${this.todos[0].task}". ` +
+			`Progress: ${this.completedTodosCount}/${this.todos.length}`;
+	}
+
+	addTodo(task) {
+		this.todos.push({
+			task: task,
+			completed: false,
+			assignee: null
+		});
+	}
+}
+
+
+const observableTodoStore = new ObservableTodoStore();
+
 
 export default class DashboardView extends Component {
     constructor(props) {
@@ -50,6 +90,7 @@ export default class DashboardView extends Component {
                 items: [
                     {
                         name: 'Web',
+                        //expanded: true,
                         items: [
                             {
                                 name: 'Personal',
@@ -92,6 +133,7 @@ export default class DashboardView extends Component {
             loaded: false,
             menuItems: menuItems
         };
+        this.toggleSubMenu = this.toggleSubMenu.bind(this);
     }
     loadInitialData = async()=>{
         try {
@@ -108,20 +150,38 @@ export default class DashboardView extends Component {
     componentWillMount(){
         this.loadInitialData();
     }
-    render_view() {
-
+    toggleSubMenu(submenuObject){
+        const menuObject = this.state.menuItems;
+        const searchString = `$..items[?(@.name=="${submenuObject.name}")]`;
+        const item = jsonPath(menuObject, searchString); // For now, by name
+        if (item){
+            item.expanded = !item.expanded;
+        }
+        this.setState({menuItems: menuObject});
     }
-    render_menuItem(item, level){
+    /*
+    item - menu item
+    level - number of level
+    expandedParent - true if parent item should be expanded
+    */
+    render_menuItem(item, level, expandedParent){
+        const menuItemStyle = {paddingLeft: 10 * level + 'px'};
+        // Find out if there is any subitems to be expanded
+        window.jsonPath = jsonPath;
+        //var childsWithSubitems = jsonPath(item, '$..items[?(@.items)]');
+        var subitemsExpanded = jsonPath(item, '$..items[?(@.expanded)]');
+        // Set up class for expanding
+        const subitemClassName = (item.expanded || subitemsExpanded || expandedParent ? '' : ' collapsed');
         return item.items.map((subItem)=>
-            <div className={'item-submenu' + (level > 1 ? ' collapsed' : '')} key={subItem.name}>
-                <div className="menu-item">
+            <div className={'item-submenu' + subitemClassName} key={subItem.name}>
+                <div className="menu-item" style={menuItemStyle}>
                     {subItem.icon ?<div className="icon-block" style={{color: subItem.color || ''}}><FontAwesomeIcon icon={subItem.icon}  /></div> : ''}
-                    {subItem.name}               
+                    <span>{subItem.name}</span> 
+                    {subItem.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(subItem)}><FontAwesomeIcon icon="angle-down" /></button>: ''}            
                 </div>
-                {subItem.items ? <button className="button-expand"><FontAwesomeIcon icon="angle-down" /></button>: ''
-                    
-                    }
-                {subItem.items ? <div className="item-submenu">{this.render_menuItem(subItem, level + 1)}</div> : ''}
+                <div>
+                    {subItem.items ? <div className="">{this.render_menuItem(subItem, level + 1, item.expanded)}</div> : ''}
+                </div>
             </div>
         );
     }
@@ -172,6 +232,9 @@ export default class DashboardView extends Component {
                             {this.render_menu()}
                         </div>
                     </aside>
+                    <div style={{'marginLeft': '300px'}}>
+                        <TodoList store={ observableTodoStore } />
+                    </div>
                 </div>
             </div>
             );

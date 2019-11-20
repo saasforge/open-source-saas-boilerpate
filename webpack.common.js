@@ -56,7 +56,11 @@ const config = {
             exclude: /node_modules/,
             query:{
                 presets: ['@babel/react', '@babel/preset-env'],
-                plugins: ['@babel/plugin-proposal-class-properties', '@babel/transform-runtime']
+                plugins: [
+                        ['@babel/plugin-proposal-decorators', { 'legacy': true }],  
+                        ['@babel/plugin-proposal-class-properties', {'loose': true}],
+                        '@babel/transform-runtime'
+                        ]
             }
         },
         {

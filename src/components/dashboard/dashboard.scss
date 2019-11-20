@@ -106,23 +106,27 @@ aside {
 }
 .aside-menu .group-name {
     padding: 10px;
+    color: #ccd4e6;
+    background-color: #323c5a;
 }
 .aside-menu .group-items {
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 .aside-menu .item-submenu {
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 .aside-menu .item-submenu:hover {
-    background-color: #384775;
-    padding: 10px;
+
 }
 .aside-menu .item-submenu .collapsed{
     display: none;
 }
 .aside-menu .menu-item {
     padding: 10px 0px;
-    display: inline-block;
+}
+.aside-menu .menu-item:hover {
+    background-color: #384775;
+    color: #ebebeb;
 }
 .aside-menu .icon-block {
     color: #1fe4b7;
@@ -131,7 +135,7 @@ aside {
 }
 .aside-menu .button-expand {
     color: #c9d2da;
-    padding: 8px 15px;
+    padding: 2px 15px;
     border: 0;
     background: 0 0;
     outline: 0 !important;
@@ -141,9 +145,7 @@ aside {
     float: right;
 }
 .aside-menu .button-expand:hover {
-    background-color: #4f5977;
-    border-radius: 3px;
-    color: #e2e7eb;
+    color: #ebebeb;
 }
 @media (max-width: 1024px){
     .header-mobile-fixed .header-mobile {
