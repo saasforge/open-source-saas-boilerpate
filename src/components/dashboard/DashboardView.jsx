@@ -69,7 +69,8 @@ export default class DashboardView extends Component {
                                     },
                                     {
                                         name: 'My books',
-                                        url: '/books'
+                                        url: '/books',
+                                        icon: 'book'
                                     }
                                 ]
                             }
@@ -166,19 +167,31 @@ export default class DashboardView extends Component {
         // Find out if there is any subitems to be expanded
         window.jsonPath = jsonPath;
         //var childsWithSubitems = jsonPath(item, '$..items[?(@.items)]');
-        var subitemsExpanded = jsonPath(item, '$..items[?(@.expanded)]');
+        //var subitemsExpanded = jsonPath(item, '$..items[?(@.expanded)]');
         // Set up class for expanding
-        const subitemClassName = (item.expanded || subitemsExpanded ? '' : ' collapsed');
-        return item.items.map((subItem)=>
-            <div className={'item-submenu' + subitemClassName} key={subItem.name}>
+        const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
+        let itemTitle;
+        if (item.name){
+            itemTitle = (                 
                 <div className="menu-item" style={menuItemStyle}>
-                    {subItem.icon ?<div className="icon-block" style={{color: subItem.color || ''}}><FontAwesomeIcon icon={subItem.icon}  /></div> : ''}
-                    <span>{subItem.name}</span> 
-                    {subItem.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(subItem)}><FontAwesomeIcon icon="angle-down" /></button>: ''}            
-                </div>
-                <div>
-                    {subItem.items ? <div className="">{this.render_menuItem(subItem, level + 1)}</div> : ''}
-                </div>
+                    {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
+                    <span>{item.name}</span> 
+                    {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}            
+                </div>);
+        } else {
+            itemTitle = '';
+        }
+        return (
+            <div key={item.name || item.groupName}>
+                {itemTitle}
+                {item.items ? 
+                    <div className={'item-submenu' + subitemClassName}>
+                    {
+                        item.items.map((subItem)=>this.render_menuItem(subItem, level + 1))
+                    }
+                    </div> 
+                    : ''
+                }
             </div>
         );
     }
