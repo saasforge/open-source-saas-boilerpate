@@ -1,3 +1,5 @@
+@import '~bootstrap/scss/bootstrap';
+
 html {
     height: 100%;
     margin: 0;
@@ -109,24 +111,20 @@ aside {
     color: #ccd4e6;
     background-color: #323c5a;
 }
-.aside-menu .group-items {
-    /*padding-left: 10px;*/
-}
-.aside-menu .item-submenu {
-    /*padding-left: 10px;*/
-}
-.aside-menu .item-submenu:hover {
 
-}
 .aside-menu .item-submenu.collapsed{
     display: none;
 }
 .aside-menu .menu-item {
     padding: 10px 0px;
+    display: block;
+    color: #9fb1da;
+    cursor: pointer;
 }
 .aside-menu .menu-item:hover {
     background-color: #384775;
     color: #ebebeb;
+    text-decoration: none;
 }
 .aside-menu .icon-block {
     color: #1fe4b7;
@@ -146,6 +144,51 @@ aside {
 }
 .aside-menu .button-expand:hover {
     color: #ebebeb;
+}
+.dashboard-main {
+    padding-top: 66px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+.dashboard-main .header-main {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 266px;
+    z-index: 99;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    height: 64px;
+    padding: 15px;
+}
+.dashboard-main .header-main .bar-right {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    padding: 0;
+}
+.button-dropdown-menu {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 3px;
+    background-color: #edf1fd;
+    min-width: 70px;
+    color: #1f2a4d;
+}
+.dropdown-menu {
+    box-shadow: 0 0 50px 0 rgba(63, 64, 105, 0.15);
+    border: 1px solid rgba(210, 210, 210, 0.15);
+}
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #8ea0da;
 }
 @media (max-width: 1024px){
     .header-mobile-fixed .header-mobile {
@@ -216,6 +259,13 @@ aside {
         margin: 0 .5rem 0 1rem;
         color: #ced7e0;
     }
+    aside {
+        display: none;
+    }
+    .dashboard-main {
+        width: 100%;
+        padding-left: 0px;
+    }
 }
 @media (min-width: 1025px){
     .header-mobile {
@@ -234,6 +284,9 @@ aside {
         bottom: 0;
         left: 0;
         z-index: 99;
+    }
+    .dashboard-main {
+        padding-left: 266px;
     }
 }
 

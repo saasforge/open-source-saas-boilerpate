@@ -21,4 +21,11 @@ For example, to specify path to a resource in some component:
 <link rel="icon" type="image/x-icon" href="{{ url_for("custom_static", 
     filename="shared/components/media_component/favicon.ico") }}" />
 ```
+## Dashboard
+### Left menu
+To specify elements of the left menu, edit 
+#### Menu element
+#### Menu link
+#### Linked content
 
+### Links/content

@@ -39,7 +39,8 @@ def init():
 init()               
 
 @dashboard_blueprint.route('/app', methods=['GET'])
-def app_index():
+@dashboard_blueprint.route('/app/<path:path>', methods=['GET'])
+def app_index(path = None):
     return render_template('dashboard.html')
 
 @dashboard_blueprint.route('/app/api/jwttest', methods=['GET'])

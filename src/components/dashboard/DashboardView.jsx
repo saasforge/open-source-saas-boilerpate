@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, Suspense, lazy } from 'react';
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import axios from 'axios';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-free-solid';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import jsonPath from '@src/components/json_path/jsonpath';
-/*
-import { observable, computed, autorun } from 'mobx';
-import { observer } from "mobx-react"
-*/
+
+import dashboardComponents from './dashboardComponents';
+
+import LeftMenu from '@src/components/leftMenu/LeftMenu';
+
+
+
+//import Profile from '@src/components/profile/ProfileUI';
+//import ChangePassword from '@src/components/password/ChangePasswordUI';
+
 import './dashboard.scss';
+
 
 
 library.add(fab);
@@ -24,85 +31,16 @@ const UserData = ()=> {
 };
 
 
-
-
 export default class DashboardView extends Component {
     constructor(props) {
         super(props);
-
-        const menuItems = [
-            {
-                groupName: 'Email',
-                items: [
-                    {
-                        name: 'Inbox',
-                        icon: ['fab', 'facebook'],
-                        url: '/inbox',
-                        color: '#e4951f'
-                    },
-                    {
-                        name: 'Unread',
-                        icon: 'envelope',
-                        url: '/unread',
-                        color: '#1fd2e4'
-                    },
-                    {
-                        name: 'Sent',
-                        icon: 'paper-plane',
-                        url: '/sent'
-                    }
-                ]
-            },
-            {
-                groupName: 'Categories',
-                items: [
-                    {
-                        name: 'Web',
-                        //expanded: true,
-                        items: [
-                            {
-                                name: 'Personal',
-                                items: [
-                                    {
-                                        name: 'My photos',
-                                        url: '/photos'
-                                    },
-                                    {
-                                        name: 'My books',
-                                        url: '/books',
-                                        icon: 'book'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        name: 'Social',
-                        url: '/social', // As this is not leaf item this URL will be the part of it
-                        items: [
-                            {
-                                name: 'Facebook',
-                                icon: ['fab', 'facebook-square'],
-                                url: '/facebook'
-                            },
-                            {
-                                name: 'Strava',
-                                icon: ['fab', 'strava'],
-                                url: '/strava'
-                            }
-                        ]
-                    }
-                ]
-            }
-        ];
     
         this.state = {
             username: '',
             error: '',
-            loaded: false,
-            menuItems: menuItems
+            loaded: false
         };
-        this.toggleSubMenu = this.toggleSubMenu.bind(this);
+        this.components = dashboardComponents;
     }
     loadInitialData = async()=>{
         try {
@@ -119,94 +57,8 @@ export default class DashboardView extends Component {
     componentWillMount(){
         this.loadInitialData();
     }
-    findMenuItemByName(item, name){
-        var foundItem = null;
-        if (item.name == name){
-            foundItem = item
-        } else {
-            if (item.items){
-                for (var i = 0; i < item.items.length; i++){
-                    foundItem = this.findMenuItemByName(item.items[i], name);
-                    if (foundItem){
-                        break;
-                    }
-                }
-            }
-        }
-        return foundItem;
-    }
-    toggleSubMenu(submenuObject){
-        /*const menuObject = this.state.menuItems;
-        const searchString = `$..items[?(@.name=="${submenuObject.name}")]`;
-        const item = jsonPath(menuObject, searchString); // For now, by name
-        if (item){
-            item.expanded = !item.expanded;
-        }
-        this.setState({menuItems: menuObject});
-        */
-        const menuItems = this.state.menuItems;
-        var foundItem = null;
-        for (var i = 0; i < menuItems.length; i++){
-            foundItem = this.findMenuItemByName(menuItems[i], submenuObject.name);
-            if (foundItem){
-                break;
-            }
-        }
-        if (foundItem){
-            foundItem.expanded = !foundItem.expanded;
-        }
-        this.setState({menuItems: menuItems});
-    }
-    /*
-    item - menu item
-    level - number of level
-    expandedParent - true if parent item should be expanded
-    */
-    render_menuItem(item, level){
-        const menuItemStyle = {paddingLeft: 10 * level + 'px'};
-        // Find out if there is any subitems to be expanded
-        window.jsonPath = jsonPath;
-        //var childsWithSubitems = jsonPath(item, '$..items[?(@.items)]');
-        //var subitemsExpanded = jsonPath(item, '$..items[?(@.expanded)]');
-        // Set up class for expanding
-        const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
-        let itemTitle;
-        if (item.name){
-            itemTitle = (                 
-                <div className="menu-item" style={menuItemStyle}>
-                    {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                    <span>{item.name}</span> 
-                    {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}            
-                </div>);
-        } else {
-            itemTitle = '';
-        }
-        return (
-            <div key={item.name || item.groupName}>
-                {itemTitle}
-                {item.items ? 
-                    <div className={'item-submenu' + subitemClassName}>
-                    {
-                        item.items.map((subItem)=>this.render_menuItem(subItem, level + 1))
-                    }
-                    </div> 
-                    : ''
-                }
-            </div>
-        );
-    }
-    render_menu() {
-        const groupItems = this.state.menuItems.map((group) =>
-            <div className="group-block" key={group.groupName}>
-                <div className="group-name">{group.groupName}</div>
-                <div className="group-items">{this.render_menuItem(group, 1)}</div>
-            </div>
-        );
-        return (
-            <div className="aside-menu">{groupItems}</div>
-        );
-    }
     render(){
+
         if (this.state.loaded) {
             return (
             <div>
@@ -239,13 +91,40 @@ export default class DashboardView extends Component {
                             </div>
                         </div>
                         <div className="aside-menu">
-                            {this.render_menu()}
+                            <LeftMenu />
                         </div>
                     </aside>
+                    <div className="dashboard-main">
+                        <div className="header-main">
+                            <div></div>
+                            <div className="bar-right">
+                                <div>
+                                    <button className="button-dropdown-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                       
+                                        {this.state.username}
+                                    </button>
+                                    <div className="dropdown-menu">
+                                        <Link className="dropdown-item" to="/app/profile">Profile</Link>
+                                        <Link className="dropdown-item" to="/app/password">Change password</Link>
+                                        <a className="dropdown-item" href="#">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="dashboard-central">
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Switch>
+                                    {this.components.map((componentElement)=>{
+                                        return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />
+                                    })}
+                                </Switch>
+                            </Suspense>
+                        </div>
+                    </div>
                 </div>
             </div>
             );
           }
         return <div>Loading...</div>;
     }
+
 };
