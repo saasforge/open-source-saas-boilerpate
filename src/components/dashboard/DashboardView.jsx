@@ -9,27 +9,19 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import dashboardComponents from './dashboardComponents';
 
+// Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';
+import menuItems from './data/leftMenuData';
 
+// Top dropdown menu
+import DropdownMenu from '@src/components/dropdownMenu/DropdownMenu';
+import topMenuItems from './data/topMenuData';
 
-
-//import Profile from '@src/components/profile/ProfileUI';
-//import ChangePassword from '@src/components/password/ChangePasswordUI';
 
 import './dashboard.scss';
 
 
-
 library.add(fab);
-
-
-const UserData = ()=> {
-    const userData = InitialDataFetcher.read();
-    return (
-        <div>{userData.username}</div>
-    );
-};
-
 
 export default class DashboardView extends Component {
     constructor(props) {
@@ -64,7 +56,7 @@ export default class DashboardView extends Component {
             <div>
                 <div className="header-mobile  header-mobile-fixed ">
                     <div className="header-mobile-logo">
-                        <a href="">
+                        <a href="/app">
                             <img className="logo" alt="Logo" src="/static/media/logo.png"/>
                         </a>
                     </div>
@@ -91,23 +83,14 @@ export default class DashboardView extends Component {
                             </div>
                         </div>
                         <div className="aside-menu">
-                            <LeftMenu />
+                            <LeftMenu menuItems={menuItems} />
                         </div>
                     </aside>
                     <div className="dashboard-main">
                         <div className="header-main">
                             <div></div>
                             <div className="bar-right">
-                                <div>
-                                    <button className="button-dropdown-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                       
-                                        {this.state.username}
-                                    </button>
-                                    <div className="dropdown-menu">
-                                        <Link className="dropdown-item" to="/app/profile">Profile</Link>
-                                        <Link className="dropdown-item" to="/app/password">Change password</Link>
-                                        <a className="dropdown-item" href="#">Logout</a>
-                                    </div>
-                                </div>
+                                <DropdownMenu menuItems={topMenuItems} title={this.state.username} />
                             </div>
                         </div>
                         <div className="dashboard-central">

@@ -5,7 +5,6 @@ import '@fortawesome/fontawesome-free-solid';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import dashboardMenu from './leftMenuData';
 
 library.add(fab);
 
@@ -14,7 +13,7 @@ class LeftMenu extends Component {
         super(props);
     
         this.state = {
-            menuItems: dashboardMenu
+            menuItems: props.menuItems
         };
         this.toggleSubMenu = this.toggleSubMenu.bind(this);
     }
@@ -56,34 +55,21 @@ class LeftMenu extends Component {
         const menuItemStyle = {paddingLeft: 10 * level + 'px'};
         // Set up class for expanding
         const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
-        var itemTitle;
+        let itemBlock;
         if (item.name){
-            let itemBlock = (
-                <div>
+            itemBlock = (
+                <div className="menu-item" style={menuItemStyle}>
                     {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                    <span>{item.name}</span> 
+                    {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
                     {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
                 </div>
             );
-            if (item.url){
-                itemTitle = (
-                    <Link className="menu-item" style={menuItemStyle} to={item.url}>
-                        {itemBlock}
-                    </Link>
-                );
-            } else {
-                itemTitle = (                
-                    <div className="menu-item" style={menuItemStyle}>
-                        {itemBlock}
-                    </div>
-                );
-            }
         } else {
-            itemTitle = '';
+            itemBlock = '';
         }
         return (
             <div key={item.name || item.groupName}>
-                {itemTitle}
+                {itemBlock}
                 {item.items ? 
                     <div className={'item-submenu' + subitemClassName}>
                     {

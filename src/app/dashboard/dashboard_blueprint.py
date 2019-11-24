@@ -23,7 +23,7 @@ def init():
     '''
     Imports namespaces that should be added to the blueprint
     '''
-    shared_modules_folder = Path('src\\components')
+    shared_modules_folder = Path.joinpath(Path.cwd(), 'src\\components')
     for module in shared_modules_folder.iterdir():
         if module.is_dir():
             module_spec = importlib.util.find_spec('src.components.{0}.api'.format(module.name))
