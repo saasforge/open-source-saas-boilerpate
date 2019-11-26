@@ -13,6 +13,10 @@ body.dashboard {
     flex-direction: column;
     text-align: left;
     font-size: 15px;
+    height: 100%;
+}
+#root, .dashboard-view-block, .grid-root, .dashboard-main, .dashboard-central {
+    height: 100%;
 }
 *, ::after, ::before {
     -webkit-box-sizing: border-box;
@@ -20,6 +24,7 @@ body.dashboard {
 }
 body a, body button, html a, html button {
     outline: 0!important;
+    box-shadow: none !important;
 }
 a {
     text-decoration: none;
@@ -104,7 +109,28 @@ aside {
     -ms-flex: 1 0 auto;
     flex: 1 0 auto;
     max-width: 100%;
-    height: 100%;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+}
+.aside-menu::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+.aside-menu::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+.aside-menu::-webkit-scrollbar-thumb {
+    background: #4e5c86;
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+.aside-menu::-webkit-scrollbar-thumb:hover {
+    background: #536dbd;
 }
 .aside-menu .group-block {
     color: #9fb1da;
@@ -160,12 +186,13 @@ aside {
     display: flex;
     flex-direction: column;
     max-width: 100%;
+    overflow-y: hidden;
 }
 .dashboard-main .header-main {
     position: fixed;
     top: 0;
     right: 0;
-    left: 266px;
+    left: 265px;
     z-index: 99;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -173,8 +200,12 @@ aside {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    height: 64px;
+    height: 65px;
     padding: 15px;
+    -webkit-box-shadow: 7px 10px 12px 2px rgba(218, 220, 222, 0.57);
+    -moz-box-shadow: 7px 10px 12px 2px rgba(218, 220, 222, 0.57);
+    box-shadow: 7px 10px 12px 2px rgba(218, 220, 222, 0.57);
+    background-color: #fff;
 }
 .dashboard-main .header-main .bar-right {
     display: -webkit-box;
@@ -204,6 +235,64 @@ aside {
 }
 .dropdown-item.active, .dropdown-item:active {
     background-color: #8ea0da;
+}
+.dashboard-central {
+    padding: 15px 15px;
+    background-color: #f0f0f0;
+    -webkit-box-shadow: inset 5px 5px 41px 2px rgba(217, 223, 255, 0.34);
+    -moz-box-shadow: inset 5px 5px 41px 2px rgba(217, 223, 255, 0.34);
+    box-shadow: inset 5px 5px 41px 2px rgba(217, 223, 255, 0.34);
+    overflow-y: auto;
+}
+
+.dashboard-central::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+.dashboard-central::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+.dashboard-central::-webkit-scrollbar-thumb {
+    background: #b9c3cc;
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+.dashboard-central::-webkit-scrollbar-thumb:hover {
+    background: #a0aab3;
+}
+.panel-light {
+    background-color: #fff;
+    padding: 20px 15px;
+    border-radius: 3px;
+    -webkit-box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
+    -moz-box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
+    box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
+    color: #1f2a4d;
+}
+.panel-light {
+    .btn-primary {
+        background-color: #2d4592;
+        color: #eff1f7;
+        border: none;
+        padding: 5px 15px;
+    }
+    .btn-primary:hover {
+        background-color: #1c43bf;
+        color: #fff;
+    }
+    .form-control {
+        -webkit-box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
+        -moz-box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
+        box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
+    }
+}
+h5 {
+    font-size: 1.15rem;
 }
 @media (max-width: 1024px){
     .header-mobile-fixed .header-mobile {
@@ -301,7 +390,7 @@ aside {
         z-index: 99;
     }
     .dashboard-main {
-        padding-left: 266px;
+        padding-left: 265px;
     }
 }
 

@@ -25,3 +25,27 @@ class retrieve_user_profile(Resource):
             'result': False,
             'error': 'Cannot find user.'
         })
+
+    @login_required
+    def post(self):
+        current_user_id = get_current_user_id()
+        current_user = dbapi.get_user_by_id(current_user_id)
+        if current_user:
+            try:
+                current_user.username = profile_api.payload.get('username')
+                current_user.save()
+            except Exception as ex:
+                # to-do: log exception, for not just print it
+                print('ERROR while saving profile')
+                print(ex)
+                return jsonify({
+                    'result': False,
+                    'error': 'Can not save user.'
+                })
+            return jsonify({
+                'result': True
+            })
+        return jsonify({
+            'result': False,
+            'error': 'Cannot find user.'
+        })

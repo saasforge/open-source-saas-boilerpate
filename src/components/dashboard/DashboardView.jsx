@@ -53,7 +53,7 @@ export default class DashboardView extends Component {
 
         if (this.state.loaded) {
             return (
-            <div>
+            <div className="dashboard-view-block">
                 <div className="header-mobile  header-mobile-fixed ">
                     <div className="header-mobile-logo">
                         <a href="/app">
@@ -82,9 +82,7 @@ export default class DashboardView extends Component {
                                 </button>
                             </div>
                         </div>
-                        <div className="aside-menu">
-                            <LeftMenu menuItems={menuItems} />
-                        </div>
+                        <LeftMenu menuItems={menuItems} />
                     </aside>
                     <div className="dashboard-main">
                         <div className="header-main">
