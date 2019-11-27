@@ -9,7 +9,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import { globalVars } from '@src/shared/globalVars';
 
-import dashboardComponents from './dashboardComponents';
+import dashboardComponents from './data/components';
 
 // Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';

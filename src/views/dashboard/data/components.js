@@ -4,7 +4,7 @@
 import { lazy } from 'react';
 
 const dashboardComponents = [
-    {url: '/app/profile', component: lazy(() => import('@src/components/profile/ProfileUI'))},
+    {url: '/app/profile', component: lazy(() => import('@src/views/profile/ProfileView'))},
     {url: '/app/password', component: lazy(() => import('@src/components/password/ChangePasswordUI'))},
     {url: '/app/inbox', component: lazy(() => import('@src/components/inbox/InboxUI'))},
 ];

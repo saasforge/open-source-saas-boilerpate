@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import DashboardView from '@src/components/dashboard/DashboardView';
+import DashboardView from '@src/views/dashboard/DashboardView';
 // import more components
 export default (
     <BrowserRouter>

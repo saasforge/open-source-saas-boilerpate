@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Alert from '@src/components/alert/Alert';
 
-class Profile extends Component {
+class ProfileView extends Component {
     constructor(props) {
         super(props);
     
@@ -67,4 +67,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+export default ProfileView;

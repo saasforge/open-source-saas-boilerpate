@@ -19,22 +19,28 @@ dashboard_app = Api (dashboard_blueprint,
 dashboard_api = Namespace('dashboard', path = '/app')
 dashboard_app.add_namespace(dashboard_api)
 
-def init():
-    '''
-    Imports namespaces that should be added to the blueprint
-    '''
-    shared_modules_folder = Path.joinpath(Path.cwd(), 'src\\components')
-    for module in shared_modules_folder.iterdir():
+def register_api(folder):
+    for module in folder.iterdir():
         if module.is_dir():
-            module_spec = importlib.util.find_spec('src.components.{0}.api'.format(module.name))
+            module_spec = importlib.util.find_spec('src.{0}.{1}.api'.format(folder.name, module.name))
             if module_spec:
-                namespace_module = importlib.import_module('src.components.{0}.api'.format(module.name))
+                namespace_module = importlib.import_module('src.{0}.{1}.api'.format(folder.name, module.name))
                 if namespace_module:
                     variables = [item for item in dir(namespace_module) if not item.startswith("__")]
                     for var_name in variables:
                         var = getattr(namespace_module, var_name)
                         if isinstance(var, Namespace):
                             dashboard_app.add_namespace(var)
+def init():
+    '''
+    Imports namespaces that should be added to the blueprint
+    '''
+    shared_modules_folder = Path.joinpath(Path.cwd(), 'src\\components')
+    register_api(shared_modules_folder)
+
+    views_modules_folder = Path.joinpath(Path.cwd(), 'src\\views')
+    register_api(views_modules_folder)
+
 
 init()               
 
