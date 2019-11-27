@@ -11,15 +11,15 @@ import { JWTFunctions } from '@src/components/jwt/JWTFunctions';
 class AuthUI extends Component {
     render() {
       return (
-            <div>
+            <div className="auth-switcher-container">
                 <BrowserRouter history={history}>
                     <Switch>
                         <Route path="/login" component={LoginForm} />
                         <Route path="/register" component={RegisterForm} />
                     </Switch>
                 </BrowserRouter>
-                <div className="text-center">
-                    <p>{globalVars.COMPANY_NAME} © {new Date().getFullYear()}</p>
+                <div className="legal">
+                    {globalVars.COMPANY_NAME} © {new Date().getFullYear()}
                 </div>
             </div>
         );

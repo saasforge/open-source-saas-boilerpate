@@ -4,11 +4,82 @@ html, body {
 body {
     display: flex;
     align-items: center;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+.auth-switcher-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.auth-root-container {
+    height: 100%;
+    width: 100%;
+}
+.auth-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.auth-info {
+    background-image: linear-gradient(to right,#afc9f5,#696b8e);
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+.auth-info .welcome {
+    margin: auto;
+    font-size: 24px;
+}
+.legal {
+    font-size: 14px;
+    margin-bottom: 10px;
     text-align: center;
 }
-.form-auth {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
+.glint {
+    background: radial-gradient(transparent 10%, rgba(255, 255, 255, 0.1) 80%);
+    pointer-events: none;
+    z-index: 1;
+    position: absolute;
+    top: -493px;
+    left: 96px;
+    width: 1300px;
+    height: 1281px;
+    border-radius: 100%;
+}
+.glint2 {
+    background: radial-gradient(transparent 10%, rgba(255, 255, 255, 0.1) 80%);
+    pointer-events: none;
+    z-index: 1;
+    position: absolute;
+    top: -541px;
+    left: 68px;
+    width: 1300px;
+    height: 1060px;
+    border-radius: 100%;
+}
+.auth-form {
+    width: 60%;
     margin: auto;
+    height: 100%;
+    color: #445566;
+    z-index: 999999;
+}
+.auth-form .form-container {
+    min-width: 350px;
+    margin: auto;
+}
+
+@media (max-width: 1024px){
+    .auth-info {
+        display: none;
+    }
+    .auth-form {
+        width: 100%;
+    }
+    .auth-form .form-container {
+        margin: auto;
+    }
 }

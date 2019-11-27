@@ -7,6 +7,8 @@ import '@fortawesome/fontawesome-free-solid';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
+import { globalVars } from '@src/shared/globalVars';
+
 import dashboardComponents from './dashboardComponents';
 
 // Left menu
@@ -74,7 +76,7 @@ export default class DashboardView extends Component {
                         <div className="aside-brand">
                             <a href="">
                                 <img className="logo" alt="Logo" src="/static/media/logo.png"/>
-                                <span>My company</span>
+                                <span>{globalVars.COMPANY_NAME}</span>
                             </a>
                             <div className="aside-toggle">
                                 <button>

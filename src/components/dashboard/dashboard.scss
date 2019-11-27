@@ -265,32 +265,7 @@ aside {
 .dashboard-central::-webkit-scrollbar-thumb:hover {
     background: #a0aab3;
 }
-.panel-light {
-    background-color: #fff;
-    padding: 20px 15px;
-    border-radius: 3px;
-    -webkit-box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
-    -moz-box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
-    box-shadow: 5px 5px 32px 2px rgba(206, 207, 210, 0.34);
-    color: #1f2a4d;
-}
-.panel-light {
-    .btn-primary {
-        background-color: #2d4592;
-        color: #eff1f7;
-        border: none;
-        padding: 5px 15px;
-    }
-    .btn-primary:hover {
-        background-color: #1c43bf;
-        color: #fff;
-    }
-    .form-control {
-        -webkit-box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
-        -moz-box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
-        box-shadow: 2px 1px 9px -1px rgba(187, 199, 232, 0.34);
-    }
-}
+
 h5 {
     font-size: 1.15rem;
 }

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{{get_config_var('COMPANY_NAME')}} - Login/register</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
         <link rel="icon" type="image/x-icon" href="{{ url_for("static", filename="media/favicon.ico") }}" />
     </head>
-
     <body>
-        <div id="auth_root" class="container"></div>
+        <div id="auth_root" class="auth-root-container">    
+        </div>
         <script src="{{ url_for("static", filename="dist/auth.bundle.js")}}"></script>
     </body>
-
 </html>

@@ -20,7 +20,8 @@ class Alert extends Component {
         this.defaultTimeoutInSeconds = 5;
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (prevState.text != nextProps.message && nextProps.message){
+        const notEmptyMessage = Array.isArray(nextProps.message) ? nextProps.message.length : nextProps.message;
+        if (prevState.text != nextProps.message && notEmptyMessage){
             return {
                 text: nextProps.message,
                 hide: false
@@ -49,12 +50,22 @@ class Alert extends Component {
                 setTimeout(() => this.setState({hide: true}), (this.props.hideInSecs * 1000 || this.defaultTimeoutInSeconds));
             }
         }
+        const messageObject = (Array.isArray(this.state.text) ?
+            this.state.text.map((item) =>
+                <div key={item}>
+                    {item}
+                </div>
+            ): 
+            <span>{this.state.text}</span>
+        );
         return (
                 <div className={alertStyle}>
                     <div className="icon-block">
                         <FontAwesomeIcon icon={iconClass[statusName] || 'info'} />
                     </div>
-                    <span>{this.state.text}</span>
+                    <div>
+                        {messageObject}
+                    </div>
                 </div>
             );
     }

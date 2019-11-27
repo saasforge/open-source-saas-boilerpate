@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { AuthUIFunctions } from './AuthUIFunctions';
-import ErrorMessage from './ErrorMessage';
+import Alert from '@src/components/alert/Alert';
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -87,48 +87,47 @@ export default class RegisterForm extends Component {
     }
     render(){
         return (
-            <div>
+            <div className="form-container">
+                <div className="text-center mb-5 mt-5">
+                    <img src="/static/media/logo.png" />
+                </div>
                 <div className="text-center mb-5 mt-5">
                     <h1>Please register</h1>
                 </div>
-                <div className="row md-form">
+                <div className="form-group">
                     <label htmlFor="inputUserName">User name (visible to others)</label>
                     <input type="text" id="inputUserName" 
                         className={this.state.validUsername ? 'form-control' : 'form-control non-valid'} 
                         onChange={this.handleChange} name="username"
                         autoFocus />
                 </div>
-
-                <div className="row md-form">
+                <div className="form-group">
                     <label htmlFor="inputEmail">Email address</label>
                     <input type="email" id="inputEmail" 
                         className={this.state.validEmail ? 'form-control' : 'form-control non-valid'} 
                         onChange={this.handleChange} name="email"/>
                 </div>
-
-                <div className="row md-form">
+                <div className="form-group">
                     <label htmlFor="inputPassword">Password</label>
                     <input type="password" id="inputPassword" 
                         className={this.state.validPassword ? 'form-control' : 'form-control non-valid'}
                         onChange={this.handleChange} name="password" />
                 </div>
-
-                <div className="row md-form">
+                <div className="form-group">
                     <label htmlFor="inputPassword">Confirm password</label>
                     <input type="password" id="inputPassword2" 
                         className={this.state.validPassword2 ? 'form-control' : 'form-control non-valid'}
                         onChange={this.handleChange} name="password2" />
-                </div>
-
-                <div className="row md-form">
-                    <p className="text">Already have an account? Sign in <Link to="/login">here</Link>.</p>
                 </div>
                 <div className="text-center mb-5 mt-5">
                     <div className="col-md-12">
                         <button className="btn btn-lg btn-primary" onClick={this.sendData}>Create account</button>
                     </div>
                 </div>
-                { this.state.errors.length ? <ErrorMessage errors={this.state.errors} /> : null }
+                <div className="row text-center">
+                    <div className="w-100">Already have an account? Sign in <Link to="/login">here</Link>.</div>
+                </div>
+                { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
             </div>
         );
     }
