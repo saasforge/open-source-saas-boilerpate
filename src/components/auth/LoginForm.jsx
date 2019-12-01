@@ -17,12 +17,6 @@ export default class LoginForm extends Component {
             validPassword: true,
             errors: []
         };
-        /*
-        var methods = Object.getOwnPropertyNames(LoginForm.prototype);
-        for (var i = 0; i <  methods.length; i++){
-            LoginForm.prototype[methods[i]] = LoginForm.prototype[methods[i]].bind(this);
-        }*/
-        //this.handleClick = this.handleClick.bind(this);
     }
     addError = (error) => {
         this.setState(prevState => ({
@@ -63,38 +57,6 @@ export default class LoginForm extends Component {
         try {
             let response = await axios.post('/api/auth/login', data);
             this.setState({ errors: AuthUIFunctions.handleResponse(response, '/app') });
-        } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
-        }
-    }
-    sendTestData = async () => {
-        try {
-            let response = await axios.get('/app/api/jwttest', {a: 1});
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
-        } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
-        }
-    }
-    doLogout = async () => {
-        try {
-            let response = await axios.post('/api/auth/logout', {});
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
-        } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
-        }
-    }
-    testRefresh = async() => {
-        try {
-            let response = await axios.post('/api/auth/token/refresh', {});
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
-        } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
-        }
-    }
-    testRefresh2 = async() => {
-        try {
-            let response = await axios.post('/api/auth/token/testrefresh', {});
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
         }

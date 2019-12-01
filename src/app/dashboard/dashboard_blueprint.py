@@ -35,10 +35,10 @@ def init():
     '''
     Imports namespaces that should be added to the blueprint
     '''
-    shared_modules_folder = Path.joinpath(Path.cwd(), 'src\\components')
+    shared_modules_folder = Path.joinpath(Path.cwd(), 'src/components')
     register_api(shared_modules_folder)
 
-    views_modules_folder = Path.joinpath(Path.cwd(), 'src\\views')
+    views_modules_folder = Path.joinpath(Path.cwd(), 'src/views')
     register_api(views_modules_folder)
 
 
