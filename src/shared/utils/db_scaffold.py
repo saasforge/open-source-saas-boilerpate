@@ -1,6 +1,6 @@
 from pathlib import Path
 import importlib
-from src.extensions import db, alembic
+from src.shared.utils.extensions import db, alembic
 from config import ConfigHelper
 
 from src.shared.db_models.user import User

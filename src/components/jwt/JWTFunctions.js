@@ -13,7 +13,7 @@ var JWTFunctions = {
                 if (error.response.status === 401 && error.response.config.url == '/api/auth/token/refresh') {
                     // If we can't do authorized requesto to refresh token, it means the refresh token is wrong or expired,
                     // so we need to re-login.
-                    window.location.href = '/login';
+                    window.location.href = '/auth/login';
                     return Promise.reject(error);
                 }
                 // Reject promise if not authentication error
@@ -32,7 +32,7 @@ var JWTFunctions = {
                     return axios(error.response.config);
                 }).catch(error => {
                     this.clearTokens();
-                    window.location.href = '/login';
+                    window.location.href = '/auth/login';
                     return Promise.reject(error);
                 }).finally(()=>{
                     this.addAxiosResponseInterceptor();

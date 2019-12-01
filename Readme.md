@@ -29,3 +29,19 @@ To specify elements of the left menu, edit
 #### Linked content
 
 ### Links/content
+
+## Services/functions
+### Config: how to securely configure your variables
+1. Add the variable in config.py directly and assign its value (only if it's not sensitive, like a flag to use SSL or TLS)
+2. Sensitive data put into the environment variables. It could be done in 2 ways:
+- Add them into venv/scripts/activate script
+- add them into .env file in the project folder.
+3. In the code always call get_config_var:
+```python
+from src.shared.utils.global_functions import get_config_var
+get_config_var('var_name')
+```
+This function also can be safely used in jinja HTML files:
+```html
+<title>{{get_config_var('COMPANY_NAME')}}</title>
+```

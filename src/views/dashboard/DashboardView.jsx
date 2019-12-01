@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { globalVars } from '@src/shared/globalVars';
 
 import dashboardComponents from './data/components';
+import FileNotFoundView from '@src/views/errorPages/FileNotFoundView';
 
 // Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';
@@ -74,7 +75,7 @@ export default class DashboardView extends Component {
                 <div className="grid-root">
                     <aside>
                         <div className="aside-brand">
-                            <a href="">
+                            <a href="/app">
                                 <img className="logo" alt="Logo" src="/static/media/logo.png"/>
                                 <span>{globalVars.COMPANY_NAME}</span>
                             </a>
@@ -99,6 +100,8 @@ export default class DashboardView extends Component {
                                     {this.components.map((componentElement)=>{
                                         return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />
                                     })}
+                                    <Redirect exact from='/app' to='/app/profile' />
+                                    <Route component={ FileNotFoundView } />
                                 </Switch>
                             </Suspense>
                         </div>

@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import uuid
 from flask import current_app
 from passlib.hash import pbkdf2_sha256 as sha256
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
+from src.shared.utils.global_functions import get_config_var
 from src.shared.db_models.role import Role
 from src.shared.db_models.account import Account
 
@@ -13,7 +16,7 @@ class User(db.Model):
 
     id = db.Column(UUID(as_uuid=True),
         primary_key=True, default=lambda: uuid.uuid4().hex)
-    username = db.Column(db.String(120), unique = True, nullable = False)
+    username = db.Column(db.String(120), nullable = False)
     email = db.Column(db.String(64), unique=True)
     password_hash = db.Column(db.String(120), nullable = False)
     role_id = db.Column(UUID(as_uuid=True), db.ForeignKey('role.id'))
@@ -25,7 +28,7 @@ class User(db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == current_app.config.get('ADMIN_EMAIL'):
+            if self.email == get_config_var('ADMIN_EMAIL'):
                 self.role = Role.query.filter_by(name='Admin').first()
             else:
                 default_role = Role.query.filter_by(is_default=True).first()
@@ -45,6 +48,25 @@ class User(db.Model):
 
     def verify_hash(self, password):
         return sha256.verify(password, self.password_hash)
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(get_config_var('SECRET_KEY'), expiration)
+        return s.dumps({'confirm': self.id.__str__()}).decode('utf-8')
+
+    def confirm(self, token):
+        s = Serializer(get_config_var('SECRET_KEY'))
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('confirm') != self.id.__str__():
+            return False
+        self.confirmed = True
+        return True
+
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
     def save(self):
         try:

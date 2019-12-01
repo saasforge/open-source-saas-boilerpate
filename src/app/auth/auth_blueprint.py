@@ -17,10 +17,6 @@ auth_app.add_namespace(auth_api)
 
 
 
-@auth_blueprint.route('/login', methods=['GET'])
-def app_login():
-    return render_template('auth.html')
-
-@auth_blueprint.route('/register', methods=['GET'])
-def app_register():
+@auth_blueprint.route('/auth/<path:path>', methods=['GET'])
+def all_auth_requests(path):
     return render_template('auth.html')

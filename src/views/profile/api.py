@@ -5,7 +5,7 @@ from flask_restplus import Namespace, Resource, fields, Api
 
 from src.shared.utils.user_auth_wrapper import login_required, get_current_user_id
 from src.shared.utils.extensions import db, db_schema
-from src.components.users_db_api import dbapi
+from src.shared.services import db_user_service
 
 profile_api = Namespace('profile_api', path ='/app/api/profile')
 
@@ -14,7 +14,7 @@ class retrieve_user_profile(Resource):
     @login_required
     def get(self):
         current_user_id = get_current_user_id()
-        current_user = dbapi.get_user_by_id(current_user_id)
+        current_user = db_user_service.get_user_by_id(current_user_id)
         if current_user:
             return jsonify({
                 'result': True,
@@ -29,7 +29,7 @@ class retrieve_user_profile(Resource):
     @login_required
     def post(self):
         current_user_id = get_current_user_id()
-        current_user = dbapi.get_user_by_id(current_user_id)
+        current_user = db_user_service.get_user_by_id(current_user_id)
         if current_user:
             try:
                 current_user.username = profile_api.payload.get('username')

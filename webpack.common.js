@@ -4,7 +4,8 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const config = {
     entry: {
         auth: './src/app/auth/AuthApp.jsx',
-        dashboard: './src/app/dashboard/DashboardApp.jsx'
+        dashboard: './src/app/dashboard/DashboardApp.jsx',
+        error: './src/app/error/ErrorApp.jsx'
     },
     output: {
         filename: '[name].bundle.js',

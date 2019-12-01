@@ -1,8 +1,15 @@
 body {
     margin: 0px;
     padding: 0px;
-    font-family: 'Roboto';
+    font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
+}
+body, html, #root {
+    height: 100%;
+}
+.btn:focus, .btn:active {
+    box-shadow: none;
+    outline: none;
 }
 
 /* Form */
@@ -83,4 +90,24 @@ body {
 }
 .alert-warning .icon-block {
     color: #c7b65e;
+}
+
+/* Errors */
+.error-back {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.error-back h1 {
+    margin: auto;
+    color: #fff;
+    font-size: 60px;
+}
+.error-back.file-not-found {
+    background-image: url(/static/media/404-back.png);
+    background-size: cover;
+}
+.error-back.server-error {
+    background-image: url(/static/media/error-back.png);
+    background-size: cover;
 }

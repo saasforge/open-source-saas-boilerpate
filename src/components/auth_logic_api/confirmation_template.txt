@@ -1,0 +1,7 @@
+Dear {{ user_name }},
+Welcome to <b>{{ company_name }}</b>!
+To confirm your account please <a href="{{ confirmation_link }}">click here</a>.
+Alternatively, you can paste the following link in your browser's address bar:
+{{ confirmation_link }}
+Sincerely,
+{{company_name}} Team

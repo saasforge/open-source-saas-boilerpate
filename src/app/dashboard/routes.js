@@ -6,7 +6,6 @@ export default (
     <BrowserRouter>
         <Switch>
             <Route path='/app' component={DashboardView} />
-            <Redirect from='/' to='/app' />
         </Switch>
     </BrowserRouter>
 );

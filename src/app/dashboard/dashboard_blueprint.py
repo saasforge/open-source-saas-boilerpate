@@ -1,6 +1,6 @@
 import importlib
 from pathlib import Path
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, redirect, url_for
 from flask_restplus import Namespace, Resource, Api
 
 #from src.dashboard.api.dashboard_api import dashboard_api
@@ -44,9 +44,13 @@ def init():
 
 init()               
 
+@dashboard_blueprint.route('/', methods=['GET']) # To-do: create a separate endpoint for a landing page
+def index_page():
+    return redirect(url_for('dashboard.app_index_app'))
+
 @dashboard_blueprint.route('/app', methods=['GET'])
 @dashboard_blueprint.route('/app/<path:path>', methods=['GET'])
-def app_index(path = None):
+def app_index_app(path = None):
     return render_template('dashboard.html')
 
 @dashboard_blueprint.route('/app/api/jwttest', methods=['GET'])

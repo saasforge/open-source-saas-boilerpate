@@ -12,6 +12,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('db_url') # Store it in the hosting config
     COMPANY_NAME = 'Your company name' # Change to your company name
     JWT_SECRET_KEY = os.environ.get('jwt_secret_key')
+    SECRET_KEY = os.environ.get('secret_key')
 
 class ProductionConfig(Config):
     ENV = 'prod'
@@ -21,6 +22,14 @@ class DevelopmentConfig(Config):
     ENV = 'dev'
     DEVELOPMENT = True
     DEBUG = True
+    MAIL_SERVER = os.environ.get('mail_server')
+    MAIL_PORT = os.environ.get('mail_port')
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = os.environ.get('mail_username')
+    MAIL_DEFAULT_SENDER = os.environ.get('mail_username')
+    MAIL_PASSWORD = os.environ.get('mail_password')
+    ADMIN_EMAIL = os.environ.get('admin_email')
 
 class TestingConfig(Config):
     ENV = 'test'
