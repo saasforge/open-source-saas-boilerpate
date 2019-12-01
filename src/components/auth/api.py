@@ -20,11 +20,11 @@ jwt_api.jwt._set_error_handler_callbacks(auth_logic_api)
 
 def send_confirmation_email(user, token):
     confirmation_link = url_for('auth.all_auth_requests', path = 'confirm/{0}/{1}'.format(token, user.id), _external=True) 
-    text_body = render_template('/components/auth_logic_api/confirmation_template.txt', 
+    text_body = render_template('/components/auth/email_templates/confirmation_template.txt', 
                                 user_name = user.username, 
                                 company_name = get_config_var('COMPANY_NAME'), 
                                 confirmation_link = confirmation_link)
-    html_body = render_template('/components/auth_logic_api/confirmation_template.html', 
+    html_body = render_template('/components/auth/email_templates/confirmation_template.html', 
                                 user_name = user.username, 
                                 company_name = get_config_var('COMPANY_NAME'), 
                                 confirmation_link = confirmation_link)
