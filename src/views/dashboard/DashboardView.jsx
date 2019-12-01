@@ -33,9 +33,22 @@ export default class DashboardView extends Component {
         this.state = {
             username: '',
             error: '',
-            loaded: false
+            loaded: false,
+            leftMenuCollapsed: false,
+            centralPartExpanded: true
         };
         this.components = dashboardComponents;
+        this.toggleLeftMenuOnClick = this.toggleLeftMenuOnClick.bind(this);
+        this.toggleLeftMenuOnHover = this.toggleLeftMenuOnHover.bind(this);
+    }
+    toggleLeftMenuOnClick(){
+        this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
+        this.setState({centralPartExpanded: !this.state.centralPartExpanded});
+    }
+    toggleLeftMenuOnHover(){
+        if (!this.state.centralPartExpanded){
+            this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
+        }
     }
     loadInitialData = async()=>{
         try {
@@ -73,19 +86,19 @@ export default class DashboardView extends Component {
                     </div>
                 </div>
                 <div className="grid-root">
-                    <aside>
+                    <aside className={this.state.leftMenuCollapsed ? 'collapsed' : ''}>
                         <div className="aside-brand">
                             <a href="/app">
                                 <img className="logo" alt="Logo" src="/static/media/logo.png"/>
                                 <span>{globalVars.COMPANY_NAME}</span>
                             </a>
                             <div className="aside-toggle">
-                                <button>
-                                    <FontAwesomeIcon icon="chevron-left" />
+                                <button onClick={()=>this.toggleLeftMenuOnClick()} onMouseEnter={()=>this.toggleLeftMenuOnHover()}>
+                                    <FontAwesomeIcon icon={this.state.leftMenuCollapsed ? 'chevron-right': 'chevron-left'} />
                                 </button>
                             </div>
                         </div>
-                        <LeftMenu menuItems={menuItems} />
+                        <LeftMenu menuItems={menuItems} collapsed={this.state.leftMenuCollapsed} />
                     </aside>
                     <div className="dashboard-main">
                         <div className="header-main">

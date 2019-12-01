@@ -57,13 +57,24 @@ class LeftMenu extends Component {
         const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
         let itemBlock;
         if (item.name){
-            itemBlock = (
-                <div className="menu-item" style={menuItemStyle}>
-                    {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                    {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
-                    {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
-                </div>
-            );
+            if (!this.props.collapsed){
+                itemBlock = (
+                    <div className="menu-item" style={menuItemStyle}>
+                        {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
+                        {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
+                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
+                    </div>
+                );
+            } else {
+                // Show only icon or default icon
+                itemBlock = (
+                    <div className="menu-item" style={menuItemStyle}>
+                        {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
+                        {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
+                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
+                    </div>
+                );
+            }
         } else {
             itemBlock = '';
         }
@@ -80,13 +91,18 @@ class LeftMenu extends Component {
                 }
             </div>
         );
-    }
+    }    
     render() {
         const groupItems = this.state.menuItems.map((group) =>
-            <div className="group-block" key={group.groupName}>
-                <div className="group-name">{group.groupName}</div>
-                <div className="group-items">{this.renderMenuItemBlock(group, 1)}</div>
-            </div>
+            {
+                const groupRendering = this.props.collapsed ? 
+                    (<FontAwesomeIcon icon="ellipsis-h" />):
+                    group.groupName;
+                return (<div className="group-block" key={group.groupName}>
+                    <div className="group-name">{groupRendering}</div>
+                    <div className="group-items">{this.renderMenuItemBlock(group, 1)}</div>
+                </div>);
+            }
         );
         return (
             <div className="aside-menu">{groupItems}</div>
