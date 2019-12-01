@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '@src/shared/theme.scss';
+import '@src/shared/theme/common.scss';
 
 const ErrorView = function(){
     const classBack = window.errorCode == '404' ? 'file-not-found' : 'server-error';

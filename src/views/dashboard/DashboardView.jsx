@@ -21,7 +21,7 @@ import DropdownMenu from '@src/components/dropdownMenu/DropdownMenu';
 import topMenuItems from './data/topMenuData';
 
 
-import './dashboard.scss';
+import '@src/shared/theme/dashboard.scss';
 
 
 library.add(fab);

@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { globalVars } from '@src/shared/globalVars';
 
 
-import '@src/shared/theme.scss';
-import '@src/app/auth/auth.scss';
+import '@src/shared/theme/common.scss';
+import '@src/shared/theme/auth.scss';
 
 const auth_component = (
     <div className="auth-container"> 

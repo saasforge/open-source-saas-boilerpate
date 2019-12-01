@@ -8,8 +8,6 @@ import './alert.css';
 
 library.add(fab);
 
-
-
 class Alert extends Component {
     constructor(props) {
         super(props);    

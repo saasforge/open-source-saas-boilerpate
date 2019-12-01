@@ -1,12 +1,11 @@
 html, body {
     height: 100%;
 }
-body {
+body.auth {
     display: flex;
     align-items: center;
     height: 100%;
     overflow-x: hidden;
-    font-family: 'Open Sans', sans-serif;
 }
 .auth-switcher-container {
     display: flex;

@@ -6,6 +6,8 @@ body {
 }
 body, html, #root {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 .btn:focus, .btn:active {
     box-shadow: none;
