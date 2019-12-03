@@ -17,14 +17,14 @@ class LeftMenu extends Component {
         };
         this.toggleSubMenu = this.toggleSubMenu.bind(this);
     }
-    findMenuItemByName(item, name){
+    findMenuItemByTitle(item, title){
         var foundItem = null;
-        if (item.name == name){
+        if (item.title == title){
             foundItem = item
         } else {
             if (item.items){
                 for (var i = 0; i < item.items.length; i++){
-                    foundItem = this.findMenuItemByName(item.items[i], name);
+                    foundItem = this.findMenuItemByTitle(item.items[i], title);
                     if (foundItem){
                         break;
                     }
@@ -37,7 +37,7 @@ class LeftMenu extends Component {
         const menuItems = this.state.menuItems;
         var foundItem = null;
         for (var i = 0; i < menuItems.length; i++){
-            foundItem = this.findMenuItemByName(menuItems[i], submenuObject.name);
+            foundItem = this.findMenuItemByTitle(menuItems[i], submenuObject.title);
             if (foundItem){
                 break;
             }
@@ -55,14 +55,14 @@ class LeftMenu extends Component {
         level = this.props.collapsed ? 2 : level; // If the menu is collapsed all icons should be on the same level.
         const menuItemStyle = {paddingLeft: 10 * level + 'px'};
         // Set up class for expanding
-        const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
+        const subitemClassName = (item.title ? (item.expanded == true ? '' : ' collapsed') : '');
         let itemBlock;
-        if (item.name){
+        if (item.title){
             if (!this.props.collapsed){
                 itemBlock = (
                     <div className="menu-item" style={menuItemStyle}>
                         {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                        {item.url ? <Link to={item.url} onClick={()=>this.props.linkClickHandler()}>{item.name}</Link> : <span>{item.name}</span> }
+                        {item.url ? <Link to={item.url} onClick={()=>this.props.linkClickHandler()}>{item.title}</Link> : <span>{item.title}</span> }
                         {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
                     </div>
                 );
@@ -73,7 +73,7 @@ class LeftMenu extends Component {
                                         <FontAwesomeIcon className="default-color" icon='arrow-alt-circle-right' />;
                 itemBlock = (
                     <div className="menu-item" style={menuItemStyle}>
-                        <div className="icon-block" title={item.name}>{item.url ? <Link to={item.url}>{itemCollapsedIcon}</Link> : <span>{itemCollapsedIcon}</span> }</div>
+                        <div className="icon-block" title={item.title}>{item.url ? <Link to={item.url}>{itemCollapsedIcon}</Link> : <span>{itemCollapsedIcon}</span> }</div>
                         {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
                     </div>
                 );
@@ -82,7 +82,7 @@ class LeftMenu extends Component {
             itemBlock = '';
         }
         return (
-            <div key={item.name || item.groupName}>
+            <div key={item.title || item.groupTitle}>
                 {itemBlock}
                 {item.items ? 
                     <div className={'item-submenu' + subitemClassName}>
@@ -100,9 +100,9 @@ class LeftMenu extends Component {
             {
                 const groupRendering = this.props.collapsed ? 
                     (<FontAwesomeIcon icon="ellipsis-h" />):
-                    group.groupName;
-                return (<div className="group-block" key={group.groupName}>
-                    <div className="group-name">{groupRendering}</div>
+                    group.groupTitle;
+                return (<div className="group-block" key={group.groupTitle}>
+                    <div className="group-title">{groupRendering}</div>
                     <div className="group-items">{this.renderMenuItemBlock(group, 1)}</div>
                 </div>);
             }

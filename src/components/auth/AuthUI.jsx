@@ -19,7 +19,7 @@ class AuthUI extends Component {
                         <Route path="/auth/login" component={LoginForm} />
                         <Route path="/auth/register" component={RegisterForm} />
                         <Route path="/auth/finishregister/:userid" component={FinishRegistrationPage} />
-                        <Route path="/auth/confirm/:token/:userid/" component={ConfirmationPage} />
+                        <Route path="/auth/confirm/:tsuccessen/:userid/" component={ConfirmationPage} />
                     </Switch>
                 </BrowserRouter>
                 <div className="legal">

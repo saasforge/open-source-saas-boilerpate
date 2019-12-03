@@ -30,13 +30,13 @@ class Alert extends Component {
     }
     render() {
         const alertClasses = {
-            'ok': 'alert-success',
+            'success': 'alert-success',
             'info': 'alert-info', 
             'error': 'alert-error', 
             'warning': 'alert-warning'
         };
         const iconClass = {
-            'ok': 'thumbs-up',
+            'success': 'thumbs-up',
             'info': 'info-circle', 
             'error': 'exclamation-circle', 
             'warning': 'exclamation-triangle'

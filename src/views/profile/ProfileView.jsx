@@ -37,7 +37,7 @@ class ProfileView extends Component {
             let response = await axios.post('/app/api/profile', {username: this.state.username});
             if (response.data.result){
                 this.setState({
-                    status: 'ok',
+                    status: 'success',
                     message: 'Profile has been saved successfully!'
                 });
             } else {

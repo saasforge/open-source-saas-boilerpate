@@ -1,3 +1,63 @@
+# SaaS-Build boilerplate
+This free boilerplate allows creating a working SaaS web application.
+# Technologies
+- Python (Flask) - backend
+- PostgreSQL - database
+- ReactJS - frontend
+- CSS/SCSS for styling
+- Fontawesome
+- Webpack/Babel - frontend building
+
+# Features
+## User authentication
+- Email authentication (with email confirmation)
+- User registration, login, logout
+- Simple user profile page
+
+## Interface
+
+## Project structure
+All features/functions are put into separate structures, often front-end and back-end side-by-side. The whole project is divided into the following parts:
+### Blueprints (back-end applications)
+Based on [Flask blueprint](https://flask.palletsprojects.com/en/1.1.x/blueprints/), it allows separating parts of an application that are significantly different each from another and requires a different level of authentication/authorization.
+- Authentication (contains the root HTML file and linked to [the authentication ReactJS component](#auth))
+- Dashboard (dashboard root HTML linked to [the dashboard view](#dashboard))
+- Errors page (for serving back-end error, not a blueprint, just a simple HTML page)
+
+### Views
+Views are pages that are being rendered in the applications. May include components and call services.
+- Dashboard view (jsx file + several data files for providing data from left and top menus and dashboard components)
+- Profile view (jsx + server-side API)
+- Error pages view (jsx for serving dashboard 404 error)
+
+### Components (in alphabetical order)
+#### Alert
+Styled block with and icon and text. There are 4 types of alerts:
+**Error**
+
+**Warning**
+
+**Info**
+
+**Success**
+
+### Services
+### Database models
+
+## Dev's features
+All features are now divided into units and components. Frontend and backend are put side-by-side for easier reference and development.
+Autocreation of tables for users and roles (2 roles are added automatically: User and Admin)
+Autoupdating existing database
+Simple responsive web interface with header, left collapsing menu, central part, and fixed status bar
+Handling 404 and 500 errors
+Integration with Google App Engine (reading entities if env variables are not accessible)
+
+Automatic importing apis,  namespaces
+All styles in one folder what allows to change and create a new theme fast
+ES6
+Refer @src as a root source folder
+Easy menus data defining with automatic routes generation
+
 # Components
 
 ## Conventions

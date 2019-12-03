@@ -1,42 +1,57 @@
+import { lazy } from 'react';
+
 const dashboardMenu = [
     {
-        groupName: 'Email',
+        groupTitle: 'Email',
         items: [
             {
-                name: 'Inbox',
+                title: 'Inbox',
                 icon: ['fab', 'facebook'],
-                url: '/app/inbox',
-                color: '#e4951f'
+                color: '#e4951f',
+                url: '/app/inbox', 
+                component: lazy(() => import('@src/views/inbox/InboxUI'))
             },
             {
-                name: 'Unread',
+                title: 'Unread',
                 icon: 'envelope',
                 url: '/unread',
                 color: '#1fd2e4'
             },
             {
-                name: 'Sent',
+                title: 'Sent',
                 icon: 'paper-plane',
                 url: '/sent'
             }
         ]
     },
     {
-        groupName: 'Categories',
+        groupTitle: 'Demo',
         items: [
             {
-                name: 'Web',
+                title: 'Alerts', 
+                icon: 'exclamation-triangle',
+                color: 'yellow',
+                url: '/app/demo/alerts',
+                component: lazy(() => import('@src/views/componentsDemo/AlertDemoView'))
+            }
+        ]
+    },
+    {
+        groupTitle: 'Categories',
+        items: [
+            {
+                title: 'Web',
                 //expanded: true,
                 items: [
                     {
-                        name: 'Personal',
+                        title: 'Personal',
                         items: [
                             {
-                                name: 'My photos',
+                                title: 'My photos',
                                 url: '/photos'
                             },
                             {
-                                name: 'My books',
+                                title: 'My books',
                                 url: '/books',
                                 icon: 'book'
                             }
@@ -45,16 +60,16 @@ const dashboardMenu = [
                 ]
             },
             {
-                name: 'Social',
+                title: 'Social',
                 url: '/social', // As this is not leaf item this URL will be the part of it
                 items: [
                     {
-                        name: 'Facebook',
+                        title: 'Facebook',
                         icon: ['fab', 'facebook-square'],
                         url: '/facebook'
                     },
                     {
-                        name: 'Strava',
+                        title: 'Strava',
                         icon: ['fab', 'strava'],
                         url: '/strava'
                     }

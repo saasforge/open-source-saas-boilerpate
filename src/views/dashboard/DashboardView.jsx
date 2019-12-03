@@ -9,12 +9,13 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import { globalVars } from '@src/shared/globalVars';
 
-import dashboardComponents from './data/components';
 import FileNotFoundView from '@src/views/errorPages/FileNotFoundView';
+
+import JsonPathComponent from '@src/components/jsonPath/JsonPathComponent';
 
 // Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';
-import menuItems from './data/leftMenuData';
+import leftMenuItems from './data/leftMenuData';
 
 // Top dropdown menu
 import DropdownMenu from '@src/components/dropdownMenu/DropdownMenu';
@@ -38,11 +39,29 @@ export default class DashboardView extends Component {
             centralPartExpanded: false,
             leftMenuMobileShow: false
         };
-        this.components = dashboardComponents;
+        const leftMenuComponents = this.extractComponents(leftMenuItems);
+        const topMenuComponents = this.extractComponents(topMenuItems);
+        this.components = leftMenuComponents.concat(topMenuComponents.filter( ({url}) => !leftMenuComponents.find(item => item.url == url) ));
         this.toggleLeftMenuOnClick = this.toggleLeftMenuOnClick.bind(this);
         this.toggleLeftMenuOnHover = this.toggleLeftMenuOnHover.bind(this);
         this.toggleLeftMenuMobile = this.toggleLeftMenuMobile.bind(this);
         this.closeLeftMenuMobile = this.closeLeftMenuMobile.bind(this);
+    }
+    extractComponents(menuObject){
+        let items = JsonPathComponent(menuObject, '$..items');
+        if (!items){
+            if (Array.isArray(menuObject)){
+                items = menuObject;
+            }
+        }
+        return items.flat().filter((item)=>{
+            return (item.url && item.component);
+        }).map((item)=>{
+            return {
+                url: item.url,
+                component: item.component
+            }
+        });
     }
     toggleLeftMenuOnClick(){
         if (this.state.centralPartExpanded){
@@ -128,7 +147,7 @@ export default class DashboardView extends Component {
                                 </button>
                             </div>
                         </div>
-                        <LeftMenu menuItems={menuItems} 
+                        <LeftMenu menuItems={leftMenuItems} 
                                 collapsed={this.state.leftMenuCollapsed} 
                                 linkClickHandler={()=>this.closeLeftMenuMobile()}/>
                         <div className="blur-mobile-element" 
