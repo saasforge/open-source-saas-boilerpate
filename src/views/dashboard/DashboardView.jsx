@@ -48,11 +48,9 @@ export default class DashboardView extends Component {
         if (this.state.centralPartExpanded){
             // Collapse central, expand menu
             this.setState({centralPartExpanded: false, leftMenuCollapsed: false});
-            console.log('expand menu on click')
         } else {
             // Expand central, collapse menu
             this.setState({centralPartExpanded: true, leftMenuCollapsed: true});
-            console.log('collapse menu on click')
         }
      //this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
         //this.setState({centralPartExpanded: !this.state.centralPartExpanded});
@@ -159,7 +157,14 @@ export default class DashboardView extends Component {
             </div>
             );
           }
-        return <div>Loading...</div>;
+        return (
+            <div className="loading-full">
+                <div className="loading-central">
+                    <img alt="Logo-loading..." src="/static/media/logo-stroke.png"/>
+                    <div>Loading...</div>
+                </div>
+            </div>
+        );
     }
 
 };
