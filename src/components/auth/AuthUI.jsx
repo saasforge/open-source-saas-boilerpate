@@ -4,7 +4,6 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import FinishRegistrationPage from './FinishRegistrationPage';
 import ConfirmationPage from './ConfirmationPage';
-import EmailConfirmedThanksPage from './EmailConfirmedThanksPage';
 import { globalVars } from '@src/shared/globalVars';
 
 // Plug authentication library here if you want to provide interceptions.
@@ -21,7 +20,6 @@ class AuthUI extends Component {
                         <Route path="/auth/register" component={RegisterForm} />
                         <Route path="/auth/finishregister/:userid" component={FinishRegistrationPage} />
                         <Route path="/auth/confirm/:token/:userid/" component={ConfirmationPage} />
-                        <Route path="/auth/confirmed" component={EmailConfirmedThanksPage} />
                     </Switch>
                 </BrowserRouter>
                 <div className="legal">

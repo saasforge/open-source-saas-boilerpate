@@ -146,8 +146,7 @@ class user_confirm(Resource):
                 user.save()
             # User is confirmed, but we have to logout to make sure that THIS exact user will login then.
             return  jsonify({
-                'result': True,
-                'redirect': '/auth/confirmed'
+                'result': True
             })
         else:
             return jsonify({

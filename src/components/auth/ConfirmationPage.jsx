@@ -10,13 +10,20 @@ export default class ConfirmationPage extends Component {
         super(props);
     
         this.state = {
-            errors: []
+            errors: [], 
+            title: 'Confirming your email...',
+            confirmed: false,
+            text: ''
         };
     }
     confirm = async()=> {
         try {
             let response = await axios.get(`/api/auth/confirm/${this.token}/${this.userId}`);
             this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+            if (response.data.result){
+                this.setState({ title: 'Thanks for the confirmation!', confirmed: true});
+                setTimeout(()=>window.location.href = '/auth/login', 5000);
+            }
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'] });
         }
@@ -24,21 +31,36 @@ export default class ConfirmationPage extends Component {
     componentDidMount(){
         this.confirm();
     }
+    renderTextBlock(){
+        if (!this.state.confirmed){
+            return (<span>Please wait until we finish the confirmation process...</span>)
+        } else {
+            return ( 
+                <div>                 
+                    <div className="w-100">
+                        You email is confirmed. If you are not automatically redirected in 5 seconds please use the 
+                        following link to 
+                    </div>
+                    <Link to={'/auth/login/'} className="w-100">the login page</Link>
+                </div>  
+            );
+        }
+    }
     render(){
         this.userId = this.props.match.params.userid;
         this.token = this.props.match.params.token;
+        
         return (
             <div className="form-container">
                 <div className="text-center mb-5 mt-5">
                     <img src="/static/media/logo.png" />
                 </div>
                 <div className="text-center mb-5 mt-5">
-                    <h1>Confirming your email...</h1>
+                    <h1>{this.state.title}</h1>
                 </div>
                 <div className="row text-center">
                     <div className="col-md-10 offset-md-1">
-                        <div>Please wait until we finish the confirmation proces...
-                        </div>
+                        {this.renderTextBlock()}
                     </div>
                     <div className="col-md-6 offset-md-3">
                         { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }

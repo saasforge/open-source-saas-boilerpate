@@ -19,10 +19,7 @@ Component with login form. Validates entered data (email, password), sends data 
 A text page thanking for the registration and informing a user to complete the registration by clicking on the link in the sent email. Also has a link to resend the confirmation email if not received.
 
 #### ConfirmationPage.jsx
-This page is loaded when user tries to confirm his/her email. Sends the user id (taken from URL) to the confirmation endpoint and after confirmation redirects to the EmailConfirmedThanksPage.
-
-#### EmailConfirmedThanksPage.jsx
-The page with text thanking for the confirmation email. Redirects to the login page in 5 seconds.
+This page is loaded when user tries to confirm his/her email. Sends the user id (taken from URL) to the confirmation endpoint and after confirmation redirects to the login page.
 
 ## Authentication workflow
 1. A user is no the registration page, enters his/her username, email, password, and password confirmation, clicks the Register button.
