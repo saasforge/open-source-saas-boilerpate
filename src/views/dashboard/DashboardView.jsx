@@ -35,19 +35,47 @@ export default class DashboardView extends Component {
             error: '',
             loaded: false,
             leftMenuCollapsed: false,
-            centralPartExpanded: true
+            centralPartExpanded: false,
+            leftMenuMobileShow: false
         };
         this.components = dashboardComponents;
         this.toggleLeftMenuOnClick = this.toggleLeftMenuOnClick.bind(this);
         this.toggleLeftMenuOnHover = this.toggleLeftMenuOnHover.bind(this);
+        this.toggleLeftMenuMobile = this.toggleLeftMenuMobile.bind(this);
+        this.closeLeftMenuMobile = this.closeLeftMenuMobile.bind(this);
     }
     toggleLeftMenuOnClick(){
-        this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
-        this.setState({centralPartExpanded: !this.state.centralPartExpanded});
+        if (this.state.centralPartExpanded){
+            // Collapse central, expand menu
+            this.setState({centralPartExpanded: false, leftMenuCollapsed: false});
+            console.log('expand menu on click')
+        } else {
+            // Expand central, collapse menu
+            this.setState({centralPartExpanded: true, leftMenuCollapsed: true});
+            console.log('collapse menu on click')
+        }
+     //this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
+        //this.setState({centralPartExpanded: !this.state.centralPartExpanded});
     }
     toggleLeftMenuOnHover(){
-        if (!this.state.centralPartExpanded){
+        /*if (this.state.centralPartExpanded && this.state.leftMenuCollapsed){
             this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
+            console.log('hover')
+        }*/
+    }
+    toggleLeftMenuOnMouseOut(){
+        /*if (this.state.centralPartExpanded && !this.state.leftMenuCollapsed){
+            this.setState({leftMenuCollapsed: !this.state.leftMenuCollapsed});
+            console.log('out')
+        }*/
+    }
+    toggleLeftMenuMobile(){
+        this.setState({leftMenuMobileShow: !this.state.leftMenuMobileShow});
+    }
+    closeLeftMenuMobile(){
+        if (this.state.leftMenuMobileShow){
+            this.setState({leftMenuMobileShow: false});
+            return true;
         }
     }
     loadInitialData = async()=>{
@@ -77,28 +105,36 @@ export default class DashboardView extends Component {
                         </a>
                     </div>
                     <div className="header-mobile-toolbar">          
-                        <button className="header-mobile-toggle">
+                        <button className="header-mobile-toggle" 
+                            onClick={()=>this.toggleLeftMenuMobile()}>
                             <FontAwesomeIcon icon="bars" />
                         </button>                                
-                        <button className="header-mobile-toggle">
-                            <FontAwesomeIcon icon="chevron-down" />
-                        </button>
                     </div>
                 </div>
                 <div className="grid-root">
-                    <aside className={this.state.leftMenuCollapsed ? 'collapsed' : ''}>
-                        <div className="aside-brand">
+                    <aside 
+                        className={this.state.leftMenuMobileShow ? 
+                                'mobile-show' : 
+                                (this.state.leftMenuCollapsed ? 'collapsed' : '')}>
+                        <div className="aside-brand" 
+                            onMouseOver={()=>this.toggleLeftMenuOnHover()}
+                            onMouseOut={()=>this.toggleLeftMenuOnMouseOut()}>
                             <a href="/app">
                                 <img className="logo" alt="Logo" src="/static/media/logo.png"/>
                                 <span>{globalVars.COMPANY_NAME}</span>
                             </a>
                             <div className="aside-toggle">
-                                <button onClick={()=>this.toggleLeftMenuOnClick()} onMouseEnter={()=>this.toggleLeftMenuOnHover()}>
+                                <button 
+                                    onClick={()=>this.toggleLeftMenuOnClick()} >
                                     <FontAwesomeIcon icon={this.state.leftMenuCollapsed ? 'chevron-right': 'chevron-left'} />
                                 </button>
                             </div>
                         </div>
-                        <LeftMenu menuItems={menuItems} collapsed={this.state.leftMenuCollapsed} />
+                        <LeftMenu menuItems={menuItems} 
+                                collapsed={this.state.leftMenuCollapsed} 
+                                linkClickHandler={()=>this.closeLeftMenuMobile()}/>
+                        <div className="blur-mobile-element" 
+                            onClick={()=>this.toggleLeftMenuMobile()}></div>
                     </aside>
                     <div className="dashboard-main">
                         <div className="header-main">

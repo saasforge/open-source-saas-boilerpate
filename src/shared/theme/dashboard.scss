@@ -159,6 +159,12 @@ aside.collapsed .aside-menu .group-name {
     color: #9fb1da !important;
     width: 100%;
 }
+aside.collapsed .aside-menu .menu-item svg.default-color {
+    color: #9fb1da;
+}
+aside.collapsed .aside-menu .menu-item svg {
+    color: #1fe4b7;
+}
 .aside-menu .menu-item a:hover {
     color: #ebebeb !important;
 }
@@ -211,6 +217,11 @@ aside.collapsed .aside-menu .group-name {
     -moz-box-shadow: 7px 10px 12px 2px rgba(218, 220, 222, 0.57);
     box-shadow: 7px 10px 12px 2px rgba(218, 220, 222, 0.57);
     background-color: #fff;
+}
+aside.collapsed  + .dashboard-main {
+    .header-main {
+        left: 55px;
+    }
 }
 .dashboard-main .header-main .bar-right {
     display: -webkit-box;
@@ -292,8 +303,9 @@ h5 {
         padding: 0 15px;
         height: 50px;
         min-height: 50px;
-        position: relative;
-        z-index: 1;
+        position: fixed;
+        width: 100%;
+        z-index: 100;
     }
     .header-mobile .header-mobile-logo {
         display: flex;
@@ -346,9 +358,41 @@ h5 {
     aside {
         display: none;
     }
+    aside.mobile-show {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        z-index: 101;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+    }
+    aside.mobile-show .aside-brand {
+        display: none;
+    }
     .dashboard-main {
         width: 100%;
         padding-left: 0px;
+        padding-top: 0px;
+    }
+    .dashboard-main .header-main {
+        position: fixed;
+        top: 50px;
+        left: 0px;
+    }
+    .dashboard-central {
+        padding-top: 130px;
+    }
+    aside.mobile-show .aside-menu {
+        width: 265px;
+        background-color: #1f2a4d;
+        z-index: 99;
+    }
+    .blur-mobile-element {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 98;
     }
 }
 @media (min-width: 1025px){
@@ -371,6 +415,12 @@ h5 {
     }
     .dashboard-main {
         padding-left: 265px;
+    }
+    aside.collapsed + .dashboard-main {
+        padding-left: 55px !important;
+    }
+    .blur-mobile-element {
+        display: none;
     }
 }
 

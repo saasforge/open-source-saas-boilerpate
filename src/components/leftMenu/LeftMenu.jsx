@@ -52,6 +52,7 @@ class LeftMenu extends Component {
     level - number of level
     */
     renderMenuItemBlock(item, level){
+        level = this.props.collapsed ? 2 : level; // If the menu is collapsed all icons should be on the same level.
         const menuItemStyle = {paddingLeft: 10 * level + 'px'};
         // Set up class for expanding
         const subitemClassName = (item.name ? (item.expanded == true ? '' : ' collapsed') : '');
@@ -61,16 +62,18 @@ class LeftMenu extends Component {
                 itemBlock = (
                     <div className="menu-item" style={menuItemStyle}>
                         {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                        {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
+                        {item.url ? <Link to={item.url} onClick={()=>this.props.linkClickHandler()}>{item.name}</Link> : <span>{item.name}</span> }
                         {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
                     </div>
                 );
             } else {
                 // Show only icon or default icon
+                const itemCollapsedIcon = item.icon ? 
+                                        <FontAwesomeIcon icon={item.icon} style={{color: item.color || ''}} /> : 
+                                        <FontAwesomeIcon className="default-color" icon='arrow-alt-circle-right' />;
                 itemBlock = (
                     <div className="menu-item" style={menuItemStyle}>
-                        {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
-                        {item.url ? <Link to={item.url}>{item.name}</Link> : <span>{item.name}</span> }
+                        <div className="icon-block" title={item.name}>{item.url ? <Link to={item.url}>{itemCollapsedIcon}</Link> : <span>{itemCollapsedIcon}</span> }</div>
                         {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
                     </div>
                 );
