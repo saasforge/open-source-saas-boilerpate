@@ -80,5 +80,8 @@ body.auth {
     }
     .auth-form .form-container {
         margin: auto;
+        max-width: 100%;
+        min-width: 100px;
+        padding: 10px;
     }
 }

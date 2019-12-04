@@ -113,3 +113,16 @@ body, html, #root {
     background-image: url(/static/media/error-back.png);
     background-size: cover;
 }
+
+/* Maker brand */
+.maker-brand {
+    font-size: 13px;
+}
+.maker-brand a {
+    color: #c7590a;
+}
+.maker-brand a:hover {
+    text-decoration: none;
+    color: #ea8034;
+}
+/* End of maker brand */

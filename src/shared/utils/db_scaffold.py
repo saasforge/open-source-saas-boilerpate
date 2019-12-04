@@ -8,7 +8,7 @@ from src.shared.db_models.role import Role
 
 #Dynamic import of models
 print ('Dynamic import')
-modules_folder = Path.joinpath(Path.cwd(), 'src\\shared\\db_models')
+modules_folder = Path.joinpath(Path.cwd(), 'src/shared/db_models')
 
 for module in modules_folder.iterdir():
     if module.is_file():

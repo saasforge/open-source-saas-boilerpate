@@ -58,8 +58,8 @@ def register_components(app):
     Automatically registers all module that need some initializing with application.
     To-do: make it not only for shared modules
     '''
-    shared_modules_folder = Path.joinpath(Path.cwd(), 'src\\components', )
+    shared_modules_folder = Path.joinpath(Path.cwd(), 'src/components', )
     __register_extensions_auto(shared_modules_folder, app, 'components', 'api')
 
-    services_modules_folder = Path.joinpath(Path.cwd(), 'src\\shared\\services')
+    services_modules_folder = Path.joinpath(Path.cwd(), 'src/shared/services')
     __register_extensions_auto(services_modules_folder, app, 'shared.services', 'service')

@@ -6,12 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-free-solid';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import jsonpath from 'jsonPath';
 
 import { globalVars } from '@src/shared/globalVars';
 
 import FileNotFoundView from '@src/views/errorPages/FileNotFoundView';
-
-import JsonPathComponent from '@src/components/jsonPath/JsonPathComponent';
 
 // Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';
@@ -48,8 +47,8 @@ export default class DashboardView extends Component {
         this.closeLeftMenuMobile = this.closeLeftMenuMobile.bind(this);
     }
     extractComponents(menuObject){
-        let items = JsonPathComponent(menuObject, '$..items');
-        if (!items){
+        let items = jsonpath.query(menuObject, '$..items');
+        if (!items.length){
             if (Array.isArray(menuObject)){
                 items = menuObject;
             }

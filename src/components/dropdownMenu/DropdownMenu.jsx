@@ -37,14 +37,15 @@ class DropdownMenu extends Component {
                     <Link className="dropdown-item" to={item.url} key={item.title}>{item.title}</Link> 
                 )}
         );
-        return(<div>
-            <button className="button-dropdown-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                       
-                {this.state.title}
-            </button>
-            <div className="dropdown-menu">
-                {renderItems}
-            </div>
-        </div>);
+        return(
+            <div>
+                <button className="button-dropdown-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                       
+                    {this.state.title}
+                </button>
+                <div className="dropdown-menu">
+                    {renderItems}
+                </div>
+            </div>);
     }
 }
 
