@@ -61,7 +61,9 @@ class ProfileView extends Component {
                     </div>
                     <button type="submit" className="btn btn-primary" onClick={()=>this.save()}>Save</button>
                 </div>
-                <Alert status={this.state.status} message={this.state.message} hideInSecs={8} />
+                <div className="col-md-6">
+                    <Alert status={this.state.status} message={this.state.message} hideInSecs={8} />
+                </div>
             </div>
         );
     }

@@ -11,6 +11,7 @@ import jsonpath from 'jsonPath';
 import { globalVars } from '@src/shared/globalVars';
 
 import FileNotFoundView from '@src/views/errorPages/FileNotFoundView';
+import Alert from '@src/components/alert/Alert';
 
 // Left menu
 import LeftMenu from '@src/components/leftMenu/LeftMenu';
@@ -160,7 +161,9 @@ export default class DashboardShell extends Component {
                             </div>
                         </div>
                         <div className="dashboard-central">
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense fallback={<div>
+                                <Alert status="info" message="Loading, please wait..." />
+                            </div>}>
                                 <Switch>
                                     {this.components.map((componentElement)=>{
                                         return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />

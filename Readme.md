@@ -41,7 +41,7 @@ Styled block with and icon and text. There are 4 types of alerts:
 
 ![Alerts](https://github.com/saasforge/saas-forge-public-docs/blob/master/alerts.png?raw=true)
 
-**Tip** You can set up if you want an alert to disappear after a required number of seconds.
+**Tip** You can set up if you want an alert to disappear after a required number of seconds (see documentation for details).
 
 #### Auth
 Contains the server-side API and ReactJS components.
@@ -151,12 +151,99 @@ Views in the terms of this boilerplate are pages that can be rendered into the d
 
 The current version of the boilerplate includes the following views.
 #### ComponentsDemo
+Contains demo views for alerts.
 
-#### 
+#### ErrorPages
+Currently, only one error (404, file not found) is currently handled. When a user enters a non-existing URL (for example, /app/blabla), the error will be shown:
+
+![404 error](https://github.com/saasforge/saas-forge-public-docs/blob/master/404dashboard.png?raw=true)
+
+#### Profile
+##### API 
+Contains one endpoint */app/api/profile* with 2 methods:
+- GET (login required): returns the current user data
+- POST (login required): updates the current user profile (username)
+
+##### Profile view
+Simple view to update the current user's username:
+![Profile saved](https://github.com/saasforge/saas-forge-public-docs/blob/master/profile.png?raw=true)
+
 
 ### Services
 #### Email
-Can be used for the sending transactional email. 
+Can be used for the sending transactional email. Example of using:
+
+```python
+from src.shared.services.email import service as email_service
+
+email_service.send_email(user.email, get_config_var('COMPANY_NAME') + ': Confirm your registration', 
+                        text_body, 
+                        html_body, 
+                        get_config_var('COMPANY_NAME'),
+                        get_config_var('MAIL_DEFAULT_SENDER'))
+```
+
+
+### Utils
+Some important utils are located in */src/shared/utils* folder.
+
+#### DB scaffolding functions
+Contains functions to update database based on the current db_models. Automatically finds all models. Don't call this function directly, it can be called implicitly using the following script:
+
+```
+flask dbupdate
+```
+
+#### Extensions
+Contains the instances of extensions to be used in different files. All of them are inited in the app factory.
+
+#### Global functions
+Contains several functions used globally. Some of them are also available for using in jinja.
+
+##### get_config_var
+Safely returns the corresponding ```app.config[var_name]``` if found, else None.
+Example of using in jinja HTML layout:
+
+```html
+<title>{{get_config_var('COMPANY_NAME')}}</title>
+```
+
+##### flat_validation_errors(errors_object)
+Takes an errors object (like ```{'error1': 'Text of error 1', 'error2': 'Error 2'}```) and returns a single string containing all the error texts.
+
+#### Server error handler
+If some error (non-handled exception) occured it handles and returns the following page:
+
+![Server-side error page](https://github.com/saasforge/saas-forge-public-docs/blob/master/serverSideError.png?raw=true)
+
+#### User authentication wrappers
+##### @loginrequired wrapper
+To protect endpoints and make them accessible only if user is authenticated, use this wrapper. Currently, it wraps JWT wrapper, but you can easily change it to anything else. Example of using:
+
+```python
+from src.shared.utils.user_auth_wrapper import login_required
+
+@profile_api.route('/')
+class retrieve_user_profile(Resource):
+    @login_required
+    def get(self):
+        ...
+```
+##### get_current_user_id wrapper function
+This function wraps JWT get_jwt_identity and returns the current user's id what can be easily used for getting any data associated with the current user:
+
+```python
+from src.shared.utils.user_auth_wrapper import get_current_user_id
+
+@profile_api.route('/')
+class retrieve_user_profile(Resource):
+    @login_required
+    def get(self):
+        current_user_id = get_current_user_id()
+        current_user = db_user_service.get_user_by_id(current_user_id)
+        ...
+```
+
 
 ### Database models
 Contains the following tables:
@@ -182,7 +269,7 @@ flask dbupdate
 - Handling 404 and 500 errors 
 - AWS Beanstalk-friendly (you don't need to change any files' names to start deploying the project there)
 - Automatic importing APIs,  namespaces (when add a new API you don't need to import it explicitly, you just need to name it *api.py*)
-- All styles in one folder what allows to change and create a new theme fast 
+- All styles in one folder what allows to change and create a new theme fast (see */src/shared/theme*) 
 - ES6
 - Refer @src as a root source folder in you JSX and JS code
 
@@ -244,3 +331,94 @@ componentDidMount = async()=> {
     }
 }
 ```
+# Installation
+## Prerequisites
+Before start make sure you have installed Python 3 and Node.js. Please follow the official instructions. Also, you need to have a PostgreSQL database handy. If you don't want to install it you can use ElephantSQL service, they have a free plan: https://www.elephantsql.com/plans.html.
+
+## Steps to follow
+1. Download [the full zip or pull code from the repository](https://github.com/saasforge/saas-build), find full instruction in [Github documentation](https://help.github.com/articles/which-remote-url-should-i-use/)
+
+
+2. Create a virtual environment (not necessarily but highly recommended):
+- Windows:
+```python
+python -m venv venv
+```
+- Mac:
+```python
+python3 -m venv venv
+```
+
+3. Add necessarily environment variables (you can add them into */venv/scripts/activate* file or into *.env* in the root folder):
+- FLASK_APP=application
+- db_url='postgres://user:password@dbhost:port/database'
+- JWT_SECRET_KEY='your jwt secret key'
+- SECRET_KEY='your secret key'
+- MAIL_SERVER = 'mail server'
+- MAIL_PORT = Number (like 465)
+- MAIL_USE_SSL = Bool (True of False) 
+- MAIL_USE_TLS = Bool (True of False) 
+- MAIL_USERNAME = 'your email'
+- MAIL_PASSWORD = 'your password'
+- ADMIN_EMAIL = 'your admin email'
+- MAIL_DEFAULT_SENDER = 'the same as your email'
+
+> Tip. If you are puzzled how and why *.env* is used please read [this explanation on Stackoverflow](https://stackoverflow.com/questions/41546883/can-somebody-explain-the-use-of-python-dotenv-module)
+
+4. Run the command (Windows):
+```
+init
+```
+(Mac):
+```
+./init.bat
+```
+> :warning: Warning! This command will first **drop ALL tables** in your database. (You can comment this part if you wish, see */src/shared/utils/db_scaffold*, line 25.)
+
+5. If everything is going fine you will see the following text in your terminal:
+
+```sh
+* Serving Flask app "application"
+* Environment: production
+  WARNING: Do not use the development server in a production environment.
+  Use a production WSGI server instead.
+* Debug mode: off
+* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+
+If you prefer to go through the installation process manually, please refer steps from the according version of *init* file in the root folder.
+
+## Updating database
+After you change something in your database models you should update the database itself. It can be done easily with the following command:
+```sh
+flask dbupdate
+```
+
+> Note. If you added some code including changes done into your model, and then run flask dbupdate and see some weird errors like Error: no such command "dbupdate" it means you have a compilation error. Try to run your code and see if there any errors, fix them and try to update the database again.
+
+> Note 2. Another reason for this error can be that you didn't add the following environment variable:
+```sh
+FLASK_APP=application
+```
+
+>:warning: Warning. If you work on the same codebase from different computers and update the same database you will experience Alembic migration conflicts. The error usually says 
+```error
+alembic.util.exc.CommandError: Target database is not up to date. 
+``` 
+or 
+```error
+alembic.util.exc.CommandError: Can't locate revision identified by 'somenumber' 
+```
+If you experience such errors:
+
+1. In the database remove the record from alembic_version table
+2. Remove any files from your computer under app/migrations.
+
+# Author
+This free SaaS app boilerplate was create by **SaaS Forge Inc.** https://www.saasforge.dev
+
+# License
+Copyright (c) 2019 **SaaS Forge Inc.** https://www.saasforge.dev. You can use this template for any purposes except reselling or purposes prohibited by law.
+
+# Feedback and support
+If you experience any difficulties, or have any questions on using of this product, or find a bug please open an issue or drop us a line at info@saasforge.dev.
