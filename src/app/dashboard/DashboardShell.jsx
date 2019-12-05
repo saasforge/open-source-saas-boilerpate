@@ -26,7 +26,7 @@ import '@src/shared/theme/dashboard.scss';
 
 library.add(fab);
 
-export default class DashboardView extends Component {
+export default class DashboardShell extends Component {
     constructor(props) {
         super(props);
     
