@@ -422,3 +422,6 @@ Copyright (c) 2019 **SaaS Forge Inc.** https://www.saasforge.dev. You can use th
 
 # Feedback and support
 If you experience any difficulties, or have any questions on using of this product, or find a bug please open an issue or drop us a line at info@saasforge.dev.
+
+# Disclaimer of Warranties 	
+We provide this boilerplate as is, and we make no promises or guarantees about it. 
