@@ -12,14 +12,22 @@ Component with 2 functions:
 #### RegisterFrom.jsx
 Component with the registration form validates entered email, checks if password and confirmation are the same, sends the request to the registrations API endpoint.
 
+![Registration page on a normal computer screen](https://github.com/saasforge/saas-forge-public-docs/blob/master/registerBigScreen.png?raw=true)
+
 #### LoginForm.jsx
 Component with the login form. Validates entered data (email, password), sends data to the login API endpoint.
+
+![Login page](https://github.com/saasforge/saas-forge-public-docs/blob/master/loginBigScreen.png?raw=true)
 
 #### FinishRegistrationPage.jsx
 The text page thanking for the registration and informing a user to complete the registration by clicking on the link in the sent email. Also, it has a link to resend the confirmation email if not received.
 
+![Finish registration page](https://github.com/saasforge/saas-forge-public-docs/blob/master/finishRegistration.png?raw=true)
+
 #### ConfirmationPage.jsx
 This page is loaded when a user tries to confirm his/her email. It sends the user id (taken from URL) to the confirmation endpoint and after confirmation redirects to the login page.
+
+![Confirmation page](https://github.com/saasforge/saas-forge-public-docs/blob/master/confirmed.png?raw=true)
 
 ## Authentication workflow
 1. A user is no the registration page, enters his/her username, email, password, and password confirmation, clicks the Register button.

@@ -12,6 +12,10 @@ ReactJS component for showing alerts.
 
 Sample code to use:
 
+```javascript
+import Alert from '@src/components/alert/Alert';
+```
+
 ```html
 <Alert status={this.state.status} message={this.state.message} hideInSecs={8} />
 ```
