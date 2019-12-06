@@ -434,7 +434,8 @@ We provide this boilerplate as is, and we make no promises or guarantees about i
 There are many ways to do it:
 - Star this repository
 - Create your own SaaS based on this boilerplate and tell us and everyone about it. We will add it to our gallery of fame!
-- Follow our [twitter](https://twitter.com/SaaSForgeDev) and tweet about the boilerplate and your experience
-- Add any functionality or fix bugs and create a pull request.
+- Add any functionality or fix bugs and create a pull request
+- Follow our [Twitter](https://twitter.com/SaaSForgeDev) and tweet about the boilerplate and your experience
+- Follow our [Facebook page](https://www.facebook.com/saasforge) and like it
 
-:love: THANKS! :love:
+:heart: THANKS! :heart:
