@@ -429,3 +429,12 @@ If you experience any difficulties, or have any questions on using of this produ
 
 # Disclaimer of Warranties 	
 We provide this boilerplate as is, and we make no promises or guarantees about it. 
+
+# Would you like to support us?
+There are many ways to do it:
+- Star this repository
+- Create your own SaaS based on this boilerplate and tell us and everyone about it. We will add it to our gallery of fame!
+- Follow our [twitter](https://twitter.com/SaaSForgeDev) and tweet about the boilerplate and your experience
+- Add any functionality or fix bugs and create a pull request.
+
+:love: THANKS! :love:
