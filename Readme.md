@@ -1,6 +1,10 @@
+![SaaS-Boilerpate](https://github.com/saasforge/saas-forge-public-docs/blob/master/saas-build.png?raw=true)
+
 # SaaS-Build boilerplate
 This free boilerplate allows creating a working SaaS web application.
+
 # Technologies
+
 - Python (Flask) - backend
 - PostgreSQL - database
 - ReactJS - frontend
