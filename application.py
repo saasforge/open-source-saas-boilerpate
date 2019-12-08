@@ -3,7 +3,7 @@ from flask import send_from_directory, current_app, render_template
 from flask.cli import with_appcontext
 from src import create_app
 
-
+# Application factory
 application = create_app()
 
 # Init custom static folder
