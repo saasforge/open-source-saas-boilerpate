@@ -7,8 +7,6 @@ import ConfirmationPage from './ConfirmationPage';
 import { globalVars } from '@src/shared/globalVars';
 import MakerBrand from '@src/components/makerBrand/MakerBrand';
 
-// Plug authentication library here if you want to provide interceptions.
-import { JWTFunctions } from '@src/components/jwt/JWTFunctions';
 
 
 class AuthUI extends Component {

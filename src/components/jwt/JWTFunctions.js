@@ -31,7 +31,6 @@ var JWTFunctions = {
                 return axios.post('/api/auth/token/refresh').then(response => {
                     return axios(error.response.config);
                 }).catch(error => {
-                    this.clearTokens();
                     window.location.href = '/auth/login';
                     return Promise.reject(error);
                 }).finally(()=>{
