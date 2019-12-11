@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthUI from '@src/components/auth/AuthUI';
+import AuthUI from '@src/modules/auth/AuthUI';
 
 import $ from 'jquery';
 import Popper from 'popper.js';

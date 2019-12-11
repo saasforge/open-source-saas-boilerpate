@@ -10,7 +10,7 @@ import jsonpath from 'jsonPath';
 
 import { globalVars } from '@src/shared/globalVars';
 
-import FileNotFoundView from '@src/views/errorPages/FileNotFoundView';
+import FileNotFoundView from '@src/modules/errorPages/FileNotFoundView';
 import Alert from '@src/components/alert/Alert';
 
 // Left menu

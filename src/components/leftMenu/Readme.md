@@ -63,7 +63,7 @@ const dashboardMenu = [
                 icon: ['fab', 'facebook'],
                 color: '#e4951f',
                 url: '/app/inbox', 
-                component: lazy(() => import('@src/views/inbox/InboxUI'))
+                component: lazy(() => import('@src/modules/inbox/InboxUI'))
             }
         ]
     }];

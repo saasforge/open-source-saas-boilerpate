@@ -9,7 +9,7 @@ const dashboardMenu = [
                 icon: ['fab', 'facebook'],
                 color: '#e4951f',
                 url: '/app/inbox', 
-                component: lazy(() => import('@src/views/inbox/InboxUI'))
+                component: lazy(() => import('@src/modules/inbox/InboxUI'))
             },
             {
                 title: 'Unread',
@@ -32,7 +32,7 @@ const dashboardMenu = [
                 icon: 'exclamation-triangle',
                 color: 'yellow',
                 url: '/app/demo/alerts',
-                component: lazy(() => import('@src/views/componentsDemo/AlertDemoView'))
+                component: lazy(() => import('@src/modules/componentsDemo/AlertDemoView'))
             }
         ]
     },

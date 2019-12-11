@@ -28,24 +28,11 @@ Based on [Flask blueprint](https://flask.palletsprojects.com/en/1.1.x/blueprints
 - Dashboard (dashboard root HTML linked to [the dashboard view](#dashboard))
 - Errors page (for serving back-end error, not a blueprint, just a simple HTML page)
 
-### Views
-Views are pages that are being rendered in the applications. May include components and call services.
-- Dashboard view (jsx file + several data files for providing data from left and top menus and dashboard components)
-- Profile view (jsx + server-side API)
-- Error pages view (jsx for serving dashboard 404 error)
+### Modules
+Modules are the code that can't be decoupled and should go together: front-end and back-end. They both belong to the same functionality and front-end often calls endpoints from the same module's back-end.
+> The API endpoints will be imported and registered in the dashboard blueprint automatically.
 
-### Components (in alphabetical order)
-Note. This is just description of components, all documentation can be found for each component in its folder.
-#### Alert
-Styled block with and icon and text. There are 4 types of alerts:
-- Success
-- Info
-- Warning
-- Error
-
-![Alerts](https://github.com/saasforge/saas-forge-public-docs/blob/master/alerts.png?raw=true)
-
-**Tip** You can set up if you want an alert to disappear after a required number of seconds (see documentation for details).
+> If back-end requires to initialize some extension using init_api() this function should be provided at the .py code and will be called automatically.
 
 #### Auth
 Contains the server-side API and ReactJS components.
@@ -75,13 +62,61 @@ Contains the server-side API and ReactJS components.
 
 ![Confirmation page on a mobile screen](https://github.com/saasforge/saas-forge-public-docs/blob/master/confirmationSmallScreen.png?raw=true)
 
+#### JWT
+Is used for the token authentication. The component has the API server-side part and JS file with functions called automatically. In our implementation we use cookie-based token as for it's most safe method of using tokens at the moment.
+
+##### Server-side API
+It has just 4 functions:
+- init_app (Inits JWT-Flask manager and add needed config variables to the application)
+- login_create_tokens(creates a token on user's login and add attach the corresponding cookies to the response object)
+- logout(unset cookies from the response on user's logout)
+- token_refresh(updates the access' token on demand).
+
+##### Frond-end functions
+This file is referred in the Auth jsx component and it's only purpose is to add the interceptor in all the following requests done by axios. You don't need to call it directly.
+
+#### ComponentsDemo
+Contains demo views for alerts.
+
+#### ErrorPages
+Currently, only one error (404, file not found) is currently handled. When a user enters a non-existing URL (for example, /app/blabla), the error will be shown:
+
+![404 error](https://github.com/saasforge/saas-forge-public-docs/blob/master/404dashboard.png?raw=true)
+
+#### Profile
+##### API 
+Contains one endpoint */app/api/profile* with 2 methods:
+- GET (login required): returns the current user data
+- POST (login required): updates the current user profile (username)
+
+##### Profile view
+Simple view to update the current user's username:
+![Profile saved](https://github.com/saasforge/saas-forge-public-docs/blob/master/profile.png?raw=true)
+
+
+
+### Components (in alphabetical order)
+Components are ReactJS piece of code, sometimes accompanied by CSS. Doesn't have any back-end part.
+Note. This is just description of components, all documentation can be found for each component in its folder.
+#### Alert
+Styled block with and icon and text. There are 4 types of alerts:
+- Success
+- Info
+- Warning
+- Error
+
+![Alerts](https://github.com/saasforge/saas-forge-public-docs/blob/master/alerts.png?raw=true)
+
+**Tip** You can set up if you want an alert to disappear after a required number of seconds (see documentation for details).
+
+
 #### Dropdown menu
 Dropdown menu is used in the header of the dashboard. It's based on a simple JSON structure, for example this data
 
 ```javascript
 const topMenu = [
-    {title: 'Profile', url: '/app/profile', component: lazy(() => import('@src/views/profile/ProfileView'))},
-    {title: 'Change password', url: '/app/password', component: lazy(() => import('@src/views/password/ChangePasswordUI'))},
+    {title: 'Profile', url: '/app/profile', component: lazy(() => import('@src/modules/profile/ProfileView'))},
+    {title: 'Change password', url: '/app/password', component: lazy(() => import('@src/modules/password/ChangePasswordUI'))},
     {divider: true},
     {title: 'Logout', url: '/api/auth/logout', method: 'post', redirectUrl: '/auth/login'}
 ];
@@ -98,18 +133,6 @@ will generate the following menu:
 - You can specify redirectURL if you don't need to load any component but rather redirect user to the different page
 - You don't need to import components anywhere else, all routes will be generated automatically
 
-#### JWT
-Is used for the token authentication. The component has the API server-side part and JS file with functions called automatically. In our implementation we use cookie-based token as for it's most safe method of using tokens at the moment.
-
-##### Server-side API
-It has just 4 functions:
-- init_app (Inits JWT-Flask manager and add needed config variables to the application)
-- login_create_tokens(creates a token on user's login and add attach the corresponding cookies to the response object)
-- logout(unset cookies from the response on user's logout)
-- token_refresh(updates the access' token on demand).
-
-##### Frond-end functions
-This file is referred in the Auth jsx component and it's only purpose is to add the interceptor in all the following requests done by axios. You don't need to call it directly.
 
 #### Left menu
 Responsive, collapsible menu with any amount of items on each level. You create it just filling up the JSON data file:
@@ -123,7 +146,7 @@ Responsive, collapsible menu with any amount of items on each level. You create 
                 icon: 'exclamation-triangle',
                 color: 'yellow',
                 url: '/app/demo/alerts',
-                component: lazy(() => import('@src/views/componentsDemo/AlertDemoView'))
+                component: lazy(() => import('@src/modules/componentsDemo/AlertDemoView'))
             }
         ]
     }
@@ -147,30 +170,6 @@ Note. If you prefer you can import component separately and assign it excplicitl
 
 #### Maker brand
 Just small piece of HTML containing link to our website (SaaSForge). You may remove it but you **can't** replace it wit your own brand.
-
-### Views (front-end)
-Views in the terms of this boilerplate are pages that can be rendered into the dashboard, referring some front-end components, endpoints etc. Technically, they're just ReactJS components but they all will be rendered into dashboard accordingly to the routes. A folder with view also can contain *api.py* with the endpoint that is used by this given view. 
-
-> Note. All endpoints are imported automatically, for details see the corresponding secion in this Readme.
-
-The current version of the boilerplate includes the following views.
-#### ComponentsDemo
-Contains demo views for alerts.
-
-#### ErrorPages
-Currently, only one error (404, file not found) is currently handled. When a user enters a non-existing URL (for example, /app/blabla), the error will be shown:
-
-![404 error](https://github.com/saasforge/saas-forge-public-docs/blob/master/404dashboard.png?raw=true)
-
-#### Profile
-##### API 
-Contains one endpoint */app/api/profile* with 2 methods:
-- GET (login required): returns the current user data
-- POST (login required): updates the current user profile (username)
-
-##### Profile view
-Simple view to update the current user's username:
-![Profile saved](https://github.com/saasforge/saas-forge-public-docs/blob/master/profile.png?raw=true)
 
 
 ### Services

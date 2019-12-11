@@ -6,7 +6,7 @@
 ### Front-end
 Add the reference to the library to any jsx file to provide interceptor, currently, it's in src/shared/globalVars.js
 ```
-import { JWTFunctions } from '@src/shared/components/jwt/JWTFunctions';
+import { JWTFunctions } from '@src/modules/jwt/JWTFunctions';
 ```
 
 ### Back-end
