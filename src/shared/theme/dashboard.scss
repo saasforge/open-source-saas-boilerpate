@@ -176,7 +176,7 @@ aside.collapsed .aside-menu .group-title {
     cursor: pointer;
 }
 .aside-menu .menu-item a, .aside-menu .menu-item span {
-    color: #9fb1da !important;
+    color: #9fb1da;
     width: 100%;
 }
 aside.collapsed .aside-menu .menu-item svg.default-color {
@@ -188,10 +188,18 @@ aside.collapsed .aside-menu .menu-item svg {
 .aside-menu .menu-item a:hover {
     color: #ebebeb !important;
 }
-.aside-menu .menu-item:hover {
+.aside-menu .menu-item:hover{
     background-color: #384775;
     color: #ebebeb;
     text-decoration: none;
+}
+.aside-menu .menu-item.current-url {
+    background-color: #294083;
+    color: #ebebeb;
+    text-decoration: none;
+}
+.aside-menu .menu-item.menu-item.current-url a{
+    color: #edf0f5;
 }
 .aside-menu .icon-block {
     color: #1fe4b7;
@@ -453,3 +461,12 @@ h5 {
         box-shadow: 0 1px 9px -3px rgba(10, 10, 10, 0.1);
     }
 }
+
+/* Colors */
+.grey {
+    color: #dfdfdf;
+}
+.yellow {
+    color: #eeea0c;
+}
+/* End of colors */

@@ -60,7 +60,7 @@ class LeftMenu extends Component {
         if (item.title){
             if (!this.props.collapsed){
                 itemBlock = (
-                    <div className="menu-item" style={menuItemStyle}>
+                    <div className={'menu-item ' + (window.location.pathname == item.url ? 'current-url' : '')}  style={menuItemStyle}>
                         {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
                         {item.url ? <Link to={item.url} onClick={()=>this.props.linkClickHandler()}>{item.title}</Link> : <span>{item.title}</span> }
                         {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  

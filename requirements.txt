@@ -17,6 +17,7 @@ jsonschema==3.1.1
 Mako==1.1.0
 MarkupSafe==1.1.1
 marshmallow==3.2.2
+marshmallow-sqlalchemy==0.18.0
 more-itertools==7.2.0
 passlib==1.7.1
 psycopg2==2.8.4

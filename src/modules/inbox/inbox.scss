@@ -1,0 +1,22 @@
+.inbox-panel {
+    table {
+        color: #304050;
+    }
+    td {
+        min-width: 20px;
+        padding: 5px;
+    }
+    tr {
+        border-bottom: 1px solid #e2e2e2;
+        cursor: pointer;
+    }
+    tr:hover {
+        background-color: #ebedef;
+    }
+    svg {
+        width: 20px;
+    }
+    .tag-important {
+        color: #60aff0;
+    }
+}

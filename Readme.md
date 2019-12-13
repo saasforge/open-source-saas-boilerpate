@@ -2,6 +2,8 @@
 
 # SaaS-Build boilerplate
 This free boilerplate allows creating a working SaaS web application.
+Please file all the information on our website:
+https://www.saasforge.dev
 
 # Technologies
 
@@ -11,6 +13,9 @@ This free boilerplate allows creating a working SaaS web application.
 - CSS/SCSS for styling
 - Fontawesome
 - Webpack/Babel - frontend building
+
+## System requirements
+Currently, the boilerplate works with Python 3.5.
 
 # Features
 ## User authentication
