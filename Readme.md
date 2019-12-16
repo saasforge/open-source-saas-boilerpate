@@ -1,6 +1,6 @@
 ![SaaS-Boilerpate](https://github.com/saasforge/saas-forge-public-docs/blob/master/saas-build.png?raw=true)
 
-# SaaS-Build boilerplate
+# SaaS application boilerplate
 This free boilerplate allows creating a working SaaS web application.
 Please file all the information on our website:
 https://www.saasforge.dev
