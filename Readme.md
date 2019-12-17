@@ -426,7 +426,7 @@ If you experience such errors:
 This free SaaS app boilerplate was create by **SaaS Forge Inc.** https://www.saasforge.dev
 
 # License
-Copyright (c) 2019 **SaaS Forge Inc.** https://www.saasforge.dev. You can use this template for any purposes except reselling or purposes prohibited by law.
+Copyright (c) 2019 **SaaS Forge Inc.** https://www.saasforge.dev. You can use this template for any purposes except purposes prohibited by law.
 
 # Feedback and support
 If you experience any difficulties, or have any questions on using of this product, or find a bug please open an issue or drop us a line at info@saasforge.dev.
