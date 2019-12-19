@@ -102,6 +102,14 @@ export default class DashboardShell extends Component {
                 this.setState({ username: response.data.username, loaded: true});
             } else {
                 this.setState({ error: response.data.error || 'Some error occured during this request... please try again.' });
+                
+                // Something went wrong, logout user
+                try {
+                    await axios.post('/api/auth/logout', {});
+                    window.location.href = '/auth/login';
+                } catch {
+                    console.log('Error while trying logout user.'); // Console log for now
+                }
             }
         } catch {
             this.setState({ error: 'Some error occured during this request... please try again.' });
