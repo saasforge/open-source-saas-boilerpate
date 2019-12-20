@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-free-solid';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import jsonpath from 'jsonPath';
+import jsonpath from 'jsonpath';
 
 import { globalVars } from '@src/shared/globalVars';
 
