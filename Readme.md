@@ -440,6 +440,7 @@ We provide this boilerplate as is, and we make no promises or guarantees about i
 # Would you like to support us?
 There are many ways to do it:
 - Star this repository
+- Support us as sponsors, see details here: https://github.com/sponsors/saasforge
 - Create your own SaaS based on this boilerplate and tell us and everyone about it. We will add it to our gallery of fame!
 - Add any functionality or fix bugs and create a pull request
 - Follow our [Twitter](https://twitter.com/SaaSForgeDev) and tweet about the boilerplate and your experience
