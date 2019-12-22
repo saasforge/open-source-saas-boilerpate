@@ -1,5 +1,5 @@
 from pathlib import Path
-import importlib
+import importlib, glob
 from src.shared.utils.extensions import db, alembic
 from config import ConfigHelper
 
@@ -8,12 +8,16 @@ from src.shared.db_models.role import Role
 
 #Dynamic import of models
 print ('Dynamic import')
-modules_folder = Path.joinpath(Path.cwd(), 'src/shared/db_models')
+models_folder = [Path.joinpath(Path.cwd(), 'src/shared/db_models')]
+models_folder += list(map(lambda path: Path.joinpath(Path.cwd(), path), glob.glob('src/modules/*/db_models')))
 
-for module in modules_folder.iterdir():
-    if module.is_file():
-        module_name = module.name.replace('.py', '')
-        importlib.import_module('src.shared.db_models.{0}'.format(module_name))
+for model_folder in models_folder:
+    for module in model_folder.iterdir():
+        if module.is_file():
+            start_index = module.parts.index('src')
+            import_parts = module.parts[start_index:] #list(filter(lambda part: , module.parts))
+            importlib.import_module('.'.join(import_parts).replace('.py', ''))
+
 
 def reinit_db(db_option=''):
     if db_option == 'update':
