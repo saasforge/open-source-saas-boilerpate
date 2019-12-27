@@ -53,6 +53,9 @@ a:hover {
     border-style: none;
     max-height: 30px;
 }
+.top-buffer-20 {
+    margin-top: 20px;
+}
 .grid-root {
     -webkit-box-flex: 1;
     flex: 1;
@@ -470,3 +473,44 @@ h5 {
     color: #eeea0c;
 }
 /* End of colors */
+
+/***** Components ******/
+
+/******* Tabs control ******/
+.nav-tabs {
+    border: none;
+    display: flex;
+}
+.nav-tabs .nav-link {
+    color: #8f959a;
+    height: 100%;
+    margin-right: 2px;
+}
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+    border: none;
+    background-color: #f7f8fd;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #edf1fd;
+    color: #213d58;
+    border: none;
+}
+.nav-tabs .nav-link.active:hover, .nav-tabs .nav-item.show .nav-link:hover {
+    background-color: #dde5fd;
+    color: #416cec;
+    border: none;
+}
+.nav-tabs .nav-link {
+    border: none;
+    border-radius: 0.25rem;
+}
+.nav-tabs .nav-link svg {
+    vertical-align: -webkit-baseline-middle; 
+    margin: 0px 6px;
+}
+.nav-tabs .nav-link span {
+    vertical-align: sub;
+}
+/******* End of tabs control ******/
+
+/***** End of components ******/

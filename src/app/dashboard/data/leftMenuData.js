@@ -33,6 +33,13 @@ const dashboardMenu = [
                 color: 'yellow',
                 url: '/app/demo/alerts',
                 component: lazy(() => import('@src/modules/componentsDemo/AlertDemoView'))
+            },
+            {
+                title: 'Tabs control', 
+                icon: 'window-maximize',
+                color: '#66d9e8',
+                url: '/app/demo/tabs',
+                component: lazy(() => import('@src/modules/componentsDemo/TabsDemoView'))
             }
         ]
     },

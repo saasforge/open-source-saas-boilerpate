@@ -1,11 +1,10 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
+
+import Popper from 'popper.js';
+import Icon from '@src/components/icon/Icon';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '@fortawesome/fontawesome-free-solid';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 import jsonpath from 'jsonpath';
 
 import { globalVars } from '@src/shared/globalVars';
@@ -23,9 +22,6 @@ import topMenuItems from './data/topMenuData';
 
 
 import '@src/shared/theme/dashboard.scss';
-
-
-library.add(fab);
 
 export default class DashboardShell extends Component {
     constructor(props) {
@@ -118,9 +114,29 @@ export default class DashboardShell extends Component {
     componentWillMount(){
         this.loadInitialData();
     }
+    componentDidCatch(error, errorInfo) {
+        this.setState({
+            error: error,
+            errorInfo: errorInfo
+        });
+    }
     render(){
-
         if (this.state.loaded) {
+            const centralPart = this.state.error ?
+                (<Alert status="error" message="Something went wrong and page was not loaded..." />):
+                (                            
+                    <Suspense fallback={<div>
+                        <Alert status="info" message="Loading, please wait..." />
+                    </div>}>
+                        <Switch>
+                            {this.components.map((componentElement)=>{
+                                return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />
+                            })}
+                            <Redirect exact from='/app' to='/app/profile' />
+                            <Route component={ FileNotFoundView } />
+                        </Switch>
+                    </Suspense>
+                );
             return (
             <div className="dashboard-view-block">
                 <div className="header-mobile  header-mobile-fixed ">
@@ -132,7 +148,7 @@ export default class DashboardShell extends Component {
                     <div className="header-mobile-toolbar">          
                         <button className="header-mobile-toggle" 
                             onClick={()=>this.toggleLeftMenuMobile()}>
-                            <FontAwesomeIcon icon="bars" />
+                            <Icon icon="bars" />
                         </button>                                
                     </div>
                 </div>
@@ -151,7 +167,7 @@ export default class DashboardShell extends Component {
                             <div className="aside-toggle">
                                 <button 
                                     onClick={()=>this.toggleLeftMenuOnClick()} >
-                                    <FontAwesomeIcon icon={this.state.leftMenuCollapsed ? 'chevron-right': 'chevron-left'} />
+                                    <Icon icon={this.state.leftMenuCollapsed ? 'chevron-right': 'chevron-left'} />
                                 </button>
                             </div>
                         </div>
@@ -169,17 +185,7 @@ export default class DashboardShell extends Component {
                             </div>
                         </div>
                         <div className="dashboard-central">
-                            <Suspense fallback={<div>
-                                <Alert status="info" message="Loading, please wait..." />
-                            </div>}>
-                                <Switch>
-                                    {this.components.map((componentElement)=>{
-                                        return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />
-                                    })}
-                                    <Redirect exact from='/app' to='/app/profile' />
-                                    <Route component={ FileNotFoundView } />
-                                </Switch>
-                            </Suspense>
+                            {centralPart}
                         </div>
                     </div>
                 </div>
@@ -195,5 +201,4 @@ export default class DashboardShell extends Component {
             </div>
         );
     }
-
 };

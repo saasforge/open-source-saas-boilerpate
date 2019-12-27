@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '@fortawesome/fontawesome-free-solid';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-
-
-library.add(fab);
+import Icon from '@src/components/icon/Icon';
 
 class LeftMenu extends Component {
     constructor(props) {
@@ -61,20 +55,20 @@ class LeftMenu extends Component {
             if (!this.props.collapsed){
                 itemBlock = (
                     <div className={'menu-item ' + (window.location.pathname == item.url ? 'current-url' : '')}  style={menuItemStyle}>
-                        {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><FontAwesomeIcon icon={item.icon}  /></div> : ''}
+                        {item.icon ?<div className="icon-block" style={{color: item.color || ''}}><Icon icon={item.icon}  /></div> : ''}
                         {item.url ? <Link to={item.url} onClick={()=>this.props.linkClickHandler()}>{item.title}</Link> : <span>{item.title}</span> }
-                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
+                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><Icon icon="angle-down" /></button>: ''}  
                     </div>
                 );
             } else {
                 // Show only icon or default icon
                 const itemCollapsedIcon = item.icon ? 
-                                        <FontAwesomeIcon icon={item.icon} style={{color: item.color || ''}} /> : 
-                                        <FontAwesomeIcon className="default-color" icon='arrow-alt-circle-right' />;
+                                        <Icon icon={item.icon} style={{color: item.color || ''}} /> : 
+                                        <Icon className="default-color" icon='arrow-alt-circle-right' />;
                 itemBlock = (
                     <div className="menu-item" style={menuItemStyle}>
                         <div className="icon-block" title={item.title}>{item.url ? <Link to={item.url}>{itemCollapsedIcon}</Link> : <span>{itemCollapsedIcon}</span> }</div>
-                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><FontAwesomeIcon icon="angle-down" /></button>: ''}  
+                        {item.items ? <button className="button-expand" onClick={() => this.toggleSubMenu(item)}><Icon icon="angle-down" /></button>: ''}  
                     </div>
                 );
             }
@@ -99,7 +93,7 @@ class LeftMenu extends Component {
         const groupItems = this.state.menuItems.map((group) =>
             {
                 const groupRendering = this.props.collapsed ? 
-                    (<FontAwesomeIcon icon="ellipsis-h" />):
+                    (<Icon icon="ellipsis-h" />):
                     group.groupTitle;
                 return (<div className="group-block" key={group.groupTitle}>
                     <div className="group-title">{groupRendering}</div>

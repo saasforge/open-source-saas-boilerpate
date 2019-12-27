@@ -49,7 +49,7 @@ class ProfileView extends Component {
     }
     render() {
       return (
-            <div className="container panel-light">
+            <div className="panel-light">
                 <div className="col-md-6">
                     <h5>User profile</h5>
                     <div className="form-group">

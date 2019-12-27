@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
+import Icon from '@src/components/icon/Icon';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '@fortawesome/fontawesome-free-solid';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 import './alert.css';
 
-library.add(fab);
 
 class Alert extends Component {
     constructor(props) {
@@ -59,7 +55,7 @@ class Alert extends Component {
         return (
                 <div className={alertStyle}>
                     <div className="icon-block">
-                        <FontAwesomeIcon icon={iconClass[statusName] || 'info'} />
+                        <Icon icon={iconClass[statusName] || 'info'} />
                     </div>
                     <div>
                         {messageObject}
