@@ -30,7 +30,7 @@ class TabsControl extends Component {
         const content = this.props.data.map((item)=>{
             const ItemComponent = item.component;
             const itemContent = (ItemComponent ?
-                <ItemComponent />:
+                <ItemComponent data = {item.data} />:
                 (item.content ? item.content : ''));
             return (
                 <div id={item.id} key={item.id} className={'tab-pane fade ' + (item.active ? 'show active' : '')}>

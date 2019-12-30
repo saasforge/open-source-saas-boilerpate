@@ -20,7 +20,10 @@ class TabsDemoView extends Component {
                 title: 'Second tab - active by default, no icon',
                 id: 'secondTab',
                 active: true,
-                component: lazy(() => import('@src/modules/componentsDemo/DemoLazyComponent'))
+                component: lazy(() => import('@src/modules/componentsDemo/DemoLazyComponent')),
+                data: {
+                    text: 'This data was passed from the TabsControl data object'
+                }
             }, {
                 title: 'Third tab',
                 id: 'thirdTab',

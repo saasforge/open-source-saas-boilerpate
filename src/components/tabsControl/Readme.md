@@ -25,7 +25,10 @@ this.state = {
         title: 'Second tab - active by default, no icon',
         id: 'secondTab',
         active: true,
-        component: lazy(() => import('@src/modules/componentsDemo/DemoLazyComponent'))
+        component: lazy(() => import('@src/modules/componentsDemo/DemoLazyComponent')),
+        data: {
+            text: 'This data was passed from the TabsControl data object'
+        }
     }, {
         title: 'Third tab',
         id: 'thirdTab',
@@ -65,4 +68,14 @@ If the previous "icon" props is null, the following props will be ignored:
 - **component** (lazy loaded component) - a tab lazy-loaded import variable defined in the following format:
 ```javascript
 lazy(() => import(string_path_to_component))
+```
+
+4. Data
+You also can pass a parameter into a component that is loaded lazy. 
+- **data** (Any type) - a variable of any data to be passed into a component.
+
+You can access it as props:
+
+```html
+<div><strong>{this.props.data.text}</strong></div>
 ```
