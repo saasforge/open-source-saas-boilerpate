@@ -6,7 +6,6 @@ class DropdownMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: props.title,
             menuItems: props.menuItems
         };
         this.doRequest = this.doRequest.bind(this);
@@ -33,7 +32,7 @@ class DropdownMenu extends Component {
         return(
             <div>
                 <button className="button-dropdown-menu dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                       
-                    {this.state.title}
+                    {this.props.title}
                 </button>
                 <div className="dropdown-menu">
                     {renderItems}

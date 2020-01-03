@@ -5,6 +5,7 @@ import './alert.css';
 
 
 class Alert extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);    
         this.state = {
@@ -24,6 +25,9 @@ class Alert extends Component {
             return {};
         }
     }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
     render() {
         const alertClasses = {
             'success': 'alert-success',
@@ -41,7 +45,12 @@ class Alert extends Component {
         const alertStyle = this.state.hide ? ' d-none' : 'alert-box ' + alertClasses[statusName];
         if (!this.state.hide){
             if (this.props.hideInSecs){
-                setTimeout(() => this.setState({hide: true}), (this.props.hideInSecs * 1000 || this.defaultTimeoutInSeconds));
+                this._isMounted = true;
+                setTimeout(() => {
+                    if (this._isMounted){
+                        this.setState({hide: true});
+                    }
+                }, (this.props.hideInSecs * 1000 || this.defaultTimeoutInSeconds));
             }
         }
         const messageObject = (Array.isArray(this.state.text) ?

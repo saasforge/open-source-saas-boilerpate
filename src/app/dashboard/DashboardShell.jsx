@@ -1,5 +1,6 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
+import { connect } from "react-redux";
 import axios from 'axios';
 
 import Popper from 'popper.js';
@@ -23,12 +24,15 @@ import topMenuItems from './data/topMenuData';
 
 import '@src/shared/theme/dashboard.scss';
 
-export default class DashboardShell extends Component {
+const mapStateToProps = state => {
+    return { username: state.username };
+};
+
+class DashboardShell extends Component {
     constructor(props) {
         super(props);
     
         this.state = {
-            username: '',
             error: '',
             loaded: false,
             leftMenuCollapsed: false,
@@ -95,7 +99,10 @@ export default class DashboardShell extends Component {
         try {
             let response = await axios.get('/app/api/profile');
             if (response.data.result){
-                this.setState({ username: response.data.username, loaded: true});
+                this.props.dispatch({
+                    type: 'UPDATE_USERNAME', newName: response.data.username
+                });
+                this.setState({ loaded: true});
             } else {
                 this.setState({ error: response.data.error || 'Some error occured during this request... please try again.' });
                 
@@ -181,7 +188,7 @@ export default class DashboardShell extends Component {
                         <div className="header-main">
                             <div></div>
                             <div className="bar-right">
-                                <DropdownMenu menuItems={topMenuItems} title={this.state.username} />
+                                <DropdownMenu menuItems={topMenuItems} title={this.props.username} />
                             </div>
                         </div>
                         <div className="dashboard-central">
@@ -202,3 +209,5 @@ export default class DashboardShell extends Component {
         );
     }
 };
+
+export default connect(mapStateToProps)(DashboardShell);

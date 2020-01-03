@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import axios from 'axios';
 
 import Alert from '@src/components/alert/Alert';
 
-class ProfileView extends Component {
+function updateUserName(newName) {
+    return { type: 'UPDATE_USERNAME', newName }
+};
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateUserName: username => dispatch(updateUserName(username))
+    };
+}
+
+class ConnectedProfileView extends Component {
     constructor(props) {
         super(props);
     
@@ -40,6 +51,7 @@ class ProfileView extends Component {
                     status: 'success',
                     message: 'Profile has been saved successfully!'
                 });
+                this.props.updateUserName(this.state.username);
             } else {
                 this.setState({ status: 'error', message: response.data.error || 'Some error occured during this request... please try again.' });
             }
@@ -68,5 +80,10 @@ class ProfileView extends Component {
         );
     }
 }
+
+const ProfileView = connect(
+    null,
+    mapDispatchToProps
+  )(ConnectedProfileView);
 
 export default ProfileView;
