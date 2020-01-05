@@ -100,7 +100,7 @@ class DashboardShell extends Component {
             let response = await axios.get('/app/api/profile');
             if (response.data.result){
                 this.props.dispatch({
-                    type: 'UPDATE_USERNAME', newName: response.data.username
+                    type: 'UPDATE_USERNAME', name: 'username', value: response.data.username
                 });
                 this.setState({ loaded: true});
             } else {

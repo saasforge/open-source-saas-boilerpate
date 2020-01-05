@@ -4,16 +4,6 @@ import axios from 'axios';
 
 import Alert from '@src/components/alert/Alert';
 
-function updateUserName(newName) {
-    return { type: 'UPDATE_USERNAME', newName }
-};
-
-function mapDispatchToProps(dispatch) {
-    return {
-        updateUserName: username => dispatch(updateUserName(username))
-    };
-}
-
 class ConnectedProfileView extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +41,10 @@ class ConnectedProfileView extends Component {
                     status: 'success',
                     message: 'Profile has been saved successfully!'
                 });
-                this.props.updateUserName(this.state.username);
+                //this.props.updateUserName(this.state.username);
+                this.props.dispatch({
+                    type: 'UPDATE_USERNAME', name: 'username', value: this.state.username
+                });
             } else {
                 this.setState({ status: 'error', message: response.data.error || 'Some error occured during this request... please try again.' });
             }
@@ -81,9 +74,6 @@ class ConnectedProfileView extends Component {
     }
 }
 
-const ProfileView = connect(
-    null,
-    mapDispatchToProps
-  )(ConnectedProfileView);
+const ProfileView = connect()(ConnectedProfileView);
 
 export default ProfileView;
