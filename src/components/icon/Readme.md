@@ -1,4 +1,4 @@
-# Tabs Control
+# Icon Control
 This ReactJS-based, customizable icon, based on [Fontawesome](https://fontawesome.com/) icons.
 
 See them in action:
