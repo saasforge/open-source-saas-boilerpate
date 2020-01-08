@@ -414,6 +414,13 @@ If you experience such errors:
 1. In the database remove the record from alembic_version table
 2. Remove any files from your computer under app/migrations.
 
+## Setting your own data
+### Company name
+There are 2 places to set up your company name:
+
+1. Config.py - change COMPANY_NAME variable
+2. /src/shared/globalVars.js - change globalVars object
+
 # Author
 This free SaaS app boilerplate was create by **SaaS Forge Inc.** https://www.saasforge.dev
 
