@@ -52,11 +52,11 @@ class user_registration(Resource):
         # New user has been created but not saved
         new_user = db_user_service.create_user(username, email, password)
         if new_user is not None:
-            # 1. Generate confirmation token
-            token = new_user.generate_confirmation_token()
-
-            # 2. Save new user
+            # 1. Save new user - to get id for the token generation
             save_result = new_user.save()
+            
+            # 2. Generate confirmation token
+            token = new_user.generate_confirmation_token()
 
             if save_result:
                 # 3. Generate email bodies and send confirmation link asynchronously
