@@ -361,6 +361,8 @@ Before start make sure you have installed Python 3 and Node.js. Please follow th
 - ADMIN_EMAIL = 'your admin email'
 - MAIL_DEFAULT_SENDER = 'the same as your email'
 
+JWT_SECRET_KEY and SECRET_KEY are just strings that not easy to guess, for example, it may be 'My Co0LServ_ice'.
+
 > Tip. If you are puzzled how and why *.env* is used please read [this explanation on Stackoverflow](https://stackoverflow.com/questions/41546883/can-somebody-explain-the-use-of-python-dotenv-module)
 
 3. Run the command (Windows):
