@@ -54,11 +54,11 @@ class user_registration(Resource):
         if new_user is not None:
             # 1. Save new user - to get id for the token generation
             save_result = new_user.save()
-            
-            # 2. Generate confirmation token
-            token = new_user.generate_confirmation_token()
 
             if save_result:
+                # 2. Generate confirmation token
+                token = new_user.generate_confirmation_token()
+                
                 # 3. Generate email bodies and send confirmation link asynchronously
                 send_confirmation_email(new_user, token)           
 
