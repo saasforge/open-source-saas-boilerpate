@@ -347,17 +347,7 @@ Before start make sure you have installed Python 3 and Node.js. Please follow th
 1. Download [the full zip or pull code from the repository](https://github.com/saasforge/saas-build), find full instruction in [Github documentation](https://help.github.com/articles/which-remote-url-should-i-use/)
 
 
-2. Create a virtual environment (not necessarily but highly recommended):
-- Windows:
-```python
-python -m venv venv
-```
-- Mac:
-```python
-python3 -m venv venv
-```
-
-3. Add necessarily environment variables (you can add them into */venv/scripts/activate* file or into *.env* in the root folder):
+2. Add necessarily environment variables (you can add them into */venv/scripts/activate* file or into *.env* in the root folder):
 - FLASK_APP=application
 - db_url='postgres://user:password@dbhost:port/database'
 - JWT_SECRET_KEY='your jwt secret key'
@@ -373,7 +363,7 @@ python3 -m venv venv
 
 > Tip. If you are puzzled how and why *.env* is used please read [this explanation on Stackoverflow](https://stackoverflow.com/questions/41546883/can-somebody-explain-the-use-of-python-dotenv-module)
 
-4. Run the command (Windows):
+3. Run the command (Windows):
 ```
 init
 ```
@@ -383,7 +373,7 @@ init
 ```
 > :warning: Warning! This command will first **drop ALL tables** in your database. (You can comment this part if you wish, see */src/shared/utils/db_scaffold*, line 25.)
 
-5. If everything is going fine you will see the following text in your terminal:
+4. If everything is going fine you will see the following text in your terminal:
 
 ```sh
 * Serving Flask app "application"
