@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12.0-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - db_url=postgres://postgres:password@db:5432/dev
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:

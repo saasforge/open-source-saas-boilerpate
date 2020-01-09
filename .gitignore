@@ -16,7 +16,6 @@ library
 # Python
 __pycache__
 venv
-.env
 *.pyc
 
 # Database
