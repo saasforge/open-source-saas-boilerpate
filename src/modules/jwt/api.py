@@ -27,7 +27,10 @@ def init_app(app):
 def login_create_tokens(user_id):
     access_token = create_access_token(identity = user_id)
     refresh_token = create_refresh_token(identity = user_id)
-    login_response = jsonify({'result': True})
+    login_response = jsonify({
+        'result': True, 
+        'redirect': '/app' # Redirect to /app when login was successful
+    })
     set_access_cookies(login_response, access_token)
     set_refresh_cookies(login_response, refresh_token)
     return login_response

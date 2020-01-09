@@ -105,7 +105,11 @@ export default class LoginForm extends Component {
                     </div>
                 </div>
                 <div className="container">
-                    { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
+                    <div className="row">
+                        <div className="col-md-10 offset-md-1 col-sm-12">
+                            { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
+                        </div>
+                    </div>
                 </div>
             </div>
         );

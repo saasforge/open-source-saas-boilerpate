@@ -4,14 +4,14 @@ var AuthUIFunctions = {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
     },
-    handleResponse: function(response, redirectUrl){
-        if (response.data.redirect || redirectUrl){
+    handleResponse: function(response){
+        if (response.data.redirect){
             if (response.data.redirectDelay){
                 setTimeout(function(){
-                    window.location.href = response.data.redirect || redirectUrl;
+                    window.location.href = response.data.redirect;
                 }, response.data.redirectDelay * 1000);
             } else {
-                window.location.href = response.data.redirect || redirectUrl;
+                window.location.href = response.data.redirect;
             }
         }
         if (!response.data.result){
