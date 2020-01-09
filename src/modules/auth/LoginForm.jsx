@@ -66,43 +66,47 @@ export default class LoginForm extends Component {
     }
     render(){
         return (
-            <div className="form-container">
-                <div className="text-center mb-5 mt-5">
-                    <img src="/static/media/logo.png" />
-                </div>
-                <div className="text-center mb-5 mt-5">
-                    <h1>Please sign in</h1>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="inputEmail">Email address</label>
-                    <input type="email" id="inputEmail" 
-                        name="email"
-                        onChange={this.handleChange} 
-                        className={this.state.validEmail ? 'form-control' : 'form-control non-valid'} autoFocus />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="inputPassword">Password</label>
-                    <input type="password" id="inputPassword" 
-                        name="password"
-                        onChange={this.handleChange} 
-                        className={this.state.validPassword ? 'form-control' : 'form-control non-valid'}  required  />
-                </div>
-                <div className="form-group">
-                    <div className="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" onChange={this.handleChange} name="remember" /> Remember me
-                        </label>
+            <div className="d-flex flex-column h-100">
+                <div className="form-container">
+                    <div className="text-center mb-5 mt-5">
+                        <img src="/static/media/logo.png" />
+                    </div>
+                    <div className="text-center mb-5 mt-5">
+                        <h1>Please sign in</h1>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="inputEmail">Email address</label>
+                        <input type="email" id="inputEmail" 
+                            name="email"
+                            onChange={this.handleChange} 
+                            className={this.state.validEmail ? 'form-control' : 'form-control non-valid'} autoFocus />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="inputPassword">Password</label>
+                        <input type="password" id="inputPassword" 
+                            name="password"
+                            onChange={this.handleChange} 
+                            className={this.state.validPassword ? 'form-control' : 'form-control non-valid'}  required  />
+                    </div>
+                    <div className="form-group">
+                        <div className="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" onChange={this.handleChange} name="remember" /> Remember me
+                            </label>
+                        </div>
+                    </div>
+                    <div className="text-center mb-5 mt-5">
+                        <div className="col-md-12">
+                            <button className="btn btn-lg btn-primary" onClick={this.sendData} >Sign in</button>
+                        </div>
+                    </div>
+                    <div className="row text-center">
+                        <p className="w-100">Don't have an account? Register <Link to="/auth/register">here</Link>.</p>
                     </div>
                 </div>
-                <div className="text-center mb-5 mt-5">
-                    <div className="col-md-12">
-                        <button className="btn btn-lg btn-primary" onClick={this.sendData} >Sign in</button>
-                    </div>
+                <div className="container">
+                    { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
                 </div>
-                <div className="row text-center">
-                    <p className="w-100">Don't have an account? Register <Link to="/auth/register">here</Link>.</p>
-                </div>
-                { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
             </div>
         );
     }

@@ -5,11 +5,17 @@ var AuthUIFunctions = {
         return re.test(email);
     },
     handleResponse: function(response, redirectUrl){
+        if (response.data.redirect || redirectUrl){
+            if (response.data.redirectDelay){
+                setTimeout(function(){
+                    window.location.href = response.data.redirect || redirectUrl;
+                }, response.data.redirectDelay * 1000);
+            } else {
+                window.location.href = response.data.redirect || redirectUrl;
+            }
+        }
         if (!response.data.result){
             return [response.data.error || 'Something went wrong during login.'];
-        }
-        if (response.data.redirect || redirectUrl){
-            window.location.href = response.data.redirect || redirectUrl;
         }
         return []; // Errors list is empty.
     }

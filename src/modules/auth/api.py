@@ -58,7 +58,7 @@ class user_registration(Resource):
             if save_result:
                 # 2. Generate confirmation token
                 token = new_user.generate_confirmation_token()
-                
+
                 # 3. Generate email bodies and send confirmation link asynchronously
                 send_confirmation_email(new_user, token)           
 
@@ -94,6 +94,18 @@ class user_login(Resource):
                 'error': 'User does not exist or never being confirmed.'
             })
         else:
+            if existing_user.confirmed == False:
+                # Inform frontend to redirect to the confirmatiuon page
+                token = existing_user.generate_confirmation_token()
+                send_confirmation_email(existing_user, token)
+                confirm_email_page_url = '/auth/finishregister/' + str(existing_user.id)
+                return  jsonify({
+                    'result': False,
+                    'error': 'Please confirm your email. You will be redirected to the confirmation page in 3 secods.',
+                    'redirect': confirm_email_page_url,
+                    'redirectDelay': 3
+                })
+
             if existing_user.verify_hash(password):
                 login_response = jwt_api.login_create_tokens(existing_user.id)
                 return make_response(login_response, 200)
