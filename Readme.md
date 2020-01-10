@@ -414,6 +414,13 @@ If you experience such errors:
 1. In the database remove the record from alembic_version table
 2. Remove any files from your computer under app/migrations.
 
+# Running with Docker
+1. Add or override necessary environment variables using `.env`.
+2. Run with `docker-compose`:
+```sh
+docker-compose up
+```
+
 ## Setting your own data
 ### Company name
 There are 2 places to set up your company name:
