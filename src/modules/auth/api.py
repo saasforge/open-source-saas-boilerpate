@@ -47,7 +47,7 @@ class user_registration(Resource):
         if existing_user is not None:
             return jsonify({
                 'result': False,
-                'error': 'Username already exists.'
+                'error': 'User already exists.'
             })
         # New user has been created but not saved
         new_user = db_user_service.create_user(username, email, password)
