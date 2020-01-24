@@ -166,6 +166,10 @@ class user_confirm(Resource):
                         'redirectDelay': 3,
                         'error': 'Sorry but your token probably expired. We have sent you a new confirmation email - please check your email box and try again.'
                     })
+            # User is confirmed, but we have to logout to make sure that THIS exact user will login then.
+            return  jsonify({
+                'result': True
+            })
         else:
             return jsonify({
                 'result': False,
