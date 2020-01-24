@@ -41,7 +41,10 @@ class Alert extends Component {
             'error': 'exclamation-circle', 
             'warning': 'exclamation-triangle'
         };
-        const statusName = this.props.status || 'info';
+        const statusName = this.props.status;
+        if (!statusName){
+            return null;
+        }
         const alertStyle = this.state.hide ? ' d-none' : 'alert-box ' + alertClasses[statusName];
         if (!this.state.hide){
             if (this.props.hideInSecs){

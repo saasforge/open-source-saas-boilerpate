@@ -137,10 +137,9 @@ class user_resend_confirm(Resource):
         if user:  
             token = user.generate_confirmation_token()
             send_confirmation_email(user, token) 
-            confirm_email_page_url = '/auth/finishregister/' + str(user.id)
             return  jsonify({
                 'result': True,
-                'redirect': confirm_email_page_url
+                'redirect': '/auth/finishregister/{0}'.format(user.id)
             })
         else:
             return jsonify({
@@ -154,12 +153,19 @@ class user_confirm(Resource):
         user = db_user_service.get_user_by_id(userid)
         if user:  
             if not user.confirmed:          
-                user.confirm(token)
-                user.save()
-            # User is confirmed, but we have to logout to make sure that THIS exact user will login then.
-            return  jsonify({
-                'result': True
-            })
+                confirmation_result = user.confirm(token)
+                if confirmation_result:
+                    user.save()
+                else:
+                    # The token probably expired, so send a new confirmation email
+                    token = user.generate_confirmation_token()
+                    send_confirmation_email(user, token) 
+                    return jsonify({
+                        'result': False,
+                        'redirect': '/auth/finishregister/{0}'.format(user.id),
+                        'redirectDelay': 3,
+                        'error': 'Sorry but your token probably expired. We have sent you a new confirmation email - please check your email box and try again.'
+                    })
         else:
             return jsonify({
                 'result': False,
