@@ -48,3 +48,9 @@ def token_refresh():
     set_access_cookies(refresh_response, access_token)
     return refresh_response
 
+@jwt.invalid_token_loader
+def invalid_token_handler():
+    '''
+    This may happen when, for example, user changes URL - redirecting to sign in screen.
+    '''
+    return redirect('/auth/login')
