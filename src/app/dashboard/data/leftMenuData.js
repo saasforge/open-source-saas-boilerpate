@@ -40,6 +40,13 @@ const dashboardMenu = [
                 color: '#66d9e8',
                 url: '/app/demo/tabs',
                 component: lazy(() => import('@src/modules/componentsDemo/TabsDemoView'))
+            },
+            {
+                title: 'Modal', 
+                icon: 'door-open',
+                color: '#f18e13',
+                url: '/app/demo/modal',
+                component: lazy(() => import('@src/modules/componentsDemo/ModalDemoView'))
             }
         ]
     },
