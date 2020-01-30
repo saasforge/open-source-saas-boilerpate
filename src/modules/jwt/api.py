@@ -20,7 +20,7 @@ def init_app(app):
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     ##################################################
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_ACCESS_COOKIE_PATH'] = '/app'
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/' # We will protect all paths
     app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/auth'
 
 
@@ -53,4 +53,12 @@ def invalid_token_handler():
     '''
     This may happen when, for example, user changes URL - redirecting to sign in screen.
     '''
+    return redirect('/auth/login')
+
+@jwt.unauthorized_loader
+def unauthorized_loader_handler(message):
+    '''
+    This may happen when, for example, user changes URL - redirecting to sign in screen.
+    '''
+    print('Unathorized attempt: ', message)
     return redirect('/auth/login')
