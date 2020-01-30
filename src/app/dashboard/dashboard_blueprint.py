@@ -47,7 +47,6 @@ def index_page():
 
 @dashboard_blueprint.route('/app', methods=['GET'])
 @dashboard_blueprint.route('/app/<path:path>', methods=['GET'])
-@login_required
 def app_index_app(path = None):
     return render_template('dashboard.html')
 
