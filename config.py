@@ -24,8 +24,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     MAIL_SERVER = os.environ.get('mail_server')
     MAIL_PORT = os.environ.get('mail_port')
-    MAIL_USE_SSL = True
-    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True if os.getenv('MAIL_USE_SSL') == 'True' else False
+    MAIL_USE_TLS = True if os.getenv('MAIL_USE_TLS') == 'True' else False
     MAIL_USERNAME = os.environ.get('mail_username')
     MAIL_DEFAULT_SENDER = os.environ.get('mail_username')
     MAIL_PASSWORD = os.environ.get('mail_password')
