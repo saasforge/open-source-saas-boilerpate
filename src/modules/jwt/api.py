@@ -14,13 +14,13 @@ def init_app(app):
     jwt.init_app(app)
     ##jwt._set_error_handler_callbacks(jwt_api)
     #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 30 # To test
-    #app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 600 # To test
+    #app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 60 # To test
     ################ Make it True! ###################
     app.config['JWT_COOKIE_SECURE'] = False 
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     ##################################################
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_ACCESS_COOKIE_PATH'] = '/' # We will protect all paths
+    app.config['JWT_ACCESS_COOKIE_PATH'] = '/app'
     app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/auth'
 
 

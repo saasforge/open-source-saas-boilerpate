@@ -28,7 +28,8 @@ class User(db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == get_config_var('ADMIN_EMAIL'):
+            admin_emails = get_config_var('ADMIN_EMAIL').split(' ') if get_config_var('ADMIN_EMAIL') is not None else []
+            if len(admin_emails) > 0 and self.email in admin_emails:
                 self.role = Role.query.filter_by(name='Admin').first()
             else:
                 default_role = Role.query.filter_by(is_default=True).first()
