@@ -11,8 +11,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('db_url') # Store it in the hosting config
     COMPANY_NAME = 'Your company name' # Change to your company name
-    JWT_SECRET_KEY = os.environ.get('jwt_secret_key')
-    SECRET_KEY = os.environ.get('secret_key')
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 class ProductionConfig(Config):
     ENV = 'prod'
@@ -22,14 +22,14 @@ class DevelopmentConfig(Config):
     ENV = 'dev'
     DEVELOPMENT = True
     DEBUG = True
-    MAIL_SERVER = os.environ.get('mail_server')
-    MAIL_PORT = os.environ.get('mail_port')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT')
     MAIL_USE_SSL = True if os.getenv('MAIL_USE_SSL') == 'True' else False
     MAIL_USE_TLS = True if os.getenv('MAIL_USE_TLS') == 'True' else False
-    MAIL_USERNAME = os.environ.get('mail_username')
-    MAIL_DEFAULT_SENDER = os.environ.get('mail_username')
-    MAIL_PASSWORD = os.environ.get('mail_password')
-    ADMIN_EMAIL = os.environ.get('admin_email')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
 
 class TestingConfig(Config):
     ENV = 'test'
