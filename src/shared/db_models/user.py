@@ -2,6 +2,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from flask_sqlalchemy import SQLAlchemy
 import uuid
 from flask import current_app
+from flask_login import UserMixin
 from passlib.hash import pbkdf2_sha256 as sha256
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
@@ -9,9 +10,9 @@ from src.shared.utils.global_functions import get_config_var
 from src.shared.db_models.role import Role
 from src.shared.db_models.account import Account
 
-from src.shared.utils.extensions import db
+from src.shared.utils.extensions import db, login_manager
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(UUID(as_uuid=True),
@@ -43,6 +44,10 @@ class User(db.Model):
         '''
         hash = self.generate_hash(password)
         self.password_hash = hash
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(uuid.UUID(user_id))
 
     def generate_hash(self, password):
         return sha256.hash(password)

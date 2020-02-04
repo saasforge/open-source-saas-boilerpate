@@ -62,7 +62,9 @@ export default class LoginForm extends Component {
         }
     }
     handleChange = (event) =>  {
-        this.setState({ [event.target.name]: event.target.value});
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        this.setState({ [target.name]: value});
     }
     render(){
         return (

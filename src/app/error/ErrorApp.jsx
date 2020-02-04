@@ -4,7 +4,9 @@ import '@src/shared/theme/common.scss';
 
 const ErrorView = function(){
     const classBack = window.errorCode == '404' ? 'file-not-found' : 'server-error';
-    const errorText = window.errorCode == '404' ? 'Sorry but file not found' : 'Server-side error... please try again';
+    const errorText = window.errorCode == '404' ? 'Sorry but file not found' : 
+        (window.errorCode == '401' ? 'Unauthorized access. Please go back.' : 
+        'Server-side error... please try again');
     return(<div className={'error-back ' + classBack}>
         <h1>{errorText}</h1>
     </div>)

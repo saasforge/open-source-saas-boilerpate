@@ -1,10 +1,13 @@
 from flask import jsonify, render_template, send_file, Response, current_app, request, make_response, redirect, url_for
+from flask_login import login_user, logout_user, login_required, current_user
+from flask_login.config import EXEMPT_METHODS
 from flask_marshmallow import Marshmallow
 from marshmallow import fields, validate, ValidationError, EXCLUDE, INCLUDE
 from flask_restplus import Namespace, Resource, fields, Api, abort
+from functools import wraps
 
 from src.shared.utils.global_functions import get_config_var
-from src.shared.utils.extensions import db, db_schema
+from src.shared.utils.extensions import db, db_schema, login_manager
 
 # Adapters
 from src.shared.services import db_user_service
@@ -107,6 +110,7 @@ class user_login(Resource):
                 })
 
             if existing_user.verify_hash(password):
+                login_user(existing_user, auth_logic_api.payload.get('remember'))
                 login_response = jwt_api.login_create_tokens(existing_user.id)
                 return make_response(login_response, 200)
             else:
@@ -118,6 +122,7 @@ class user_login(Resource):
 @auth_logic_api.route('/logout')
 class user_logout(Resource):
     def post(self):
+        logout_user()
         logout_response = jwt_api.logout()
         return make_response(logout_response, 200)
 
@@ -175,3 +180,33 @@ class user_confirm(Resource):
                 'result': False,
                 'error': 'Sorry but user not found. Please login or register again.'
             })
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return redirect('/auth/login')
+
+# Use this wrapper to protect pages and API calls
+def admin_required(func):
+    @wraps(func)
+    def custom_decorated_view_for_page(*args, **kwargs):
+        path_parts = request.path.split('/')
+        if request.method in EXEMPT_METHODS:
+            return func(*args, **kwargs)
+        elif current_app.login_manager._login_disabled:
+            return func(*args, **kwargs)
+        elif not current_user.is_authenticated:
+            return redirect('/auth/login')
+        elif current_user.is_authenticated: 
+            if current_user.role.name != 'Admin':
+                if 'api' in path_parts:
+                    return jsonify({
+                        'result': False,
+                        'error': 'You are not authorized. Please re-login and try again.'
+                    })
+                else:
+                    print('ERROR: Unauthorized access to ', request.url)
+                    return render_template('/app/error/error.html', error_code = 401, error_text = 'Unauthorized access'), 401
+            else:
+                return func(*args, **kwargs)
+        return func(*args, **kwargs)
+    return custom_decorated_view_for_page

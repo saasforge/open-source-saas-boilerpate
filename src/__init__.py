@@ -4,7 +4,7 @@ from pathlib import Path
 from flask import Flask
 from config import ConfigHelper
 
-from src.shared.utils.extensions import db, db_schema, mail, alembic
+from src.shared.utils.extensions import db, db_schema, mail, alembic, login_manager
 from src.shared.utils.server_error_handler import app_error
 
 def create_app():
@@ -41,6 +41,7 @@ def register_extensions(app):
     db_schema.init_app(app)
     mail.init_app(app)
     alembic.init_app(app)
+    login_manager.init_app(app)
 
 def __register_extensions_auto(folder, app, folder_name, module_type):
     for module in folder.iterdir():

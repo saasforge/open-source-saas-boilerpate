@@ -19,8 +19,11 @@ def page_not_found(ex):
 def not_handled_exception(ex):
     # to-do: Log the problem
     print('Server-side ERROR: ', ex)
-    return render_template('/app/error/error.html', error_code = 500, error_text = ex.message or ''), 500
-
+    message = ex.message if hasattr(ex, 'message') else (
+                ex.args[0] if hasattr(ex, 'args') and len(ex.args) > 0 else \
+                'Some error occured... please try again'
+    )
+    return render_template('/app/error/error.html', error_code = 500, error_text = message), 500
 
 @application.cli.command()
 @with_appcontext

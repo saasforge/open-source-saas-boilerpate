@@ -6,6 +6,7 @@ Click==7.0
 Flask==1.0.2
 Flask-Alembic==2.0.1
 Flask-JWT-Extended==3.24.1
+Flask-Login==0.4.1
 Flask-Mail==0.9.1
 flask-marshmallow==0.10.1
 flask-restplus==0.13.0

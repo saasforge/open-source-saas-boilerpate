@@ -7,7 +7,10 @@ from src.shared.utils.user_auth_wrapper import login_required, get_current_user_
 from src.shared.utils.extensions import db, db_schema
 from src.shared.services import db_user_service
 
+from src.modules.auth.api import admin_required
+
 profile_api = Namespace('profile_api', path ='/app/api/profile')
+
 
 @profile_api.route('/')
 class retrieve_user_profile(Resource):
