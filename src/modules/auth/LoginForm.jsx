@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { AuthUIFunctions } from './AuthUIFunctions';
 import Alert from '@src/components/alert/Alert';
+import Icon from '@src/components/icon/Icon';
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -15,7 +16,9 @@ export default class LoginForm extends Component {
             remember: false,
             validEmail: true,
             validPassword: true,
-            errors: []
+            errors: [],
+            message: '',
+            loading: false
         };
     }
     addError = (error) => {
@@ -49,6 +52,12 @@ export default class LoginForm extends Component {
             return;
         }
 
+        this.setState({ 
+            status: 'info', 
+            message: 'Please wait until we authenticate you...',
+            loading: true 
+        });
+
         var data = {
             email: this.state.email, 
             password: this.state.password,
@@ -56,9 +65,11 @@ export default class LoginForm extends Component {
         };
         try {
             let response = await axios.post('/api/auth/login', data);
-            this.setState({ errors: AuthUIFunctions.handleResponse(response, '/app') });
+            this.setState({ errors: AuthUIFunctions.handleResponse(response, '/app'), 
+                loading: false, status: '' });
         } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+            this.setState({ errors: ['Some error occured during this request... please try again.'], 
+                loading: false, status: ''});
         }
     }
     handleChange = (event) =>  {
@@ -69,7 +80,8 @@ export default class LoginForm extends Component {
     render(){
         return (
             <div className="d-flex flex-column h-100">
-                <div className="form-container">
+                <div className="inner-container">
+                    <div className="form-container">
                     <div className="text-center mb-5 mt-5">
                         <img src="/static/media/logo.png" />
                     </div>
@@ -99,17 +111,28 @@ export default class LoginForm extends Component {
                     </div>
                     <div className="text-center mb-5 mt-5">
                         <div className="col-md-12">
-                            <button className="btn btn-lg btn-primary" onClick={this.sendData} >Sign in</button>
+                            <button className="btn btn-lg btn-primary" onClick={this.sendData} >
+                                {this.state.loading ? <Icon icon="circle-notch" className="fa-spin" size="xs" spin /> : ''}
+                                Sign in
+                            </button>
                         </div>
                     </div>
                     <div className="row text-center">
                         <p className="w-100">Don't have an account? Register <Link to="/auth/register">here</Link>.</p>
                     </div>
                 </div>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-10 offset-md-1 col-sm-12">
-                            { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-10 offset-md-1 col-sm-12">
+                                <Alert status={this.state.status} message={this.state.message} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-10 offset-md-1 col-sm-12">
+                                { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
+                            </div>
                         </div>
                     </div>
                 </div>

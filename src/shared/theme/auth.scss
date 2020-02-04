@@ -66,9 +66,16 @@ body.auth {
     color: #445566;
     z-index: 999999;
 }
-.auth-form .form-container {
-    min-width: 350px;
+.auth-form .inner-container {
     margin: auto;
+}
+.auth-form .form-container {
+    width: 350px;
+    margin: auto;
+}
+
+button svg {
+    margin-right: 4px;
 }
 
 @media (max-width: 1024px){
@@ -80,7 +87,7 @@ body.auth {
     }
     .auth-form .form-container {
         margin: auto;
-        max-width: 100%;
+        max-width: 96%;
         min-width: 100px;
         padding: 10px;
     }

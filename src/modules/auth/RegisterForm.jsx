@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { AuthUIFunctions } from './AuthUIFunctions';
 import Alert from '@src/components/alert/Alert';
+import Icon from '@src/components/icon/Icon';
 
 export default class RegisterForm extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ export default class RegisterForm extends Component {
             validEmail: true,
             validPassword: true,
             validPassword2: true,
-            errors: []
+            errors: [],
+            loading: false
         };
     }
     addError = (error) => {
@@ -75,11 +77,14 @@ export default class RegisterForm extends Component {
             password: this.state.password,
             password2: this.state.password2,
         };
+        this.setState({ 
+            loading: true 
+        });
         try {
             let response = await axios.post('/api/auth/register', data);
-            this.setState({ errors: AuthUIFunctions.handleResponse(response) });
+            this.setState({ errors: AuthUIFunctions.handleResponse(response), loading: false });
         } catch {
-            this.setState({ errors: ['Some error occured during this request... please try again.'] });
+            this.setState({ errors: ['Some error occured during this request... please try again.'], loading: false });
         }
     }
     handleChange = (event) =>  {
@@ -121,7 +126,10 @@ export default class RegisterForm extends Component {
                 </div>
                 <div className="text-center mb-5 mt-5">
                     <div className="col-md-12">
-                        <button className="btn btn-lg btn-primary" onClick={this.sendData}>Create account</button>
+                        <button className="btn btn-lg btn-primary" onClick={this.sendData} >
+                            {this.state.loading ? <Icon icon="circle-notch" className="fa-spin" size="xs" spin /> : ''}
+                            Create account
+                        </button>
                     </div>
                 </div>
                 <div className="row text-center">
