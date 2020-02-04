@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Alert from '@src/components/alert/Alert';
-//import Modal from '@src/components/modal/Modal';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 class ModalDemoView extends Component {
