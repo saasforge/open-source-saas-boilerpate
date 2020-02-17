@@ -82,7 +82,7 @@ export default class RegisterForm extends Component {
         });
         try {
             let response = await axios.post('/api/auth/register', data);
-            this.setState({ errors: AuthUIFunctions.handleResponse(response), loading: false });
+            this.setState({ errors: AuthUIFunctions.handleResponse(response), loading: false});
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'], loading: false });
         }
