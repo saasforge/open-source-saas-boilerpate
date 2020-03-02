@@ -14,13 +14,17 @@ const dashboardMenu = [
             {
                 title: 'Unread',
                 icon: 'envelope',
-                url: '/unread',
-                color: '#1fd2e4'
+                url: '/app/unread',
+                color: '#1fd2e4',
+                component: lazy(() => import('@src/modules/test/TestView')),
+                data: {title: 'Unread emails'}
             },
             {
                 title: 'Sent',
                 icon: 'paper-plane',
-                url: '/sent'
+                url: '/app/sent',
+                component: lazy(() => import('@src/modules/test/TestView')),
+                data: {title: 'Sent emails'}
             }
         ]
     },
@@ -62,12 +66,16 @@ const dashboardMenu = [
                         items: [
                             {
                                 title: 'My photos',
-                                url: '/photos'
+                                url: '/app/photos',
+                                component: lazy(() => import('@src/modules/test/TestView')),
+                                data: {title: 'My photos'}
                             },
                             {
                                 title: 'My books',
-                                url: '/books',
-                                icon: 'book'
+                                url: '/app/books',
+                                icon: 'book',
+                                component: lazy(() => import('@src/modules/test/TestView')),
+                                data: {title: 'My books'}
                             }
                         ]
                     }
@@ -80,12 +88,16 @@ const dashboardMenu = [
                     {
                         title: 'Facebook',
                         icon: ['fab', 'facebook-square'],
-                        url: '/facebook'
+                        url: '/app/facebook',
+                        component: lazy(() => import('@src/modules/test/TestView')),
+                        data: {title: 'Some data from my Facebook profile (actually not)'}
                     },
                     {
                         title: 'Strava',
                         icon: ['fab', 'strava'],
-                        url: '/strava'
+                        url: '/app/strava',
+                        component: lazy(() => import('@src/modules/test/TestView')),
+                        data: {title: 'Strava profile (may be)'}
                     }
                 ]
             }

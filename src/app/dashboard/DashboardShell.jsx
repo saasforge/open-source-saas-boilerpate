@@ -59,7 +59,8 @@ class DashboardShell extends Component {
         }).map((item)=>{
             return {
                 url: item.url,
-                component: item.component
+                component: item.component,
+                data: item.data
             }
         });
     }
@@ -137,7 +138,16 @@ class DashboardShell extends Component {
                     </div>}>
                         <Switch>
                             {this.components.map((componentElement)=>{
-                                return <Route path={componentElement.url} component={componentElement.component} key={componentElement.url} />
+                                const ElementComponent = componentElement.component;
+                                return (ElementComponent ? 
+                                        <Route path={componentElement.url} 
+                                            render={(props)=><ElementComponent data={componentElement.data} {...props} />} 
+                                            key={componentElement.url} 
+                                            data={componentElement.data}/>: 
+                                        <Route path={componentElement.url} 
+                                            component={componentElement.component} 
+                                            key={componentElement.url} 
+                                            data={componentElement.data}/>);
                             })}
                             <Redirect exact from='/app' to='/app/profile' />
                             <Route component={ FileNotFoundView } />
