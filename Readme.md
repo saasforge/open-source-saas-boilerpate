@@ -361,6 +361,10 @@ Before start make sure you have installed Python 3 and Node.js. Please follow th
 - ADMIN_EMAIL = 'your admin email'
 - MAIL_DEFAULT_SENDER = 'the same as your email'
 
+
+> Note. At least 2 first variables MUST be set up (FLASK_APP and db_url) else the installation script wont' work.
+
+
 JWT_SECRET_KEY and SECRET_KEY are just strings that not easy to guess, for example, it may be 'My Co0LServ_ice'.
 
 > Tip. If you are puzzled how and why *.env* is used please read [this explanation on Stackoverflow](https://stackoverflow.com/questions/41546883/can-somebody-explain-the-use-of-python-dotenv-module)
@@ -370,9 +374,12 @@ JWT_SECRET_KEY and SECRET_KEY are just strings that not easy to guess, for examp
 init
 ```
 (Mac):
+
 ```
 ./init.bat
 ```
+> For any problem happening during execution of this command please see the section Troubleshooting below.
+
 > :warning: Warning! This command will first **drop ALL tables** in your database. (You can comment this part if you wish, see */src/shared/utils/db_scaffold*, line 25.)
 
 4. If everything is going fine you will see the following text in your terminal:
@@ -413,6 +420,28 @@ If you experience such errors:
 
 1. In the database remove the record from alembic_version table
 2. Remove any files from your computer under app/migrations.
+
+## Troubleshooting
+Sometimes, if you use Mac OS you can experience some problems with installing the boilerplate.
+
+* When you try to execute init.sh if you see the following error "init.sh: Command not found" go to the boilerplate's root folder and run
+```
+./init.sh
+```
+Then, if you see "./init.sh permission denied" run:
+```
+sudo chmod 755 'init.sh'
+```
+
+* When the script is running you may see the error during installation some Python packages like "Error: pg_config executable not found."
+
+You need to fix this problem because script won't execute beyond.
+To fix this problem run 
+```
+brew install postgresql
+```
+If you see any other problem with installation packages it can prevent from working script normally so you have to fix all this problems.
+
 
 # Running with Docker
 1. Add or override necessary environment variables using `.env`.
