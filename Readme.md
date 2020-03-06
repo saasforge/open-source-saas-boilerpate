@@ -376,7 +376,7 @@ init
 (Mac):
 
 ```
-./init.bat
+./init.sh
 ```
 > For any problem happening during execution of this command please see the section Troubleshooting below.
 
