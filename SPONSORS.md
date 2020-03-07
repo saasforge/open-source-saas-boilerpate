@@ -2,4 +2,4 @@
 
 Our currenct sponsors:
 
-Sergio Rovira @sgr0691
+Sergio Rovira https://github.com/sgr0691

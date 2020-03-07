@@ -481,4 +481,6 @@ There are many ways to do it:
 - Follow our [Twitter](https://twitter.com/SaaSForgeDev) and tweet about the boilerplate and your experience
 - Follow our [Facebook page](https://www.facebook.com/saasforge) and like it
 
+[Our supportive sponsors](https://github.com/saasforge/open-source-saas-boilerpate/blob/master/SPONSORS.md)
+
 :heart: THANKS! :heart:
