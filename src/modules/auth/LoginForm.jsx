@@ -66,6 +66,9 @@ export default class LoginForm extends Component {
         try {
             let response = await axios.post('/api/auth/login', data);
             this.setState({ errors: AuthUIFunctions.handleResponse(response, '/app'), loading: false});
+            if (!response.data.result){
+                this.setState({status: ''});
+            }
         } catch {
             this.setState({ errors: ['Some error occured during this request... please try again.'], 
                 loading: false, status: ''});

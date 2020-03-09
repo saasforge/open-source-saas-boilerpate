@@ -92,3 +92,16 @@ button svg {
         padding: 10px;
     }
 }
+
+@media (max-width: 600px){
+    .glint, .glint2 {
+        display: none;
+    }
+    .auth-form, .design-2 .auth-form {
+        margin: 0px !important;
+        padding: 0px 15px !important;
+    }
+    .auth-form .inner-container {
+        margin: 0px;
+    }
+}
