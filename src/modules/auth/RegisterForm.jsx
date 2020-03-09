@@ -136,7 +136,7 @@ export default class RegisterForm extends Component {
                     </div>
                 </div>
                 <div className="row text-center">
-                    <div className="w-100">Already have an account? Sign in <Link to="/auth/login">here</Link>.</div>
+                    <p className="w-100">Already have an account? Sign in <Link to="/auth/login">here</Link>.</p>
                 </div>
                 { this.state.errors.length ? <Alert status={'error'} message={this.state.errors} /> : null }
             </div>
