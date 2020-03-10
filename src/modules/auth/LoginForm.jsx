@@ -69,7 +69,9 @@ export default class LoginForm extends Component {
             if (!response.data.result){
                 this.setState({status: ''});
             }
-        } catch {
+        } catch(ex) {
+            console.log('Exception occured trying to send the login request');
+            console.log(ex);
             this.setState({ errors: ['Some error occured during this request... please try again.'], 
                 loading: false, status: ''});
         }

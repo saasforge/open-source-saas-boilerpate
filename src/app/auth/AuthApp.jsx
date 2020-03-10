@@ -14,8 +14,8 @@ import '@src/shared/theme/auth.scss';
 const auth_component = (
     <div className="auth-container"> 
         <div className="auth-info">
-            <div className="glint"></div>
-            <div className="glint2"></div>
+            {/*<div className="glint"></div>
+            <div className="glint2"></div>*/}
             <div className="welcome">Welcome to {globalVars.COMPANY_NAME}</div>
             <div className="legal">{globalVars.COMPANY_NAME} © {new Date().getFullYear()}</div>
         </div>  
