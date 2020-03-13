@@ -37,10 +37,10 @@ export default class ConfirmationPage extends Component {
         } else {
             return ( 
                 <div>                 
-                    <div className="w-100">
+                    <p className="w-100">
                         You email is confirmed. If you are not automatically redirected in 5 seconds please use the 
                         following link to 
-                    </div>
+                    </p>
                     <Link to={'/auth/login/'} className="w-100">the login page</Link>
                 </div>  
             );

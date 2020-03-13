@@ -49,7 +49,7 @@ def token_refresh():
     return refresh_response
 
 @jwt.invalid_token_loader
-def invalid_token_handler():
+def invalid_token_handler(data):
     '''
     This may happen when, for example, user changes URL - redirecting to sign in screen.
     '''
