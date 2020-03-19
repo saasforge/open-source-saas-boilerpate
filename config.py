@@ -14,14 +14,6 @@ class Config(object):
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
-class ProductionConfig(Config):
-    ENV = 'prod'
-    DEBUG = False
-
-class DevelopmentConfig(Config):
-    ENV = 'dev'
-    DEVELOPMENT = True
-    DEBUG = True
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = os.environ.get('MAIL_PORT')
     MAIL_USE_SSL = True if os.getenv('MAIL_USE_SSL') == 'True' else False
@@ -30,6 +22,15 @@ class DevelopmentConfig(Config):
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+
+class ProductionConfig(Config):
+    ENV = 'prod'
+    DEBUG = False
+
+class DevelopmentConfig(Config):
+    ENV = 'dev'
+    DEVELOPMENT = True
+    DEBUG = True
 
 class TestingConfig(Config):
     ENV = 'test'

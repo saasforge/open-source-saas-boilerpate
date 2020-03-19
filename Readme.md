@@ -401,7 +401,10 @@ After you change something in your database models you should update the databas
 flask dbupdate
 ```
 
-> Note. If you added some code including changes done into your model, and then run flask dbupdate and see some weird errors like Error: no such command "dbupdate" it means you have a compilation error. Try to run your code and see if there any errors, fix them and try to update the database again.
+> Note. If you added some code including changes done into your model, and then run flask dbupdate and see some weird errors like Error: no such command "dbupdate" it means you have a compilation error. Try to run your code and see if there any errors, fix them and try to update the database again. To make sure there are not compilation errors, run the following command:
+```
+flask run
+```
 
 > Note 2. Another reason for this error can be that you didn't add the following environment variable:
 ```sh
@@ -440,8 +443,17 @@ To fix this problem run
 ```
 brew install postgresql
 ```
-If you see any other problem with installation packages it can prevent from working script normally so you have to fix all this problems.
+* If you see any other problem with installation packages it can prevent from working script normally so you have to fix all this problems.
 
+* If you build and run the project but then you see the following exception:
+**ImportError: No module named 'psycopg2._psycopg'**
+uninstall and install the module back:
+
+```
+pip uninstall psycopg2
+pip install psycopg2
+```
+* If you are trying to update database and see something like "dbupdate no such command", check your virtual environment. Check venv/Lib/site-packages folder to see if installation still exists (sometimes if you move the root folder the files may be presented on the disc but the current virtual environment just doesn't see them, so reinstall all packages from scratch.)
 
 # Running with Docker
 1. Add or override necessary environment variables using `.env`.
