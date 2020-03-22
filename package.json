@@ -38,7 +38,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mobx": "^5.15.0",
     "mobx-react": "^6.1.4",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "popper.js": "^1.16.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
