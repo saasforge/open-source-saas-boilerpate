@@ -16,7 +16,7 @@ class Alert extends Component {
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         const notEmptyMessage = Array.isArray(nextProps.message) ? nextProps.message.length : nextProps.message;
-        if (prevState.text != nextProps.message && notEmptyMessage){
+        if (notEmptyMessage){
             return {
                 text: nextProps.message,
                 hide: false
