@@ -51,6 +51,13 @@ const dashboardMenu = [
                 color: '#f18e13',
                 url: '/app/demo/modal',
                 component: lazy(() => import('@src/modules/componentsDemo/ModalDemoView'))
+            },
+            {
+                title: 'Color picker field',
+                icon: 'palette',
+                color: 'red',
+                url: '/app/demo/color-picker-field',
+                component: lazy(() => import('@src/modules/componentsDemo/ColorPickerFieldDemoView'))
             }
         ]
     },

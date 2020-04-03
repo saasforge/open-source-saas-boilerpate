@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(UUID(as_uuid=True), db.ForeignKey('role.id'))
     confirmed = db.Column(db.Boolean, default=False, server_default='f')
     account_id = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'))
-    account = db.relationship('Account', back_populates='user')
+    account = db.relationship('Account', back_populates='user', cascade='all,delete')
     created = db.Column(db.DateTime(), nullable=True)
 
     def __init__(self, **kwargs):
