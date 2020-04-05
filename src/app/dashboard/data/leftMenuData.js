@@ -58,6 +58,13 @@ const dashboardMenu = [
                 color: 'red',
                 url: '/app/demo/color-picker-field',
                 component: lazy(() => import('@src/modules/componentsDemo/ColorPickerFieldDemoView'))
+            },
+            {
+                title: 'File uploader',
+                icon: 'image',
+                color: '#f7e834',
+                url: '/app/demo/file-upload',
+                component: lazy(() => import('@src/modules/componentsDemo/FileUploaderDemoView'))
             }
         ]
     },

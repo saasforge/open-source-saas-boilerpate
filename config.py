@@ -23,6 +23,11 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
 
+    #AWS
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+    AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME') # Create additional variables for other buckets
+
 class ProductionConfig(Config):
     ENV = 'prod'
     DEBUG = False
