@@ -16,7 +16,6 @@ class ColorPickerField extends Component {
     constructor(props) {
         super(props);    
         this.state = {
-            color: this.props.colorValue
         };
     }
     handleChangeColorText =(event)=>{
@@ -40,10 +39,9 @@ class ColorPickerField extends Component {
                     value={this.props.colorValue} />
                     <ColorPicker
                         animation="slide-up"
-                        color={this.props.colorValue}
+                        color={this.props.colorValue || '#f4f4f4'}
                         onChange={this.handleChangeColorPicker}
                         placement={this.fixPlacement(this.props.placement)}
-                        defauldColor="#ff0000"
                     />
             </div>);
     }

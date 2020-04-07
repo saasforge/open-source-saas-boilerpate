@@ -33,6 +33,15 @@ import ColorPickerField from '@src/components/color-picker-field/ColorPickerFiel
     />
 ```
 
+Event handler takes 2 parameters: color and field name, for example:
+```javascript
+    changeColor = (color, fieldName)=>{
+        let colorVal = {};
+        colorVal[fieldName] = color;
+        this.setState(colorVal);
+    }
+```
+
 #### Component props
 - **icon**(string or array of strings) - icon name (accordingly to Fontawesome naming)
 - **color**(string) - color name, for example "green" or "#FFF"

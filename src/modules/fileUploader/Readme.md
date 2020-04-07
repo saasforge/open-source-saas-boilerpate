@@ -11,8 +11,8 @@ You can specify:
 - previewWidth - width of preview image
 - previewHeight - height of preview image
 - previewIsRound - false or true (false by default)
-- generateIdName - false or true (false by default), indicates if the module should generate ID name for 
-the newly uploaded image
+- generateIdName - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
+- uploadOnSelection - if true (false by default), the upload is executing right after user selects a file.
 
 
 
@@ -70,5 +70,5 @@ Add the component:
 - **previewWidth** - width of preview image
 - **previewHeight** - height of preview image
 - **previewIsRound** - false or true (false by default)
-- **generateIdName** - false or true (false by default), indicates if the module should generate ID name for 
-the newly uploaded image
+- **generateIdName** - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
+- **uploadOnSelection** - if true (false by default), the upload is executing right after user selects a file.

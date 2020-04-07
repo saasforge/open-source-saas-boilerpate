@@ -15,13 +15,14 @@ previewHeight - height of preview image
 previewIsRound - false or true (false by default)
 generateIdName - false or true (false by default), indicates if the module should generate ID name for 
 the newly uploaded image
+uploadOnSelection - if true (false by default), the upload is executing right after user selects a file.
 */
 
 class FileUploader extends Component {
     constructor(props) {
         super(props);    
         this.state = {
-            src: this.props.src || '',
+            src: this.props.src,
             fileName: (this.props.src ? this.props.src.replace(/[\#\?].*$/,'') : ''),
             showFileName: (this.props.showFileName != null ? this.props.showFileName : true),
             noFileText: this.props.noFileText || 'No file selected',
@@ -31,9 +32,18 @@ class FileUploader extends Component {
             previewWidth: this.props.previewWidth || '100px',
             previewHeight: this.props.previewHeight || '80px',
             previewIsRound: (this.props.previewIsRound != null ? this.props.previewIsRound : false),
-            generateIdName: (this.props.generateIdName != null ? this.props.generateIdName : false)
+            generateIdName: (this.props.generateIdName != null ? this.props.generateIdName : false),
+            uploadOnSelection: (this.props.uploadOnSelection == true ? true : false)
         };
         this.fileInput = React.createRef();
+    }
+    static getDerivedStateFromProps(props, state) {
+        if (props.src !== state.src && !state.src) {
+            return {
+                src: props.src
+            };
+        }
+        return null;
     }
     updatePreview = ()=>{
         const self = this;
@@ -45,6 +55,10 @@ class FileUploader extends Component {
                     fileName: self.fileInput.current.files[0].name,
                     fileSelected: true
                 });
+                if (self.state.uploadOnSelection){
+                    // Execute upload right after a file is selected
+                    self.uploadFile();
+                }
             }                
             reader.readAsDataURL(this.fileInput.current.files[0]);
         }
@@ -59,14 +73,17 @@ class FileUploader extends Component {
             let formData = new FormData();
             formData.append('file', file);
             const generateFlag = (this.state.generateIdName ? 'generate' : 'original');
-            let response = await axios.post(`/app/api/upload/${generateFlag}`, formData);
+            let response = await axios.post(`/app/api/upload/${this.props.folderName}/${generateFlag}`, formData);
             if (response.data.result){
                 this.setState({
                     status: 'success',
                     message: 'Image has been upload successfully!',
                     src: response.data.file_url,
-                    fileName: response.data.file_name
+                    //fileName: response.data.file_name
                 });
+                if (this.props.uploadDoneHandler){
+                    this.props.uploadDoneHandler(response.data.file_url);
+                }
             } else {
                 this.setState({ status: 'error', message: response.data.error || 'Some error occured during this request... please try again.' });
             }
@@ -77,7 +94,7 @@ class FileUploader extends Component {
     render() {
         let backgroundSize = '';
         if (this.state.previewIsRound){
-            if (this.state.src){
+            if (this.props.src){
                 backgroundSize = 'cover';
             } else {
                 backgroundSize = '76%';
@@ -90,9 +107,9 @@ class FileUploader extends Component {
                 <div className="image-upload-block">
                     <input type="file" className="form-control" onChange={this.updatePreview} 
                         id={this.state.id} hidden ref={this.fileInput}/>
-                    {this.state.showFileName ? <span className="mr-2">{this.state.fileName || this.state.noFileText}</span>: ''}
+                    {this.state.showFileName == true ? <span className="mr-2">{this.state.fileName || this.state.noFileText}</span>: ''}
                     <button className="btn btn-primary mr-2" onClick={this.selectFile}>Select a file</button>
-                    {this.state.fileSelected ?
+                    {this.state.fileSelected && !this.state.uploadOnSelection ?
                         <button className="btn btn-primary" onClick={this.uploadFile}>Upload</button>
                         :''
                     }
