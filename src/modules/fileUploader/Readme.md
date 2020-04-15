@@ -12,8 +12,8 @@ You can specify:
 - previewHeight - height of preview image
 - previewIsRound - false or true (false by default)
 - generateIdName - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
-- uploadOnSelection - if true (false by default), the upload is executing right after user selects a file.
-
+- uploadOnSelection - if true (false by default), the upload is executing right after user selects a file
+- showAlert - indicates if component should show its own alert with the upload success or not (true by default).
 
 
 ## How to use
@@ -71,4 +71,5 @@ Add the component:
 - **previewHeight** - height of preview image
 - **previewIsRound** - false or true (false by default)
 - **generateIdName** - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
-- **uploadOnSelection** - if true (false by default), the upload is executing right after user selects a file.
+- **uploadOnSelection** - if true (false by default), the upload is executing right after user selects a file
+- **showAlert** - indicates if component should show its own alert with the upload success or not (true by default).

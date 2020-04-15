@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Alert from '@src/components/alert/Alert';
 import Icon from '@src/components/icon/Icon';
+import {commonFunctions} from '@src/components/commonFunctions';
 
 import './fileUploader.scss';
 
@@ -15,16 +16,15 @@ previewHeight - height of preview image
 previewIsRound - false or true (false by default)
 generateIdName - false or true (false by default), indicates if the module should generate ID name for 
 the newly uploaded image
-uploadOnSelection - if true (false by default), the upload is executing right after user selects a file.
 */
 
 class FileUploader extends Component {
     constructor(props) {
         super(props);    
         this.state = {
-            src: this.props.src,
-            fileName: (this.props.src ? this.props.src.replace(/[\#\?].*$/,'') : ''),
-            showFileName: (this.props.showFileName != null ? this.props.showFileName : true),
+            src: (Array.isArray(this.props.src) ? this.props.src : [this.props.src]), // inner it's always array
+            //fileName: (this.props.src ? this.props.src.replace(/[\#\?].*$/,'') : ''),
+            //showFileName: (this.props.showFileName != null ? this.props.showFileName : true),
             noFileText: this.props.noFileText || 'No file selected',
             status: '', 
             message: '',
@@ -32,36 +32,41 @@ class FileUploader extends Component {
             previewWidth: this.props.previewWidth || '100px',
             previewHeight: this.props.previewHeight || '80px',
             previewIsRound: (this.props.previewIsRound != null ? this.props.previewIsRound : false),
-            generateIdName: (this.props.generateIdName != null ? this.props.generateIdName : false),
-            uploadOnSelection: (this.props.uploadOnSelection == true ? true : false)
+            generateIdName: (this.props.generateIdName != null ? this.props.generateIdName : false)
         };
         this.fileInput = React.createRef();
-    }
-    static getDerivedStateFromProps(props, state) {
-        if (props.src !== state.src && !state.src) {
-            return {
-                src: props.src
-            };
-        }
-        return null;
+        this.id = commonFunctions.generateShortId('fileUploader_');
     }
     updatePreview = ()=>{
         const self = this;
-        if (this.fileInput.current.files[0]) {
-            var reader = new FileReader();               
-            reader.onload = function(e) {
-                self.setState({
-                    src: e.target.result, 
-                    fileName: self.fileInput.current.files[0].name,
-                    fileSelected: true
-                });
-                if (self.state.uploadOnSelection){
-                    // Execute upload right after a file is selected
-                    self.uploadFile();
+        //if (self.props.multiple){
+            var filesNumber = this.fileInput.current.files.length;
+            for(var i = 0; i < filesNumber; i++){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    let src = self.state.src || [];
+                    src.push(e.target.result);
+                    self.setState({src: src});
+                    filesNumber =- 1;
+                    if (filesNumber == 0){
+                        // Clear up the file uploader input
+                        self.fileInput.current.value = '';
+                    }
                 }
-            }                
-            reader.readAsDataURL(this.fileInput.current.files[0]);
-        }
+                reader.readAsDataURL(this.fileInput.current.files[i]);
+            }
+        /*} else {
+            if (this.fileInput.current.files[0]) {
+                var reader = new FileReader();               
+                reader.onload = function(e) {
+                    self.setState({
+                        src: e.target.result
+                    });
+                    self.fileInput.current.value = '';
+                }                
+                reader.readAsDataURL(this.fileInput.current.files[0]);
+            }
+        }*/
     }
     selectFile = ()=>{
         this.fileInput.current.click()
@@ -73,7 +78,7 @@ class FileUploader extends Component {
             let formData = new FormData();
             formData.append('file', file);
             const generateFlag = (this.state.generateIdName ? 'generate' : 'original');
-            let response = await axios.post(`/app/api/upload/${this.props.folderName}/${generateFlag}`, formData);
+            let response = await axios.post(`/app/api/upload/${generateFlag}`, formData);
             if (response.data.result){
                 this.setState({
                     status: 'success',
@@ -82,19 +87,27 @@ class FileUploader extends Component {
                     //fileName: response.data.file_name
                 });
                 if (this.props.uploadDoneHandler){
-                    this.props.uploadDoneHandler(response.data.file_url);
+                    this.props.uploadDoneHandler(true, response.data.file_url); // For a single file
                 }
             } else {
-                this.setState({ status: 'error', message: response.data.error || 'Some error occured during this request... please try again.' });
+                this.setState({ status: 'error', message: response.data.error || 
+                    'Some error occured during this request... please try again.' });
+                if (this.props.uploadDoneHandler){
+                    this.props.uploadDoneHandler(true, null, response.data.error); 
+                }
             }
         } catch {
             this.setState({ status: 'error', message: 'Some error occured during this request... please try again.' });
         }
     }
-    render() {
+    deleteFile=(e, index)=>{
+        e.stopPropagation();
+        //if (this.state.)
+    }
+    renderImageBlock = (imageUrl, canBeDeleted, index, id)=>{
         let backgroundSize = '';
         if (this.state.previewIsRound){
-            if (this.props.src){
+            if (this.state.src){
                 backgroundSize = 'cover';
             } else {
                 backgroundSize = '76%';
@@ -102,36 +115,57 @@ class FileUploader extends Component {
         } else {
             backgroundSize = 'contain';
         }
+        return (<div className="placeholder-block" onClick={this.selectFile} key={index || ''}
+                style={{width: this.state.previewWidth,
+                        height: this.state.previewHeight,
+                        verticalAlign: 'middle',
+                        textAlign: 'center',
+                        marginTop: '10px',
+                        padding: '5px',
+                        border: '1px solid #e9e9e9',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        backgroundClip: (this.state.previewIsRound ? 'unset': 'content-box'),
+                        backgroundSize: backgroundSize,
+                        borderRadius: (this.state.previewIsRound ? '50%' : '5px'),
+                        backgroundImage: `url(${imageUrl})`}}>
+                        {canBeDeleted ? 
+                            <button className="delete-cross-button" onClick={(e)=>this.deleteFile(e, index)}>
+                                <Icon icon="times-circle" />
+                            </button>
+                        :''}
+                    {!imageUrl ? <Icon icon="image" className="placeholder-icon" />: ''}
+            </div>);
+    }
+    render() {
+        
+        const placeHolder = this.renderImageBlock(null, false);
+        
+        const sources = (this.props.multiple ? (Array.isArray(this.state.src) ? this.state.src : []): null); 
+        const multipleImages = (sources ? sources.map((src, index)=>{
+                return this.renderImageBlock(src, true, index, src.id);
+            }): null);
         return   (     
             <div>          
                 <div className="image-upload-block">
                     <input type="file" className="form-control" onChange={this.updatePreview} 
-                        id={this.state.id} hidden ref={this.fileInput}/>
-                    {this.state.showFileName == true ? <span className="mr-2">{this.state.fileName || this.state.noFileText}</span>: ''}
-                    <button className="btn btn-primary mr-2" onClick={this.selectFile}>Select a file</button>
-                    {this.state.fileSelected && !this.state.uploadOnSelection ?
+                        id={this.state.id} hidden ref={this.fileInput} multiple={this.props.multiple ? true: false} />
+                    {/*this.state.showFileName ? <span className="mr-2">{this.state.fileName || this.state.noFileText}</span>: ''*/}
+                    {/*this.state.fileSelected ?
                         <button className="btn btn-primary" onClick={this.uploadFile}>Upload</button>
                         :''
-                    }
+                    */}
                 </div>
-                <div className="placeholder-block" 
-                    style={{width: this.state.previewWidth,
-                            height: this.state.previewHeight,
-                            verticalAlign: 'middle',
-                            textAlign: 'center',
-                            marginTop: '10px',
-                            padding: '5px',
-                            border: '1px solid #e9e9e9',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'center',
-                            backgroundClip: (this.state.previewIsRound ? 'unset': 'content-box'),
-                            backgroundSize: backgroundSize,
-                            borderRadius: (this.state.previewIsRound ? '50%' : '5px'),
-                            backgroundImage: `url(${this.state.src || '/static/media/image-placeholder.png'})`}}>
-                    {/*<img className="img-placeholder"
-                        style={{borderRadius: 
-                            (this.state.previewIsRound ? '50%' : '5px')}}
-                        src={this.state.src || '/static/media/image-placeholder.png'} />*/}
+                <div className="image-list">
+                    {this.props.multiple ? 
+                                        multipleImages : 
+                                        (this.state.src ? 
+                                                    this.renderImageBlock(this.state.src, true):
+                                                    placeHolder)}
+                    {this.props.multiple ?
+                                        placeHolder:
+                                        null}
+
                 </div>
                 <Alert status={this.state.status} message={this.state.message} />
             </div>  );

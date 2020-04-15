@@ -8,6 +8,7 @@ from flask_login import current_user
 s3_client = None
 s3_resource = None
 
+
 def get_s3_credentials():
     global s3_client, s3_resource, eb_client
     if s3_client is None:
