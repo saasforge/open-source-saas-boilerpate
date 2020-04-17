@@ -22,6 +22,7 @@ class retrieve_user_profile(Resource):
             return jsonify({
                 'result': True,
                 'username': current_user.username,
+                'userpic_url': current_user.userpic_url,
                 'email': current_user.email
             })
         return jsonify({
@@ -36,6 +37,7 @@ class retrieve_user_profile(Resource):
         if current_user:
             try:
                 current_user.username = profile_api.payload.get('username')
+                current_user.userpic_url = profile_api.payload.get('userpic_url')
                 current_user.save()
             except Exception as ex:
                 # to-do: log exception, for not just print it

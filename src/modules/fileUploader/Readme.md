@@ -47,6 +47,7 @@ You can specify:
 ```
 It's just an example because this policy grants a right to get object. It's useful when you need to provide a public access to your files.
 
+
 ### Add component
 ```javascript
 import FileUploader from '@src/modules/fileUploader/FileUploader.jsx';
@@ -61,6 +62,29 @@ Add the component:
         previewHeight="120px"
         previewIsRound={false}
         generateIdName={true} />
+```
+Before using, in the parent component's constructor, add the following line:
+```
+this.fileUploader = React.createRef(); // Name of the object can be any.
+```
+Then in the <FileUploader> component add the following line: 
+
+```
+ref={this.fileUploader}
+```
+Then you will be able to call the upload process just calling:
+
+```
+const uploadData = await this.fileUploader.current.upload(); 
+console.log(uploadData.result);
+console.log(uploadData.urls);
+```
+The returning result is a JavaScript object in the format:
+```
+{
+    result: true/false,
+    urls: array of URLs newly uploaded files
+}
 ```
 
 ### Props:

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import axios from 'axios';
 
 import Alert from '@src/components/alert/Alert';
+import FileUploader from '@src/modules/fileUploader/FileUploader.jsx';
 
 class ConnectedProfileView extends Component {
     constructor(props) {
@@ -10,18 +11,21 @@ class ConnectedProfileView extends Component {
     
         this.state = {
             username: '',
+            userpic_url: '',
             status: '',
-            message: ''
+            message: '',
+            userPicChanged: false
         };
         this.save = this.save.bind(this);
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
+        this.userpicUploader = React.createRef();
     }
     componentDidMount = async()=> {
         // Load user data
         try {
             let response = await axios.get('/app/api/profile');
             if (response.data.result){
-                this.setState({ username: response.data.username});
+                this.setState({ username: response.data.username, userpic_url: response.data.userpic_url});
             } else {
                 this.setState({ status: 'error', message: response.data.error || 'Some error occured during this request... please try again.' });
             }
@@ -35,7 +39,7 @@ class ConnectedProfileView extends Component {
     save = async()=> {
         this.setState({ status: 'info', message: 'Saving...' });
         try {
-            let response = await axios.post('/app/api/profile', {username: this.state.username});
+            let response = await axios.post('/app/api/profile', {username: this.state.username, userpic_url: this.state.userpic_url});
             if (response.data.result){
                 this.setState({
                     status: 'success',
@@ -52,6 +56,27 @@ class ConnectedProfileView extends Component {
             this.setState({ status: 'error', message: 'Some error occured during this request... please try again.' });
         }
     }
+    deleteUserPic = ()=>{
+        this.setState({userpic_url: null});
+        this.save();
+    }
+    uploadUserPic = async()=>{
+        this.setState({ status: 'info', message: 'Uploading userpic...' });
+        const uploadData = await this.userpicUploader.current.upload();
+        console.log(uploadData.result);
+        console.log(uploadData.urls);
+        if (uploadData.result){
+            this.setState({userpic_url: uploadData.urls[0]});
+            this.save();
+        }
+    }
+    saveHandler = ()=>{
+        if (this.state.userPicChanged){
+            this.uploadUserPic();
+        } else {
+            this.save();
+        }
+    }
     render() {
       return (
             <div className="panel-light">
@@ -64,7 +89,23 @@ class ConnectedProfileView extends Component {
                             value={this.state.username} 
                             placeholder="Enter your user name (nick)"/>
                     </div>
-                    <button type="submit" className="btn btn-primary" onClick={()=>this.save()}>Save</button>
+                    <div className="form-group">
+                        <label>User picture</label>
+                        <FileUploader 
+                            ref={this.userpicUploader}
+                            previewWidth="100px" 
+                            previewHeight="100px"
+                            previewIsRound={true}
+                            generateIdName={true}
+                            showAlert={false}
+                            src={this.state.userpic_url} 
+                            deleteFileHandler={this.deleteUserPic}
+                            folderName="userpic"
+                            defaultIcon="user-circle"
+                            showModalOnClick={false}
+                            filesChangeHandler={()=>this.setState({userPicChanged: true})}/>
+                    </div>
+                    <button type="submit" className="btn btn-primary" onClick={()=>this.saveHandler()}>Save</button>
                 </div>
                 <div className="col-md-6">
                     <Alert status={this.state.status} message={this.state.message} hideInSecs={8} />

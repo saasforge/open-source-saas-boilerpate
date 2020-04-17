@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     id = db.Column(UUID(as_uuid=True),
         primary_key=True, default=lambda: uuid.uuid4().hex)
     username = db.Column(db.String(120), nullable = False)
+    userpic_url = db.Column(db.String(), nullable = True)
     email = db.Column(db.String(64), unique=True)
     password_hash = db.Column(db.String(120), nullable = False)
     role_id = db.Column(UUID(as_uuid=True), db.ForeignKey('role.id'))

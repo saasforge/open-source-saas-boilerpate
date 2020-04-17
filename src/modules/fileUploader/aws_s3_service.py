@@ -21,7 +21,7 @@ def get_s3_credentials():
             aws_secret_access_key = current_app.config['AWS_SECRET_KEY'])
 
 
-def upload_file(uploaded_file, bucket_name, generate_id_flag):
+def upload_file(uploaded_file, bucket_name, folder_name, generate_id_flag):
     get_s3_credentials()
     file_url = ''
     file_name = uploaded_file.filename
@@ -31,7 +31,7 @@ def upload_file(uploaded_file, bucket_name, generate_id_flag):
         file_name = '{0}{1}'.format(id, ext) if ext != '' else id
     try:
         preview_file = None
-        key_name = file_name
+        key_name = '{0}/{1}'.format(folder_name, file_name)
         s3_client.upload_fileobj(
             uploaded_file,
             bucket_name,
@@ -59,4 +59,22 @@ def upload_file(uploaded_file, bucket_name, generate_id_flag):
         'result': True,
         'file_url': file_url,
         'file_name': file_name
+    }
+
+def delete_file(bucket_name, folder_name, file_url):
+    get_s3_credentials()
+    try:
+        file_name = file_url[file_url.rfind("/")+1:]
+        key_name = '{0}/{1}'.format(folder_name, file_name)
+        s3_client.delete_object(Bucket = bucket_name, Key = key_name)
+
+    except Exception as e:
+        # This is a catch all exception, edit this part to fit your needs.
+        print("Something went wrong during deleting a file: ", e)
+        return {
+            'result': False,
+            'error': 'Some error occured during deleting file... pleasy, try again.'
+        }
+    return {
+        'result': True
     }
