@@ -6,14 +6,19 @@ See them in action:
 
 ## Features
 You can specify:
-- showFileName - bool, if you want the file name to be shown (true by default)
-- noFileText - the text that should be shown if no file is selected and showFileName is true ('No file selected' by default)
+- src - URL to the file to show
 - previewWidth - width of preview image
 - previewHeight - height of preview image
 - previewIsRound - false or true (false by default)
-- generateIdName - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
-- uploadOnSelection - if true (false by default), the upload is executing right after user selects a file
-- showAlert - indicates if component should show its own alert with the upload success or not (true by default).
+- generateIdName - false or true (false by default), indicates if the module should generate ID name for 
+the newly uploaded image
+- folderName - subBucket (or subfolder) on AWS to upload files to
+- deleteFileHandler - a function to handle the deleting file from the server. This component provides deleting itself, and notify the handler about this fact for it to update the database. It passes result and url of the image
+- showModalOnClick - if true, shows the modal on image click with bigger image. By default is true
+- filesChangeHandler - pointer to the function that will be called if user selected a new picture(s)
+- uploadOnSelection - if true, the files should be uploaded immediatelly after selection. False by default
+- defaultIcon - fontawesom icon name (without "fa"). If not specified, the component's default icon is used.
+- showAlert - if true show the component's alert. False by default.
 
 
 ## How to use
@@ -89,11 +94,15 @@ The returning result is a JavaScript object in the format:
 
 ### Props:
 - **src** - URL to the file to show
-- **showFileName** - bool, if you want the file name to be shown (true by default)
-- **noFileText** - the text that should be shown if no file is selected and showFileName is true ('No file selected' by default)
 - **previewWidth** - width of preview image
 - **previewHeight** - height of preview image
 - **previewIsRound** - false or true (false by default)
-- **generateIdName** - false or true (false by default), indicates if the module should generate ID name for a newly uploaded image
-- **uploadOnSelection** - if true (false by default), the upload is executing right after user selects a file
-- **showAlert** - indicates if component should show its own alert with the upload success or not (true by default).
+- **generateIdName** - false or true (false by default), indicates if the module should generate ID name for 
+the newly uploaded image
+- **folderName** - subBucket (or subfolder) on AWS to upload files to
+- **deleteFileHandler** - a function to handle the deleting file from the server. This component provides deleting itself, and notify the handler about this fact for it to update the database. It passes result and url of the image
+- **showModalOnClick** - if true, shows the modal on image click with bigger image. By default is true
+- **filesChangeHandler** - pointer to the function that will be called if user selected a new picture(s)
+- **uploadOnSelection** - if true, the files should be uploaded immediatelly after selection. False by default
+- **defaultIcon** - fontawesom icon name (without "fa"). If not specified, the component's default icon is used.
+- **showAlert** - if true show the component's alert. False by default.
