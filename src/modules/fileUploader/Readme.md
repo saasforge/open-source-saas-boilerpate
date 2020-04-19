@@ -1,8 +1,12 @@
 # File Uploader Module
-Includes a form to select and upload a file, as well as backe-end part to send the file to AWS S3 service.
+Includes a form to select and upload a file, as well as backe-end part to send the file to AWS S3 service. You can specify if you want to select and upload only one file and the multiple uploads with multiple files shown as a gallery.
 
-See them in action:
-![File Uploader Module](https://github.com/saasforge/saas-forge-public-docs/blob/master/file-upload-module.png?raw=true)
+## Single file upload:
+![Single file upload](https://github.com/saasforge/saas-forge-public-docs/blob/master/file-upload-module-v2-single.png?raw=true)
+
+## Multiple file upload:
+![Multiple file upload](https://github.com/saasforge/saas-forge-public-docs/blob/master/file-upload-module-v2-multiple.png?raw=true)
+
 
 ## Features
 You can specify:
@@ -106,3 +110,7 @@ the newly uploaded image
 - **uploadOnSelection** - if true, the files should be uploaded immediatelly after selection. False by default
 - **defaultIcon** - fontawesom icon name (without "fa"). If not specified, the component's default icon is used.
 - **showAlert** - if true show the component's alert. False by default.
+
+### Functions:
+- **filesBeenChanged** call this function to check if new files have been selected, returns true or false.
+- **upload** - call this function to initiate upload process. It returns an object {result: Bool, urls: Array}

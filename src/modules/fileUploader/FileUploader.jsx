@@ -30,7 +30,7 @@ class FileUploader extends Component {
     constructor(props) {
         super(props);    
         this.state = {
-            src: (Array.isArray(this.props.src) ? this.props.src : (this.props.src ? [this.props.src] : [])), // inner it's always array
+            src: (Array.isArray(this.props.src) ? this.props.src.slice(0) : (this.props.src ? [this.props.src] : [])), // inner it's always array
             //fileName: (this.props.src ? this.props.src.replace(/[\#\?].*$/,'') : ''),
             //showFileName: (this.props.showFileName != null ? this.props.showFileName : true),
             noFileText: this.props.noFileText || 'No file selected',
@@ -43,17 +43,20 @@ class FileUploader extends Component {
             generateIdName: (this.props.generateIdName != null ? this.props.generateIdName : false),
             selectedImageSrc: '',
             showModalOnClick: (this.props.showModalOnClick != null ? this.props.showModalOnClick : true),
-            showAlert: (this.props.showAlert != null ? this.props.showAlert : false)
+            showAlert: (this.props.showAlert != null ? this.props.showAlert : false),
+            filesChanged: false,
+            loaded: false
             //uploadOnSelection: (this.props.uploadOnSelection != null ? this.props.uploadOnSelection : false)
         };
         this.fileInput = React.createRef();
         this.id = commonFunctions.generateShortId('fileUploader_');
         this.files = [];
     }
-    static getDerivedStateFromProps(nextProps) {
-        if (nextProps.src){
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.src && !prevState.loaded){
             return {
-                src: (Array.isArray(nextProps.src) ? nextProps.src : (nextProps.src ? [nextProps.src] : []))
+                src: (Array.isArray(nextProps.src) ? nextProps.src.slice(0) : (nextProps.src ? [nextProps.src] : [])),
+                loaded: true
             };
         } else {
             return {};
@@ -75,14 +78,15 @@ class FileUploader extends Component {
                     // Clear up the file uploader input
                     self.files = files;
                     self.fileInput.current.value = '';
-                    self.setState({src: src});
-                    if (self.props.filesChangeHandler){
-                        self.props.filesChangeHandler();
-                    }
+                    self.setState({src: src, filesChanged: true});
                 }
             }
             reader.readAsDataURL(this.fileInput.current.files[i]);
         }
+    }
+    // Returns true if new files have been selected, else false
+    filesBeenChanged=()=>{
+        return this.state.filesChanged;
     }
     selectFile = ()=>{
         this.fileInput.current.click()
@@ -116,6 +120,7 @@ class FileUploader extends Component {
                         src: src,
                         status: 'success',
                         message: 'Image has been upload successfully!',
+                        filesChanged: false
                         //src: response.data.file_url,
                         //fileName: response.data.file_name
                     });
@@ -149,20 +154,19 @@ class FileUploader extends Component {
 
     }
     deleteFileFromServer = async(fileUrl)=>{
+        let result = false;
         const folder = this.props.folderName ? (this.props.folderName + '/') : '';
         try {
             let response = await axios.delete(`/app/api/upload/${folder}`, {data: {url: fileUrl}});
             if (!response.data.result){
                 this.setState({status: '', message: ''});
-            }
-            if (this.props.deleteFileHandler){
-                this.props.deleteFileHandler(response.data.result, fileUrl);
-                return true;
-            }
+            }  
+            result = response.data.result;  
         } catch(ex) {
             this.setState({ error: 'Some error occured during this request... please try again.', loading: false });
-            this.props.deleteFileHandler(false, fileUrl);
+            result = false;
         }
+        return result;
     }
     deleteFile = async(e, index)=>{
         e.stopPropagation();
@@ -174,11 +178,18 @@ class FileUploader extends Component {
                 this.setState({src: src});
             } else if (this.state.src[index].indexOf('http') == 0){
                 // Uploaded and has URL
+                const fileUrl = this.state.src[index];
                 const deleteResult = await this.deleteFileFromServer(this.state.src[index]);
                 if (deleteResult){
+                    // Change list here
                     let src = this.state.src;
                     src.splice(index, 1);
                     this.setState({src: src});
+
+                    // Call handler if exists
+                    if (this.props.deleteFileHandler){
+                        this.props.deleteFileHandler(deleteResult, fileUrl);
+                    }
                 }
             }
         }
@@ -202,6 +213,7 @@ class FileUploader extends Component {
                         verticalAlign: 'middle',
                         textAlign: 'center',
                         marginTop: '10px',
+                        marginRight: '5px',
                         padding: '5px',
                         border: '1px solid #e9e9e9',
                         backgroundRepeat: 'no-repeat',
@@ -209,7 +221,7 @@ class FileUploader extends Component {
                         backgroundClip: (this.state.previewIsRound ? 'unset': 'content-box'),
                         backgroundSize: backgroundSize,
                         borderRadius: (this.state.previewIsRound ? '50%' : '5px'),
-                        backgroundImage: `url(${imageUrl})`}}>
+                        backgroundImage: (imageUrl ? `url(${imageUrl})`: '') } }>
                         {canBeDeleted ? 
                             <button className="delete-cross-button" onClick={(e)=>this.deleteFile(e, index)}>
                                 <Icon icon="times-circle" />
@@ -227,12 +239,12 @@ class FileUploader extends Component {
                 <Modal.Title></Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <img className="w-100" src={this.state.selectedImageSrc} />
+                    {this.state.selectedImageSrc ? <img className="image-block" src={this.state.selectedImageSrc} />: ''}
                 </Modal.Body>
             </Modal>);
-        const images = this.state.src.map((src, index)=>{
-                return this.renderImageBlock(src, true, index);
-            });
+        const images = (this.state.src ? this.state.src.map((src, index)=>{
+            return this.renderImageBlock(src, true, index);
+        }): '');
         return   (     
             <div>   
                 {modal}
