@@ -52,10 +52,12 @@ export default class ConfirmationPage extends Component {
         
         return (
             <div className="form-container">
-                <div className="text-center mb-5 mt-5">
-                    <img src="/static/media/logo.png" />
+                <div className="text-center mb-2 mt-2">
+                    <div className="auth-logo">
+                        <img src="/static/media/logo.png" />
+                    </div>
                 </div>
-                <div className="text-center mb-5 mt-5">
+                <div className="text-center mb-5 mt-3">
                     <h1>{this.state.title}</h1>
                 </div>
                 <div className="row text-center">

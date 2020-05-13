@@ -98,10 +98,12 @@ export default class RegisterForm extends Component {
     render(){
         return (
             <div className="form-container">
-                <div className="text-center mb-5 mt-5">
-                    <img src="/static/media/logo.png" />
+                <div className="text-center mb-2 mt-2">
+                    <div className="auth-logo">
+                        <img src="/static/media/logo.png" />
+                    </div>
                 </div>
-                <div className="text-center mb-5 mt-5">
+                <div className="text-center mb-5 mt-3">
                     <h1>Please register</h1>
                 </div>
                 <div className="form-group">

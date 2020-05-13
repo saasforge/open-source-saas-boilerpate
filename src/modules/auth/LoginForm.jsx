@@ -86,10 +86,12 @@ export default class LoginForm extends Component {
             <div className="d-flex flex-column h-100">
                 <div className="inner-container">
                     <div className="form-container">
-                    <div className="text-center mb-5 mt-5">
-                        <img src="/static/media/logo.png" />
+                    <div className="text-center mb-2 mt-2">
+                        <div className="auth-logo">
+                            <img src="/static/media/logo.png" />
+                        </div>
                     </div>
-                    <div className="text-center mb-5 mt-5">
+                    <div className="text-center mb-5 mt-3">
                         <h1>Please sign in</h1>
                     </div>
                     <div className="form-group">
