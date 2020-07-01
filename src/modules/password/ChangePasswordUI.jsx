@@ -82,7 +82,7 @@ class ChangePassword extends Component {
                     </div>
                     <div className="form-group">
                         <label>Confirm your new password</label>
-                        <input type="password" className="form-control" 
+                        <input type="password" 
                             className={`form-control ${this.state.newPasswordValid ? '' : 'non-valid'}`}
                             onChange={()=>this.handleFieldChange('newPasswordConfirm')}/>
                     </div>

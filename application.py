@@ -36,3 +36,9 @@ def dbupdate():
 def dbcreate():
     from src.shared.utils.db_scaffold import reinit_db
     reinit_db('create')
+
+@application.cli.command()
+@with_appcontext
+def dbseed():
+    from src.shared.utils.db_scaffold import reinit_db
+    reinit_db('seed')

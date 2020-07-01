@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+
 // For future using in file uploader (as a parent component)
 class FileUploader extends Component {
     constructor(props) {

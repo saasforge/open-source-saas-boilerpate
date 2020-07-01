@@ -1,0 +1,38 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "babel"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules" : {
+        "react/prop-types": 1,
+        "react/no-unescaped-entities": 1,
+        "react/no-deprecated": 1,
+        "no-unused-vars": 1,
+        "no-async-promise-executor": 1,
+        "no-useless-escape": 1,
+        "no-extra-semi": 1,
+        "no-empty": 1
+    }
+}

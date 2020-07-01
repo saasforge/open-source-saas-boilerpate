@@ -11,13 +11,13 @@ from src.shared.db_models.account import Account
 from src.shared.db_models.account_history import AccountHistory
 
 
-def create_user(username, email, password):
+def create_user(username, email, password, confirmed = False):
     '''
     Creates user and save into database. Returns True if user is created, else False.
     '''
     user = User(username = username,
             email = email,
-            confirmed = False)
+            confirmed = confirmed)
     try:
         user.set_password(password)
         user.created = datetime.now()

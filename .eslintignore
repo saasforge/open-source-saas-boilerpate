@@ -1,0 +1,4 @@
+venv/
+webpack.*.js
+static/dist/
+cache/Cypress/

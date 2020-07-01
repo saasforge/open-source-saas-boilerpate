@@ -1,0 +1,72 @@
+image: cypress/base:12.18.0
+
+services:
+  - postgres
+
+stages:
+  - build
+  - test
+
+# to cache both npm modules and Cypress binary we use environment variables
+# to point at the folders we can list as paths in "cache" job settings
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  POSTGRES_DB: saasforge_db
+  POSTGRES_USER: saasforge_user
+  POSTGRES_PASSWORD: saasforge_pass
+  FLASK_APP: application
+  db_url: 'postgres://saasforge_user:saasforge_pass@postgres/saasforge_db'
+  JWT_SECRET_KEY: 'testJWTkey'
+  SECRET_KEY: 'testkey'
+  TEST_USER_EMAIL: 'testuser@testdomain.test'
+  TEST_USER_NAME:  'testuser'
+  TEST_USER_PASS: 'testpass'
+
+# cache using branch name
+# https://gitlab.com/help/ci/caching/index.md
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - cache/Cypress
+    - .npm
+    - .cache/pip
+    - node_modules/
+    - venv/
+
+nodejs:
+  stage: build
+  script:
+    - npm ci --prefer-offline
+    - npm run prod
+  artifacts:
+    paths:
+    - static/dist/
+    expire_in: 1 day
+
+python:
+  stage: build
+  script:
+    - apt-get update
+    - apt-get install python3-venv python3-dev -y
+    - python3 -m venv venv
+    - . venv/bin/activate
+    - pip install wheel
+    - pip install -r requirements.txt
+
+e2e:
+  stage: test
+  script:
+    - npm run start &
+    - npm run test
+  artifacts:
+    paths:
+      - cypress/videos
+      - cypress/screenshots
+    expire_in: 1 day
+
+lint:
+  stage: test
+  script:
+    - npm run lint

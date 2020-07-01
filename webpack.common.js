@@ -11,7 +11,7 @@ const config = {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'static/dist'),
         publicPath: '/static/dist/',
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].[chunkhash].bundle.js',
     },
     plugins: [
         new CleanWebpackPlugin({
