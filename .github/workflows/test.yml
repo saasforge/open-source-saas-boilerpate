@@ -1,5 +1,14 @@
 name: Run Tests
-on: push
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   build_test:
@@ -33,8 +42,6 @@ jobs:
           npm run lint
           npm run start &
           npm run test
-        # to cache both npm modules and Cypress binary we use environment variables
-        # to point at the folders we can list as paths in "cache" job settings
         env:
           FLASK_APP: application
           db_url: 'postgres://saasforge_user:saasforge_pass@postgres/saasforge_db'
