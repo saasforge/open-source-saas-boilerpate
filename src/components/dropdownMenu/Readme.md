@@ -27,7 +27,7 @@ JSON array of objects. Each object may have the following fields:
 - **url** (String): menu item url
 - **component** (lazy loaded component): the component (view) that will be loaded into a container (accroding to its route), has the following format:
 ```javascript
-lazy(() => import('@src/<path_to_component>'))
+lazy(() => import(/* webpackChunkName: "component-name" */ '@src/<path_to_component>'))
 ```
 - **divider** (Boolean): if true, all other fields are ignored and divider will be rendered
 - **method** (String): any other than 'get' method 
@@ -37,8 +37,8 @@ Example of the top menu JSON:
 
 ```javascript
 const topMenu = [
-    {title: 'Profile', url: '/app/profile', component: lazy(() => import('@src/modules/profile/ProfileView'))},
-    {title: 'Change password', url: '/app/password', component: lazy(() => import('@src/modules/password/ChangePasswordUI'))},
+    {title: 'Profile', url: '/app/profile', component: lazy(() => import(/* webpackChunkName: "profile" */ '@src/modules/profile/ProfileView'))},
+    {title: 'Change password', url: '/app/password', component: lazy(() => import(/* webpackChunkName: "password" */ '@src/modules/password/ChangePasswordUI'))},
     {divider: true},
     {title: 'Logout', url: '/api/auth/logout', method: 'post', redirectUrl: '/auth/login'}
 ];

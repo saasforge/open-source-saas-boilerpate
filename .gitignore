@@ -32,3 +32,7 @@ src/migrations
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Cypress testing
+cypress/videos
+cypress/screenshots

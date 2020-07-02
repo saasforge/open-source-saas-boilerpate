@@ -1,0 +1,52 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    container: cypress/base:12.18.0
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: saasforge_user
+          POSTGRES_PASSWORD: saasforge_pass
+          POSTGRES_DB: saasforge_db
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Webpack, ESLint, Cypress
+        run: |
+          npm ci --prefer-offline
+          npm run prod
+          apt-get update
+          apt-get install python3-venv python3-dev -y
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install wheel
+          pip install -r requirements.txt
+          npm run lint
+          npm run start &
+          npm run test
+        env:
+          FLASK_APP: application
+          db_url: 'postgres://saasforge_user:saasforge_pass@postgres/saasforge_db'
+          JWT_SECRET_KEY: 'testJWTkey'
+          SECRET_KEY: 'testkey'
+          TEST_USER_EMAIL: 'testuser@testdomain.test'
+          TEST_USER_NAME:  'testuser'
+          TEST_USER_PASS: 'testpass'

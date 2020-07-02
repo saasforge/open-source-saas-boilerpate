@@ -6,6 +6,9 @@ from config import ConfigHelper
 from src.shared.db_models.user import User
 from src.shared.db_models.role import Role
 
+from src.shared.services import db_user_service
+from src.shared.utils.global_functions import get_config_var
+
 #Dynamic import of models
 print ('Dynamic import')
 models_folder = [Path.joinpath(Path.cwd(), 'src/shared/db_models')]
@@ -35,3 +38,7 @@ def reinit_db(db_option=''):
         db.session.add(admin_role)
         db.session.add(user_role)
         db.session.commit()
+    elif db_option == 'seed':
+        print('Adding test user')
+        new_user = db_user_service.create_user(get_config_var('TEST_USER_NAME'), get_config_var('TEST_USER_EMAIL'), get_config_var('TEST_USER_PASS'), True)
+        new_user.save()

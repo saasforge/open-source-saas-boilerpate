@@ -13,6 +13,9 @@ https://www.saasforge.dev
 - CSS/SCSS for styling
 - Fontawesome
 - Webpack/Babel - frontend building
+- Cypress - end-to-end testing
+- ESLint - static analysis
+- Github Actions & Gitlab CI - continuous integration
 
 ## System requirements
 Currently, the boilerplate works with Python 3.5.
@@ -120,8 +123,8 @@ Dropdown menu is used in the header of the dashboard. It's based on a simple JSO
 
 ```javascript
 const topMenu = [
-    {title: 'Profile', url: '/app/profile', component: lazy(() => import('@src/modules/profile/ProfileView'))},
-    {title: 'Change password', url: '/app/password', component: lazy(() => import('@src/modules/password/ChangePasswordUI'))},
+    {title: 'Profile', url: '/app/profile', component: lazy(() => import(/* webpackChunkName: "profile" */ '@src/modules/profile/ProfileView'))},
+    {title: 'Change password', url: '/app/password', component: lazy(() => import(/* webpackChunkName: "password" */ '@src/modules/password/ChangePasswordUI'))},
     {divider: true},
     {title: 'Logout', url: '/api/auth/logout', method: 'post', redirectUrl: '/auth/login'}
 ];
@@ -151,7 +154,7 @@ Responsive, collapsible menu with any amount of items on each level. You create 
                 icon: 'exclamation-triangle',
                 color: 'yellow',
                 url: '/app/demo/alerts',
-                component: lazy(() => import('@src/modules/componentsDemo/AlertDemoView'))
+                component: lazy(() => import(/* webpackChunkName: "alerts" */ '@src/modules/componentsDemo/AlertDemoView'))
             }
         ]
     }
@@ -272,6 +275,20 @@ flask dbupdate
 
 **Tip.** When this command runs for the first time it creates all the tables as well as 2 roles: User and Admin.
 
+
+### Static Analysis
+The boilerplate uses ESLint in order to perform static code analysis. There is a .eslintrc.json in the root directory which extends `eslint:recommended` and is used for JS and JSX files. There is also cypress/.eslintrc.json which extends `plugin:cypress/recommended` for helping write Cypress integration tests (*.spec.js).
+
+### Tests
+The boilerplate uses [Cypress](https://www.cypress.io/) for integration tests. Each component of the boilerplate and your application should have its own test in the cypress/integration/ directory as a \<module\>.spec.js file.
+
+The plugin in cypress/plugins/index.js is enhanced to allow reading same environment variables as your application by parsing the .env file.
+
+The DB is reset and seeded with a pre-confirmed test user before test runs; this is accomplished using cypress/support/commands.js.
+
+### Continuous Integration
+The boilerplate includes .gitlab-ci.yml and .github/workflows/test.yml which can be used to make sure that any pull requests, tags, or commits to master will trigger automatic build and test (including static analysis via ESLint and any defined Cypress integration tests). These .yml files should be kept synchronized.
+
 ## Dev's features and tips
 - All features are now divided into units and components. Frontend and backend are put side-by-side for easier reference and development.
 - Handling 404 and 500 errors 
@@ -339,6 +356,35 @@ componentDidMount = async()=> {
     }
 }
 ```
+
+### Testing
+When testing locally, note that your Postgres DB specified in .env will be cleaned and a test user will be added. Make sure your .env defines the following variables similar to .gitlab-ci.yml or .github/workflows/test.yml:
+
+```
+  TEST_USER_EMAIL: 'testuser@testdomain.test'
+  TEST_USER_NAME:  'testuser'
+  TEST_USER_PASS: 'testpass'
+```
+In one window, perform `npm run lint` to catch source code errors. Once errors are fixed, run `npm run dev` followed by `npm run start`. In a separate window, you can run `npx cypress open` to bring up the Cypress Test Runner. This will let you run each of your integration tests in an interactive way, and shows you what the user sees at each step. The Cypress Test Runner also helps you choose CSS selectors to use for building your UI interaction tests.
+
+![ezgif-5-e846adc3381c](https://user-images.githubusercontent.com/13685818/86319231-0cdd2f00-bc02-11ea-87c5-a06c166f6d40.gif)
+
+Note that during pull requests, tags, or pushes to master, CI will just use `npm run test` to run all tests headless.
+
+Login is handled specially as recommended by [this Cypress guide](https://docs.cypress.io/guides/getting-started/testing-your-app.html#Logging-in); notice that auth.spec.js performs the interactions like typing, clicking, etc. However, inbox.spec.js accomplishes authentication via POST request instead, bypassing the UI interactions. Testing of any components available only after login should be done similarly.
+ 
+In general, if you need to setup state for some test A, don't use ***UI interactions*** like cy.type() or cy.click() to do it. Test those user interactions in a different test B, and then use cy.request() to build your state for test A.
+
+### Continuous Integration
+It's recommended to [enable the requirement](https://docs.github.com/en/github/administering-a-repository/enabling-required-status-checks) for tests to succeed in order for Pull Requests to be eligible for merge. For users forking the boilerplate into GitLab, see [this instead](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html#only-allow-merge-requests-to-be-merged-if-the-pipeline-succeeds).
+  - Before tests finish:
+![image](https://user-images.githubusercontent.com/13685818/86393211-b6f0a180-bc6a-11ea-832b-d9d31b0cd446.png)
+  - After tests succeed:
+![image](https://user-images.githubusercontent.com/13685818/86393287-d38cd980-bc6a-11ea-8019-3188cc713b81.png)
+
+### Webpack caching
+Ensure that any updates to webpack.common.js consider some hash as part of the asset filename, to prevent your browser from loading cached assets during development.
+
 # Installation
 ## Prerequisites
 Before start make sure you have installed Python 3 and Node.js. Please follow the official instructions. Also, you need to have a PostgreSQL database handy. If you don't want to install it you can use ElephantSQL service, they have a free plan: https://www.elephantsql.com/plans.html.

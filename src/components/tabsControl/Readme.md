@@ -25,7 +25,7 @@ this.state = {
         title: 'Second tab - active by default, no icon',
         id: 'secondTab',
         active: true,
-        component: lazy(() => import('@src/modules/componentsDemo/DemoLazyComponent')),
+        component: lazy(() => import(/* webpackChunkName: "tab-demo" */ '@src/modules/componentsDemo/DemoLazyComponent')),
         data: {
             text: 'This data was passed from the TabsControl data object'
         }
@@ -67,7 +67,7 @@ If the previous "icon" props is null, the following props will be ignored:
 - **content** (String) - JSX variable or code describing the layout of the tab content
 - **component** (lazy loaded component) - a tab lazy-loaded import variable defined in the following format:
 ```javascript
-lazy(() => import(string_path_to_component))
+lazy(() => import(/* webpackChunkName: "component-name" */ string_path_to_component))
 ```
 
 4. Data

@@ -28,6 +28,11 @@ class Config(object):
     AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
     AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME') # Create additional variables for other buckets
 
+    #Tests
+    TEST_USER_EMAIL = os.environ.get('TEST_USER_EMAIL')
+    TEST_USER_NAME =  os.environ.get('TEST_USER_NAME')
+    TEST_USER_PASS = os.environ.get('TEST_USER_PASS')
+
 class ProductionConfig(Config):
     ENV = 'prod'
     DEBUG = False
