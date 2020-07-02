@@ -47,7 +47,7 @@ icon: 'envelope',
 - **url** (String): menu item url
 - **component** (lazy loaded component): the component (view) that will be loaded into a container (accroding to its route), has the following format:
 ```javascript
-lazy(() => import('@src/<path_to_component>'))
+lazy(() => import(/* webpackChunkName: "component-name" */ '@src/<path_to_component>'))
 ```
 - **items** (Array of objects): array of nested items
 
@@ -63,7 +63,7 @@ const dashboardMenu = [
                 icon: ['fab', 'facebook'],
                 color: '#e4951f',
                 url: '/app/inbox', 
-                component: lazy(() => import('@src/modules/inbox/InboxUI'))
+                component: lazy(() => import(/* webpackChunkName: "inbox" */ '@src/modules/inbox/InboxUI'))
             }
         ]
     }];
