@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
         self.password_hash = hash
 
     @login_manager.user_loader
-    def load_user(user_id):
+    def load_user(self, user_id):
         return User.query.get(uuid.UUID(user_id))
 
     def generate_hash(self, password):
