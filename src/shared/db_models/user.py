@@ -12,37 +12,45 @@ from src.shared.db_models.account import Account
 
 from src.shared.utils.extensions import db, login_manager
 
-class User(UserMixin, db.Model):
-    __tablename__ = 'user'
 
-    id = db.Column(UUID(as_uuid=True),
-        primary_key=True, default=lambda: uuid.uuid4().hex)
-    username = db.Column(db.String(120), nullable = False)
-    userpic_url = db.Column(db.String(), nullable = True)
+class User(UserMixin, db.Model):
+    __tablename__ = "user"
+
+    id = db.Column(
+        UUID(as_uuid=True), primary_key=True, default=lambda: uuid.uuid4().hex
+    )
+    username = db.Column(db.String(120), nullable=False)
+    userpic_url = db.Column(db.String(), nullable=True)
     email = db.Column(db.String(64), unique=True)
-    password_hash = db.Column(db.String(120), nullable = False)
-    role_id = db.Column(UUID(as_uuid=True), db.ForeignKey('role.id'))
-    confirmed = db.Column(db.Boolean, default=False, server_default='f')
-    account_id = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'))
-    account = db.relationship('Account', back_populates='user', cascade='all,delete')
+    password_hash = db.Column(db.String(120), nullable=False)
+    role_id = db.Column(UUID(as_uuid=True), db.ForeignKey("role.id"))
+    confirmed = db.Column(db.Boolean, default=False, server_default="f")
+    account_id = db.Column(UUID(as_uuid=True), db.ForeignKey("account.id"))
+    account = db.relationship(
+        "Account", back_populates="user", cascade="all,delete"
+    )
     created = db.Column(db.DateTime(), nullable=True)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            admin_emails = get_config_var('ADMIN_EMAIL').split(' ') if get_config_var('ADMIN_EMAIL') is not None else []
+            admin_emails = (
+                get_config_var("ADMIN_EMAIL").split(" ")
+                if get_config_var("ADMIN_EMAIL") is not None
+                else []
+            )
             if len(admin_emails) > 0 and self.email in admin_emails:
-                self.role = Role.query.filter_by(name='Admin').first()
+                self.role = Role.query.filter_by(name="Admin").first()
             else:
                 default_role = Role.query.filter_by(is_default=True).first()
                 self.role = default_role
-        if self.account == None:
+        if self.account is None:
             self.account = Account()
-    
+
     def set_password(self, password):
-        '''
+        """
         Creates a hash from a password
-        '''
+        """
         hash = self.generate_hash(password)
         self.password_hash = hash
 
@@ -57,16 +65,16 @@ class User(UserMixin, db.Model):
         return sha256.verify(password, self.password_hash)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(get_config_var('SECRET_KEY'), expiration)
-        return s.dumps({'confirm': self.id.__str__()}).decode('utf-8')
+        s = Serializer(get_config_var("SECRET_KEY"), expiration)
+        return s.dumps({"confirm": self.id.__str__()}).decode("utf-8")
 
     def confirm(self, token):
-        s = Serializer(get_config_var('SECRET_KEY'))
+        s = Serializer(get_config_var("SECRET_KEY"))
         try:
-            data = s.loads(token.encode('utf-8'))
-        except:
+            data = s.loads(token.encode("utf-8"))
+        except Exception:
             return False
-        if data.get('confirm') != self.id.__str__():
+        if data.get("confirm") != self.id.__str__():
             return False
         self.confirmed = True
         return True
@@ -80,7 +88,7 @@ class User(UserMixin, db.Model):
             db.session.add(self)
             db.session.commit()
         except Exception as ex:
-            print('ERROR while saving user:')
-            print(ex) # to-do: log
+            print("ERROR while saving user:")
+            print(ex)  # to-do: log
             return False
         return True

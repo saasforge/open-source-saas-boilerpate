@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 80
+exclude = '''
+(
+  .git
+  | __pycache__
+  | venv
+  | node_modules
+  | foo.py
+)
+'''

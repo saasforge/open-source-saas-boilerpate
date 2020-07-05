@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Webpack, ESLint, Cypress
+      - name: Webpack, ESLint, flake8, Cypress
         run: |
           npm ci --prefer-offline
           npm run prod

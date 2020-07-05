@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress run",
-    "lint": "eslint . --ext .js,.jsx",
+    "lint": "run-script-os",
+    "lint:darwin:linux": "eslint . --ext .js,.jsx && . venv/bin/activate && flake8 && ( flake8 --select W,F || true )",
+    "lint:win32": "eslint . --ext .js,.jsx && call venv\\Scripts\\activate && flake8 && ( flake8 --select W,F || exit 0 )",
     "dbreset": "run-script-os",
     "dbreset:darwin:linux": ". venv/bin/activate && flask dbcreate && flask dbseed",
     "dbreset:win32": "call venv\\Scripts\\activate && flask dbcreate && flask dbseed",
