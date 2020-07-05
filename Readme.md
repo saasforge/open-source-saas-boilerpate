@@ -14,7 +14,7 @@ https://www.saasforge.dev
 - Fontawesome
 - Webpack/Babel - frontend building
 - Cypress - end-to-end testing
-- ESLint - static analysis
+- ESLint & flake8 - static analysis
 - Github Actions & Gitlab CI - continuous integration
 
 ## System requirements
@@ -277,7 +277,9 @@ flask dbupdate
 
 
 ### Static Analysis
-The boilerplate uses ESLint in order to perform static code analysis. There is a .eslintrc.json in the root directory which extends `eslint:recommended` and is used for JS and JSX files. There is also cypress/.eslintrc.json which extends `plugin:cypress/recommended` for helping write Cypress integration tests (*.spec.js).
+The boilerplate uses ESLint and flake8 in order to perform static code analysis. There is a .eslintrc.json in the root directory which extends `eslint:recommended` and is used for JS and JSX files. There is also cypress/.eslintrc.json which extends `plugin:cypress/recommended` for helping write Cypress integration tests (*.spec.js).
+
+The CI pipeline will also lint Python files using flake8; please run `black` autoformatter on the project's root directory before staging files to commit. The configuration of flake8 can be found in tox.ini and the configuration for black can be found in pyproject.toml.
 
 ### Tests
 The boilerplate uses [Cypress](https://www.cypress.io/) for integration tests. Each component of the boilerplate and your application should have its own test in the cypress/integration/ directory as a \<module\>.spec.js file.
