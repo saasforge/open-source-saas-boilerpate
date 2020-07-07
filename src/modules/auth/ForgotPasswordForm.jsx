@@ -6,7 +6,7 @@ import { AuthUIFunctions } from './AuthUIFunctions';
 import Alert from '@src/components/alert/Alert';
 import Icon from '@src/components/icon/Icon';
 
-export default class LoginForm extends Component {
+export default class ForgotPasswordForm extends Component {
     constructor(props) {
         super(props);
     
@@ -15,7 +15,6 @@ export default class LoginForm extends Component {
             password: '',
             remember: false,
             validEmail: true,
-            validPassword: true,
             errors: [],
             message: '',
             loading: false
@@ -43,31 +42,26 @@ export default class LoginForm extends Component {
             this.addError('Please enter a valid email.');
             isValid = false;
         }
-        if ( !(this.state.password)){
-            this.setState({ validPassword: false });
-            this.addError('Please enter a password.');
-            isValid = false;
-        }
         if (!isValid){
             return;
         }
 
         this.setState({ 
             status: 'info', 
-            message: 'Please wait until we authenticate you...',
+            message: 'Please wait until we send you the link...',
             loading: true 
         });
 
         var data = {
-            email: this.state.email, 
-            password: this.state.password,
-            remember: this.state.remember
+            email: this.state.email
         };
         try {
-            let response = await axios.post('/api/auth/login', data);
-            this.setState({ errors: AuthUIFunctions.handleResponse(response, '/app'), loading: false});
-            if (!response.data.result){
-                this.setState({status: ''});
+            let response = await axios.post('/api/auth/forgot', data);
+            this.setState({ errors: AuthUIFunctions.handleResponse(response), loading: false});
+            if (response.data.result){
+                this.setState({status: 'success', message: response.data.message});
+            } else {
+                this.setState({status: 'error', message: 'Something went wrong, please try again...'});
             }
         } catch(ex) {
             console.log('Exception occured trying to send the login request');
@@ -92,7 +86,7 @@ export default class LoginForm extends Component {
                         </div>
                     </div>
                     <div className="text-center mb-5 mt-3">
-                        <h1>Please sign in</h1>
+                        <h1>Forgot password</h1>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputEmail">Email address</label>
@@ -102,32 +96,17 @@ export default class LoginForm extends Component {
                             className={this.state.validEmail ? 'form-control' : 'form-control non-valid'} autoFocus />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputPassword">Password</label>
-                        <input type="password" id="inputPassword" 
-                            name="password"
-                            onChange={this.handleChange} 
-                            className={this.state.validPassword ? 'form-control' : 'form-control non-valid'}  required  />
-                    </div>
-                    <div className="form-group">
-                        <div className="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" onChange={this.handleChange} name="remember" /> Remember me
-                            </label>
-                        </div>
+                        <span>We will send you the link to reset your password. Please note, the link is valid during 
+                            30 minutes.
+                        </span>
                     </div>
                     <div className="text-center mb-5 mt-5">
                         <div className="col-md-12">
                             <button className="btn btn-lg btn-primary" onClick={this.sendData} >
                                 {this.state.loading ? <Icon icon="circle-notch" className="fa-spin" size="xs" spin /> : ''}
-                                Sign in
+                                Submit
                             </button>
                         </div>
-                    </div>
-                    <div className="row text-center">
-                        <p className="w-100">Don't have an account? Register <Link to="/auth/register">here</Link>.</p>
-                    </div>
-                    <div className="row text-center">
-                        <p className="w-100"><Link to="/auth/forgot">Forgot your password?</Link></p>
                     </div>
                 </div>
                     <div className="container">
