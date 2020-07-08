@@ -56,17 +56,18 @@ class User(UserMixin, db.Model):
     def verify_hash(self, password):
         return sha256.verify(password, self.password_hash)
 
-    def generate_confirmation_token(self, expiration=3600):
+    # Is used for confirmation and forgot password feature
+    def generate_verification_token(self, key='confirm', expiration=3600):
         s = Serializer(get_config_var('SECRET_KEY'), expiration)
-        return s.dumps({'confirm': self.id.__str__()}).decode('utf-8')
+        return s.dumps({key: self.id.__str__()}).decode('utf-8')
 
-    def confirm(self, token):
+    def verify(self, token, key='confirm'):
         s = Serializer(get_config_var('SECRET_KEY'))
         try:
             data = s.loads(token.encode('utf-8'))
         except:
             return False
-        if data.get('confirm') != self.id.__str__():
+        if data.get(key) != self.id.__str__():
             return False
         self.confirmed = True
         return True

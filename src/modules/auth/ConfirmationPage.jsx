@@ -8,7 +8,7 @@ import Alert from '@src/components/alert/Alert';
 export default class ConfirmationPage extends Component {
     constructor(props) {
         super(props);
-    
+
         this.state = {
             errors: [], 
             title: 'Confirming your email...',
@@ -49,7 +49,7 @@ export default class ConfirmationPage extends Component {
     render(){
         this.userId = this.props.match.params.userid;
         this.token = this.props.match.params.token;
-        
+
         return (
             <div className="form-container">
                 <div className="text-center mb-2 mt-2">
