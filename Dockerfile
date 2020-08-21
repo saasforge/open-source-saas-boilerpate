@@ -17,12 +17,13 @@ RUN pip install --upgrade pip && \
 
 COPY package.json package.json
 
+COPY . /app
+
 RUN npm install --global npm && \
     npm update && \
     npm install && \
     npm run dev
 
-COPY . /app
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 
